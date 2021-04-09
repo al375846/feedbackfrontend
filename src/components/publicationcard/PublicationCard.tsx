@@ -1,40 +1,42 @@
 import moment from 'moment';
 import React from 'react'
+import Card from '@material-ui/core/Card'
 import { Publication } from '../../entities/Publication';
-
-interface PublicationCardState {
- }
+import './PublicationCard.css'
 
  interface PublicationCardProps {
     publication: Publication
 }
 
-const formatDate = (date: Date): string => {
-    return moment(date).format('LLL');
-}
+const PublicationCard = (props: PublicationCardProps) => {
 
-class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
-    render() {
-        return (
-        <div className="ui card">
-                <div className="content">
-                    <div className="comment" key={this.props.publication.id}>
-                        <div className="content">
-                            <div className="avatar">
-                                {this.props.publication.apprentice.username}
-                            </div>
-                        <div className="metadata">
-                            <span className="date">{formatDate(this.props.publication.date)}</span>
+    const formatDate = (date: Date): string => {
+        return moment(date).format('LLL');
+    }
+
+    return (
+        <Card>
+            <div className="content">
+                <div className="comment" key={props.publication.id}>
+                    <div className="content">
+                        <div className="avatar">
+                            <span>
+                            {props.publication.title}
+                            *
+                            <i className="user icon" />
+                            {props.publication.apprentice.username}
+                            </span>
                         </div>
-                        <div className="text">{this.props.publication.title}</div>
-                        <div className="text">{this.props.publication.description}</div>
-                        <div className="text">{this.props.publication.tags}</div>
-                        </div>
+                    <div className="metadata">
+                        <span className="date">{formatDate(props.publication.date)}</span>
+                    </div>
+                    <div className="text">{props.publication.description}</div>
+                    <div className="text">{props.publication.tags}</div>
                     </div>
                 </div>
             </div>
-        )
-    }
+        </Card>
+    )
 }
 
 export default PublicationCard

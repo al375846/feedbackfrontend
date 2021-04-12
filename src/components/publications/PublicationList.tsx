@@ -10,7 +10,7 @@ interface PublicationListProps {
 
 const PublicationList = (props: PublicationListProps) => {
 
-    const [publications, setPublications] = useState<Publication[]>([])
+    const [publications, setPublications] = useState<Array<Publication>>([])
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [finalSearchTerm, setFinalSearchTerm] = useState<string>('')
     const [cursor, setCursor] = useState<number>(-1)
@@ -40,14 +40,13 @@ const PublicationList = (props: PublicationListProps) => {
             setPublications(data.publications)
         }
 
-        searchPublications()
+        if (props.token)
+            searchPublications()
 
     }, [finalSearchTerm])
 
     const pubs = publications.map((publication) => {
-        return (
-            <PublicationCard key={publication.id} publication={publication}/>
-        )
+        return <PublicationCard key={publication.id} publication={publication}/>
     })
 
     return (

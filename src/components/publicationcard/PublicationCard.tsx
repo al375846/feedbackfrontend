@@ -1,5 +1,5 @@
-import moment from 'moment';
 import React from 'react'
+import moment from 'moment';
 import Card from '@material-ui/core/Card'
 import { Publication } from '../../entities/Publication';
 import './PublicationCard.css'

@@ -39,10 +39,9 @@ const PublicationList = () => {
             setPublications(data.publications)
         }
 
-        if (token)
-            searchPublications()
+        searchPublications()
 
-    }, [finalSearchTerm])
+    }, [finalSearchTerm, cursor])
 
     const pubs = publications.map((publication) => {
         return <PublicationCard key={publication.id} publication={publication}/>

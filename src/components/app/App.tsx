@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import {BrowserRouter, Route, Link} from 'react-router-dom'
+import {BrowserRouter, Route} from 'react-router-dom'
 
 import PublicationList from "../publications/PublicationList"
 import api from '../../api/Api'
@@ -19,8 +19,7 @@ const App = () => {
            
         }
 
-        if (!token)
-            login()
+        login()
         
     }, [])
 

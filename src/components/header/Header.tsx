@@ -8,9 +8,6 @@ const Header = () => {
                 Home
             </Link>
             <div className="right menu">
-                <Link to="/" className="item">
-                    Publications list
-                </Link>
                 <Link to="/login" className="item">
                     Log in
                 </Link>

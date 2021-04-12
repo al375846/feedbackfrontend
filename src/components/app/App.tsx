@@ -4,6 +4,8 @@ import {BrowserRouter, Route} from 'react-router-dom'
 import PublicationList from "../publications/PublicationList"
 import api from '../../api/Api'
 import { TokenProvider } from "../../contexts/TokenContext"
+import Header from "../header/Header"
+import FeedbackList from "../feedbacks/FeedbackList"
 
 const App = () => {
 
@@ -26,8 +28,10 @@ const App = () => {
     return (
         <div className="ui container" style={{marginTop: '10px'}}>
             <TokenProvider value={token}>
+                <Header />
                 <BrowserRouter>
                 <Route path="/" exact component={PublicationList}/>
+                <Route path="/feedback" component={FeedbackList} />
                 </BrowserRouter>
             </TokenProvider>
         </div>

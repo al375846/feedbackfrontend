@@ -12,7 +12,7 @@ const PublicationList = () => {
     const [finalSearchTerm, setFinalSearchTerm] = useState<string>('')
     const [cursor, setCursor] = useState<number>(-1)
 
-    const token = useContext(TokenContext)
+    const token = useContext<string>(TokenContext)
 
     useEffect(() => {
         const time = setTimeout( () => {

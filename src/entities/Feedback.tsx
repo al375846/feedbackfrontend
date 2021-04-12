@@ -1,12 +1,12 @@
-export interface Publication {
+import { Publication } from "./Publication";
+
+export interface Feedback {
     id: number,
-    title: string,
-    category: {name: string},
+    publication: Publication
     description: string,
-    tags: Array<string>,
     videos: Array<string>,
     documents: Array<string>,
     images: Array<string>,
-    apprentice: {username: string},
+    expert: {username: string},
     date: Date
 }

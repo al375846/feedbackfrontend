@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Publication } from '../../entities/Publication'
 import PublicationCard from '../publicationcard/PublicationCard'
 import './PublicationList.css'
 import api from '../../api/Api'
+import TokenContext from '../../contexts/TokenContext'
 
-interface PublicationListProps {
-    token: string
-}
-
-const PublicationList = (props: PublicationListProps) => {
+const PublicationList = () => {
 
     const [publications, setPublications] = useState<Array<Publication>>([])
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [finalSearchTerm, setFinalSearchTerm] = useState<string>('')
     const [cursor, setCursor] = useState<number>(-1)
+
+    const token = useContext(TokenContext)
 
     useEffect(() => {
         const time = setTimeout( () => {
@@ -33,14 +32,14 @@ const PublicationList = (props: PublicationListProps) => {
                     filter: finalSearchTerm
                 },
                 headers: {
-                    Authorization: `Bearer ${props.token}`
+                    Authorization: `Bearer ${token}`
                 }
             })
 
             setPublications(data.publications)
         }
 
-        if (props.token)
+        if (token)
             searchPublications()
 
     }, [finalSearchTerm])

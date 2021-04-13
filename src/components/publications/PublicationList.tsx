@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
+
 import { Publication } from '../../entities/Publication'
 import PublicationCard from '../publicationcard/PublicationCard'
 import './PublicationList.css'
 import api from '../../api/Api'
-import TokenContext from '../../contexts/TokenContext'
+import CredentialsContext from '../../contexts/CredentialsContext'
 
 const PublicationList = () => {
 
@@ -12,7 +13,7 @@ const PublicationList = () => {
     const [finalSearchTerm, setFinalSearchTerm] = useState<string>('')
     const [cursor, setCursor] = useState<number>(-1)
 
-    const token = useContext<string>(TokenContext)
+    const credentials = useContext(CredentialsContext)
 
     useEffect(() => {
         const time = setTimeout( () => {
@@ -32,7 +33,7 @@ const PublicationList = () => {
                     filter: finalSearchTerm
                 },
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${credentials.token}`
                 }
             })
 

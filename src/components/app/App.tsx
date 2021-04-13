@@ -3,13 +3,14 @@ import {BrowserRouter, Route} from 'react-router-dom'
 
 import PublicationList from "../publications/PublicationList"
 import api from '../../api/Api'
-import { TokenProvider } from "../../contexts/TokenContext"
+import { CredentialsProvider } from "../../contexts/CredentialsContext"
 import Header from "../header/Header"
 import FeedbackList from "../feedbacks/FeedbackList"
 
 const App = () => {
 
     const [token, setToken] = useState<string>('')
+    const [usertype, setUsertype] = useState<string>('apprentice')
 
     useEffect(() => {
         const login = async () => {
@@ -21,19 +22,29 @@ const App = () => {
            
         }
 
-        login()
+        const type = async () => {
+            const {data} = await api.get('/api/usertype', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            setUsertype(data.usertype)
+        }
+
+        login().then(type)
         
     }, [])
 
     return (
         <div className="ui container" style={{marginTop: '10px'}}>
-            <TokenProvider value={token}>
-                <Header />
+            <CredentialsProvider value={{token:token, usertype:usertype}}>
                 <BrowserRouter>
+                <Header />
                 <Route path="/" exact component={PublicationList}/>
                 <Route path="/feedback" component={FeedbackList} />
                 </BrowserRouter>
-            </TokenProvider>
+            </CredentialsProvider>
         </div>
     )
 

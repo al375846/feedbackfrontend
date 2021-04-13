@@ -1,22 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react'
-import TokenContext from '../../contexts/TokenContext'
+
 import { Feedback } from '../../entities/Feedback'
 import api from '../../api/Api'
+import CredentialsContext from '../../contexts/CredentialsContext'
 
 const FeedbackList = () => {
     const [feedbacks, setFeedbacks] = useState<Array<Feedback>>([])
     const [cursor, setCursor] = useState<number>(-1)
 
-    const token = useContext<string>(TokenContext)
+    const credentials = useContext(CredentialsContext)
 
     useEffect(() => {
         const searchFeedbacks = async () => {
-            const {data} = await api.get('/api/publication', {
+            const {data} = await api.get('/api/feedback', {
                 params: {
                     cursor: cursor,
                 },
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${credentials.token}`
                 }
             })
 
@@ -36,7 +37,7 @@ const FeedbackList = () => {
 
     return (
         <div>
-            Feedbacks
+            {feeds}
         </div>
     )
 }

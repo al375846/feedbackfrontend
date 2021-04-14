@@ -6,6 +6,7 @@ import api from '../../api/Api'
 import { CredentialsProvider } from "../../contexts/CredentialsContext"
 import Header from "../header/Header"
 import FeedbackList from "../feedbacks/FeedbackList"
+import PublicationInfo from "../publicationinfo/PublicationInfo"
 
 const App = () => {
 
@@ -43,6 +44,7 @@ const App = () => {
                 <Header />
                 <Route path="/" exact component={PublicationList}/>
                 <Route path="/feedback" component={FeedbackList} />
+                <Route path="/publication/:id" component={PublicationInfo}/>
                 </BrowserRouter>
             </CredentialsProvider>
         </div>

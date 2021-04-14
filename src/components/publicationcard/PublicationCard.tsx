@@ -3,6 +3,8 @@ import moment from 'moment';
 import Card from '@material-ui/core/Card'
 import { Publication } from '../../entities/Publication';
 import './PublicationCard.css'
+import { Link } from 'react-router-dom';
+import PublicationInfo from '../publicationinfo/PublicationInfo';
 
  interface PublicationCardProps {
     publication: Publication
@@ -21,7 +23,9 @@ const PublicationCard = (props: PublicationCardProps) => {
                     <div className="content">
                         <div className="avatar">
                             <span>
+                            <Link to={`/publication/${props.publication.id.toString()}`} className="item">
                             {props.publication.title}
+                            </Link>
                             *
                             <i className="user icon" />
                             {props.publication.apprentice.username}

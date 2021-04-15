@@ -40,7 +40,8 @@ const PublicationList = () => {
             setPublications(data.publications)
         }
 
-        searchPublications()
+        if (credentials.token)
+            searchPublications()
 
     }, [finalSearchTerm, cursor])
 

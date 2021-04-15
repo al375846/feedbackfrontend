@@ -27,6 +27,14 @@ const PublicationCard = (props: PublicationCardProps) => {
         return props.publication.images ? props.publication.images.length : 0
     }
 
+    const renderTags = props.publication.tags.map((tag) => {
+        return (
+            <span className="render-tags">
+            <Badge variant="secondary">{tag}</Badge>
+            </span>
+        )
+    })
+
     return (
         <Card>
             <Card.Header>
@@ -34,10 +42,13 @@ const PublicationCard = (props: PublicationCardProps) => {
                     <Link to={`/publication/${props.publication.id.toString()}`} className="item">
                         {props.publication.title}
                     </Link>
-                        <div className="right menu item">
-                            <i className="user icon" />
-                            {props.publication.apprentice.username}
-                        </div>
+                    <div className=" item">
+                        {props.publication.category.name}
+                    </div>
+                    <div className="right menu item">
+                        <i className="user icon" />
+                        {props.publication.apprentice.username}
+                    </div>
                 </div>
             </Card.Header>
             <Card.Body>
@@ -54,7 +65,7 @@ const PublicationCard = (props: PublicationCardProps) => {
                 <div className="content">
                     <div className="comment">
                         <div className="content">
-                            <div className="text tags">{props.publication.tags}</div>
+                            <div className="text tags">{renderTags}</div>
                         </div>
                     </div>
                 </div>

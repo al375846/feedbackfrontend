@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(30em, 1fr));
     grid-gap: 1em;
-    grid-auto-rows: 15em;
+    grid-auto-rows: 20em;
 }
 
 .ui.card:first-child {

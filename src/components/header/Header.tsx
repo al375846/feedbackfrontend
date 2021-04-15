@@ -45,7 +45,7 @@ const Header = () => {
             )
         else
             return (
-                <div>
+                <div className="item">
                     carlosmo
                 </div>
             )

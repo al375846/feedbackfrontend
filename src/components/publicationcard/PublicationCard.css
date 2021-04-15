@@ -1,4 +1,7 @@
-.publication-card {
-    min-width: 20em;
-    min-height: 20em;
+.tags {
+    color: blue;
+}
+
+.tags-text{
+    margin-left: 1em;
 }

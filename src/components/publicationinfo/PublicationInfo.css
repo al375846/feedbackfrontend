@@ -1,4 +1,15 @@
-.loading{
+.loading {
     margin-left: 50%;
     margin-top: 40%;
+}
+
+.file-preview {
+    width: 15em;
+    height: 15em;
+    margin-left: 1em;
+    margin-bottom: 1em;
+}
+
+.embed {
+    overflow: hidden;
 }

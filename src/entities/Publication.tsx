@@ -4,8 +4,8 @@ export interface Publication {
     category: {name: string},
     description: string,
     tags: Array<string>,
-    videos: Array<string>,
-    documents: Array<string>,
+    video: Array<string>,
+    document: Array<string>,
     images: Array<string>,
     apprentice: {username: string},
     date: Date

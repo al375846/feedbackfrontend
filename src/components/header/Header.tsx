@@ -46,8 +46,15 @@ const Header = () => {
         else
             return (
                 <div className="item">
+                    
+                    <Link to="/" className="item">
+                    <i className="user icon"></i>
                     carlosmo
-                </div>
+                    </Link>
+                    <Button variant="secondary" onClick={() => onHandleLogin()}>
+                    Log out
+                    </Button>
+                </div>  
             )
     }
 

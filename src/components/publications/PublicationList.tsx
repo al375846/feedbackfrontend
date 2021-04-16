@@ -46,7 +46,11 @@ const PublicationList = () => {
     }, [finalSearchTerm, cursor])
 
     const pubs = publications.map((publication) => {
-        return <PublicationCard key={publication.id} publication={publication}/>
+        return (
+            <div key={publication.id}>
+                <PublicationCard publication={publication} />
+            </div>
+        )
     })
 
     return (

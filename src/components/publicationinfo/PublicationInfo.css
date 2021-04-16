@@ -4,9 +4,9 @@
 }
 
 .file-preview {
-    width: 15em;
+    width: 14em;
     height: 15em;
-    margin-left: 1em;
+    margin-left: 1.5em;
     margin-bottom: 1em;
 }
 
@@ -15,4 +15,13 @@
     flex-direction: column;
     align-items: center;
     overflow-y: hidden;
+}
+
+.file-info {
+    height: 9em;
+    overflow: hidden;
+}
+
+.file-download {
+    margin-bottom: -1em;
 }

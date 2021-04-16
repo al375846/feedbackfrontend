@@ -89,6 +89,8 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             name += fileparts[i]
         }
         name += '.' +type
+        if (name.length > 20)
+            name = name.substr(0,20) + '...'
         return name
     }
 
@@ -104,7 +106,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             },
             responseType: 'blob'
         }).then(response => {
-            let file = new File([response.data], getFilename(filename), {type: filetype})
+            let file = new File([response.data], filename, {type: filetype})
             const url = window.URL.createObjectURL(file);
             const link = document.createElement('a')
             link.href = url
@@ -122,6 +124,8 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
                 </div>
                 <div className="file-description">
                     {getFilename(image)}
+                </div>
+                <div className="file-download">
                     <i className="download icon"></i>
                 </div>
             </Button>
@@ -131,11 +135,13 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
     const rendervideos = publication.video.map((video) => {
         return (
             <Button variant="light" onClick={() => dowloandFile(video)} key={video} className="file-preview">
-                <div>
+                <div className="file-info">
                     <video src={`https://feedback-heroku.herokuapp.com/api/public/file/${video}`} id={video} width="100%" height="100%"/>
                 </div>
                 <div>
                     {getFilename(video)}
+                </div>
+                <div className="file-download">
                     <i className="download icon"></i>
                 </div>
             </Button>
@@ -145,13 +151,15 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
     const renderfiles = publication.document.map((document) => {
         return (
             <Button variant="light" onClick={() => dowloandFile(document)} key={document} className="file-preview">
-                <div>
+                <div style={{height: "9em", overflow: 'hidden'}}>
                     <Document file={`https://feedback-heroku.herokuapp.com/api/public/file/${document}`} onLoadSuccess={() => {}}>
-                    <Page pageNumber={1} width={1000} scale={0.1} className="file-pdf"/>
+                    <Page pageNumber={1} width={250} className="file-pdf"/>
                     </Document>
                 </div>
                 <div>
                     {getFilename(document)}
+                </div>
+                <div className="file-download">
                     <i className="download icon"></i>
                 </div>
             </Button>

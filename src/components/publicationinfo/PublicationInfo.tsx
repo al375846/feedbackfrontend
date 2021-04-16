@@ -145,13 +145,10 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
     const renderfiles = publication.document.map((document) => {
         return (
             <Button variant="light" onClick={() => dowloandFile(document)} key={document} className="file-preview">
-                
                 <div>
-                    <div >
-                    <Document file={`https://feedback-heroku.herokuapp.com/api/public/file/${document}`} onLoadSuccess={() => {}} className="file-pdf">
-                    <Page pageNumber={1} />
+                    <Document file={`https://feedback-heroku.herokuapp.com/api/public/file/${document}`} onLoadSuccess={() => {}}>
+                    <Page pageNumber={1} width={1000} scale={0.1} className="file-pdf"/>
                     </Document>
-                    </div>
                 </div>
                 <div>
                     {getFilename(document)}

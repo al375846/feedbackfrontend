@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { Badge, Button, Spinner } from 'react-bootstrap'
+import { Document, Page, pdfjs } from 'react-pdf'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Publication } from '../../entities/Publication'
@@ -15,6 +16,9 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
     const [publication, setPublication] = useState<Publication>()
     const credentials = useContext(CredentialsContext)
 
+    pdfjs.GlobalWorkerOptions.workerSrc = 
+    `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+
     useEffect(() => {
         const searchPublication = async () => {
             const {data} = await api.get(`/api/publication/${match.params.id}`, {
@@ -26,16 +30,11 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             setPublication(data.publication)
         }
 
-        const searchFile = (filename: string) => {
+        /*const searchFile = (filename: string) => {
             const extension = filename.split('.')
             const type = extension[extension.length - 1]
-            let file: HTMLMediaElement | HTMLImageElement | HTMLVideoElement
-            if (type === 'pdf')
+            let file: HTMLMediaElement
                 file = document.getElementById(filename) as HTMLMediaElement
-            else if (type === 'mp4')
-                file = document.getElementById(filename) as HTMLVideoElement
-            else
-                file = document.getElementById(filename) as HTMLImageElement
             let request = new XMLHttpRequest()
             request.responseType = 'blob'
             request.open('get', `https://feedback-heroku.herokuapp.com/api/file/${filename}`, true)
@@ -51,24 +50,16 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
                 }
             }
             request.send(null)
-        }
+        }*/
 
         if (credentials.token && !publication)
             searchPublication()
         
-        if (publication) {
+        /*if (publication) {
             publication.document.forEach((document) => {
                 searchFile(document)
             })
-    
-            publication.video.forEach((video) => {
-                searchFile(video)
-            })
-    
-            publication.images.forEach((image) => {
-                searchFile(image)
-            })
-        }
+        }*/
             
     }, [publication])
     
@@ -127,7 +118,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
         return (
             <Button variant="light" onClick={() => dowloandFile(image)} key={image} className="file-preview">
                 <div className="file-info">
-                    <img src="" alt={image} id={image} width="100%" height="100%"/>
+                    <img src={`https://feedback-heroku.herokuapp.com/api/public/file/${image}`} alt={image} id={image} width="100%" height="100%"/>
                 </div>
                 <div className="file-description">
                     {getFilename(image)}
@@ -141,7 +132,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
         return (
             <Button variant="light" onClick={() => dowloandFile(video)} key={video} className="file-preview">
                 <div>
-                    <video src="" id={video} width="100%" height="100%"/>
+                    <video src={`https://feedback-heroku.herokuapp.com/api/public/file/${video}`} id={video} width="100%" height="100%"/>
                 </div>
                 <div>
                     {getFilename(video)}
@@ -154,8 +145,13 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
     const renderfiles = publication.document.map((document) => {
         return (
             <Button variant="light" onClick={() => dowloandFile(document)} key={document} className="file-preview">
+                
                 <div>
-                    <embed  src="" id={document} width="100%" height="100%" type="application/pdf" />
+                    <div >
+                    <Document file={`https://feedback-heroku.herokuapp.com/api/public/file/${document}`} onLoadSuccess={() => {}} className="file-pdf">
+                    <Page pageNumber={1} />
+                    </Document>
+                    </div>
                 </div>
                 <div>
                     {getFilename(document)}

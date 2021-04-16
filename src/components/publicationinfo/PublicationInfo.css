@@ -10,6 +10,11 @@
     margin-bottom: 1em;
 }
 
-.embed {
-    overflow: hidden;
+.file-pdf {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    max-width: 10px;
 }

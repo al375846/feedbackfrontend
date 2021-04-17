@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { Badge, Button, Spinner } from 'react-bootstrap'
 import { Document, Page, pdfjs } from 'react-pdf'
@@ -8,6 +8,7 @@ import { Publication } from '../../entities/Publication'
 import api from '../../api/Api'
 import './PublicationInfo.css'
 import moment from 'moment'
+import PublicationFeedbacks from './PublicationFeedbacks'
 
 type PublicationInfoParams = {id: string}
 
@@ -30,36 +31,8 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             setPublication(data.publication)
         }
 
-        /*const searchFile = (filename: string) => {
-            const extension = filename.split('.')
-            const type = extension[extension.length - 1]
-            let file: HTMLMediaElement
-                file = document.getElementById(filename) as HTMLMediaElement
-            let request = new XMLHttpRequest()
-            request.responseType = 'blob'
-            request.open('get', `https://feedback-heroku.herokuapp.com/api/file/${filename}`, true)
-            request.setRequestHeader('Authorization', `Bearer ${credentials.token}`)
-            request.onreadystatechange = e => {
-                if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
-                    console.log(request.response)
-                    let url = URL.createObjectURL(request.response)
-                    file.src = url
-                    file.onload = () => {
-                        URL.revokeObjectURL(file.src)
-                    }
-                }
-            }
-            request.send(null)
-        }*/
-
         if (credentials.token && !publication)
             searchPublication()
-        
-        /*if (publication) {
-            publication.document.forEach((document) => {
-                searchFile(document)
-            })
-        }*/
             
     }, [publication])
     
@@ -184,11 +157,6 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             <div className="ui header">
                 <h1>{publication.title}</h1>
             </div>
-            <div className="metadata item">
-                <span className="date">
-                    {formatDate(publication.date)}
-                </span>
-            </div>
             <hr />
             <div className="content">
                 <div className="comment">
@@ -204,12 +172,35 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
                     </div>
                 </div>
             </div>
-            <hr />
+            <br />
             <div>
                 {renderfiles}
                 {renderimages}
                 {rendervideos}
             </div>
+            <br />
+            <div className="user-tag">
+                <h3>
+                    <Badge variant="info">
+                        <div>
+                            <p style={{fontSize: '0.6em'}}>
+                                {formatDate(publication.date)}
+                            </p>
+                        </div>
+                        <div>
+                            <p style={{fontSize: '0.8em'}}>
+                                {publication.apprentice.username}
+                            </p>
+                        </div>
+                    </Badge>
+                </h3>
+            </div>
+            <br />
+            <div className="ui header">
+                <h1>Respuestas</h1>
+            </div>
+            <hr />
+                <PublicationFeedbacks id={publication.id}/>
         </div>
     )
 }

@@ -5,6 +5,8 @@ import PublicationCard from '../publicationcard/PublicationCard'
 import './PublicationList.css'
 import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
+import { Button } from 'react-bootstrap'
+import PublicationCreate from '../createpublication/PublicationCreate'
 
 const PublicationList = () => {
 
@@ -12,6 +14,7 @@ const PublicationList = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [finalSearchTerm, setFinalSearchTerm] = useState<string>('')
     const [cursor, setCursor] = useState<number>(-1)
+    const [showCreate, setShowCreate] = useState<boolean>(false)
 
     const credentials = useContext(CredentialsContext)
 
@@ -43,7 +46,7 @@ const PublicationList = () => {
         if (credentials.token)
             searchPublications()
 
-    }, [finalSearchTerm, cursor])
+    }, [finalSearchTerm, cursor, credentials.token])
 
     const pubs = publications.map((publication) => {
         return (
@@ -53,17 +56,39 @@ const PublicationList = () => {
         )
     })
 
+    const renderSearch = () => {
+        if (credentials.usertype === 'apprentice')
+            return (
+                <div className="ui form">
+                <div className="ui fluid icon input" style={{marginRight: '13em'}}>
+                    <input value={searchTerm} placeholder="Search publications" type="text" className="input" onChange={e => setSearchTerm(e.target.value)}/>  
+                    <i className="search icon"></i>
+                </div>
+                <div className="add-publication">
+                    <Button onClick={() => {setShowCreate(!showCreate)}}>
+                    Post your publication
+                    </Button>  
+                </div>
+            </div>
+            )
+        else
+            return (
+                <div className="ui form">
+                <div className="ui fluid icon input">
+                    <input value={searchTerm} placeholder="Search publications" type="text" className="input" onChange={e => setSearchTerm(e.target.value)}/>  
+                    <i className="search icon"></i>
+                </div>
+            </div>
+            )
+    }
+
     return (
         <div>
-            <div className="ui form">
-                    <div className="field">
-                    <label>Search the publications</label>
-                    <input value={searchTerm} type="text" className="input" onChange={e => setSearchTerm(e.target.value)}/>
-                    </div>
-            </div>
+            {renderSearch()}
             <div className="publication-list">
                 {pubs}
             </div>
+            <PublicationCreate visible={showCreate}/>
         </div>
     )
 }

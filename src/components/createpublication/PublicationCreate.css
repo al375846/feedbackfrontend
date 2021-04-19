@@ -1,0 +1,19 @@
+.publication-form {
+    width: 40%;
+    position: fixed;
+    right: 1em;
+    top: 52%;
+    left: 58%;
+    z-index: 100;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 1em;
+}
+
+.create-form {
+    width: 93%;
+    margin-left: 1.5em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    margin-right: 1.5em;
+}

@@ -13,3 +13,8 @@
 .ui.card:last-child {
     margin-bottom: 1em;
 }
+
+.add-publication {
+    text-align: right;
+    margin-top: -2.5em;
+}

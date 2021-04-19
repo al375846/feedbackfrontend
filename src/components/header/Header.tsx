@@ -12,8 +12,8 @@ const Header = () => {
 
     const doLogin = async () => {
         const {data} = await api.post('/api/login_check', {
-            username: 'carlosmo',
-            password: 'carlosmo'
+            username: 'jaumeba',
+            password: 'jaumeba'
         })
         credentials.onTokenChange(data.token)
         token = data.token
@@ -49,7 +49,7 @@ const Header = () => {
                     
                     <Link to="/" className="item">
                     <i className="user icon"></i>
-                    carlosmo
+                    jaumeba
                     </Link>
                     <Button variant="secondary" onClick={() => onHandleLogin()}>
                     Log out

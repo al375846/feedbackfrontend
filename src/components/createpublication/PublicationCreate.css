@@ -2,8 +2,7 @@
     width: 40%;
     position: fixed;
     right: 1em;
-    top: 52%;
-    left: 58%;
+    bottom: 1em;
     z-index: 100;
     background-color: white;
     border: 2px solid black;

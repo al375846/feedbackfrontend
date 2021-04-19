@@ -63,9 +63,37 @@ const PublicationCreate = (props: PublicationCreateProps) => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
-        console.log(e.target)
-        let input = document.getElementById('title') as HTMLInputElement
-        console.log(input.value)
+        let title = document.getElementById('title') as HTMLInputElement
+        let category = document.getElementById('category') as HTMLSelectElement
+        let subcategory = document.getElementById('subcategory') as HTMLSelectElement
+        let tags = document.getElementById('tags') as HTMLInputElement
+        let tagsarray = tags.value.split(' ')
+        let description = document.getElementById('description') as HTMLTextAreaElement
+        let categorypost: string
+        if (subcategory.value !== "-1")
+            categorypost = categories[selectedCategory].name
+        else
+            categorypost = categories[selectedCategory].children[parseInt(subcategory.value)].name
+
+        console.log(credentials.token)
+
+        const data = {
+            title: title.value,
+            category: {name: categorypost},
+            tags: tagsarray,
+            description: description.value,
+            date: new Date()
+        }
+
+        const postPublication = async() => { 
+            api.post('/api/publication', data, {
+                headers: {
+                    Authorization: `Bearer ${credentials.token}`
+                }
+            })
+        }
+
+        postPublication()
     }
 
     return (

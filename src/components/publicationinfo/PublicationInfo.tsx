@@ -9,6 +9,7 @@ import api from '../../api/Api'
 import './PublicationInfo.css'
 import moment from 'moment'
 import PublicationFeedbacks from './PublicationFeedbacks'
+import FeedbackCreate from '../createfeedback/FeedbackCreate'
 
 type PublicationInfoParams = {id: string}
 
@@ -16,6 +17,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
 
     const [publication, setPublication] = useState<Publication>()
     const credentials = useContext(CredentialsContext)
+    const [showCreate, setShowCreate] = useState<boolean>(false)
 
     pdfjs.GlobalWorkerOptions.workerSrc = 
     `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
@@ -152,6 +154,17 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
         )
     })
 
+    const renderPostFeedback = () => {
+        if (credentials.usertype === 'expert')
+            return (
+                <div className="item">
+                <Button onClick={() => setShowCreate(!showCreate)}>
+                    Give feedback
+                </Button>
+                </div>
+            )
+    }
+
     return (
         <div>
             <div className="ui header">
@@ -196,10 +209,15 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
                 </h3>
             </div>
             <br />
-            <div className="ui header">
-                <h1>Respuestas</h1>
+            <div className="ui secondary pointing menu">
+                <div className="item">
+                    <h1>Respuestas</h1>
+                </div>
+                <div className="right menu">
+                {renderPostFeedback()}
+                </div>
             </div>
-            <hr />
+                <FeedbackCreate visible={showCreate} publication={publication.id} setShowCreate={setShowCreate}/>
                 <PublicationFeedbacks id={publication.id}/>
         </div>
     )

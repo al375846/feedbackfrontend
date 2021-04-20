@@ -56,6 +56,18 @@ const PublicationList = () => {
         )
     })
 
+    const postPublication = (publication: Publication) => {
+        publications.push(publication)
+        publications.sort((a, b) => {
+            if(a.id < b.id)
+                return 1;
+            else
+                return -1;
+        })
+        if (publications.length > 25)
+            publications.splice(publications.length - 1, 1)
+    }
+
     const renderSearch = () => {
         if (credentials.usertype === 'apprentice')
             return (
@@ -88,7 +100,7 @@ const PublicationList = () => {
             <div className="publication-list">
                 {pubs}
             </div>
-            <PublicationCreate visible={showCreate}/>
+            <PublicationCreate visible={showCreate} setShowCreate={setShowCreate} postPublication={postPublication}/>
         </div>
     )
 }

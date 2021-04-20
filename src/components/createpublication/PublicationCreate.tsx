@@ -1,20 +1,29 @@
-import React, { useState, useEffect, useContext, FormEvent } from 'react'
+import React, { useState, useEffect, useContext, FormEvent, useRef } from 'react'
 import { Button, Col, Form, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Category } from '../../entities/Category'
 import api from '../../api/Api'
 import './PublicationCreate.css'
+import { Publication } from '../../entities/Publication'
 
 export interface PublicationCreateProps {
-    visible: boolean
+    visible: boolean,
+    setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
+    postPublication: (publication: Publication) => void
 }
 
 const PublicationCreate = (props: PublicationCreateProps) => {
 
     const [categories, setCategories] = useState<Category[]>()
-    const [selectedCategory, setSelectedCategory] =  useState<number>(0)
     const credentials = useContext(CredentialsContext)
+
+    const [title, setTitle] = useState<string>('')
+    const [tags, setTags] = useState<string>('')
+    const [description, setDescription] = useState<string>('')
+    const [category, setCategory] = useState<number>(0)
+    const [subcategory, setSubcategory] = useState<number>(-1)
+    const files = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         const searchCategories = async () => {
@@ -50,50 +59,72 @@ const PublicationCreate = (props: PublicationCreateProps) => {
         )
     })
 
-    let renderSubcateogries
-    if (categories[selectedCategory].children) {
-        renderSubcateogries = categories[selectedCategory].children.map((subcategory, index) => {
+    let renderSubcateogries = null
+    if (categories[category].children) {
+        renderSubcateogries = categories[category].children.map((subcategory, index) => {
             return (
-                <option value={subcategory.name} key={subcategory.name+index}>{subcategory.name}</option>
+                <option value={index} key={subcategory.name+index}>{subcategory.name}</option>
             )
         })
     }
-    else
-        renderSubcateogries = <option value={-1}>No hay subcategorias</option>
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async(e: FormEvent) => {
         e.preventDefault()
-        let title = document.getElementById('title') as HTMLInputElement
-        let category = document.getElementById('category') as HTMLSelectElement
-        let subcategory = document.getElementById('subcategory') as HTMLSelectElement
-        let tags = document.getElementById('tags') as HTMLInputElement
-        let tagsarray = tags.value.split(' ')
-        let description = document.getElementById('description') as HTMLTextAreaElement
+
+        const tagsarray = tags.split(' ')
         let categorypost: string
-        if (subcategory.value !== "-1")
-            categorypost = categories[selectedCategory].name
+        if (subcategory === -1)
+            categorypost = categories[category].name
         else
-            categorypost = categories[selectedCategory].children[parseInt(subcategory.value)].name
+            categorypost = categories[category].children[subcategory].name
 
-        console.log(credentials.token)
-
-        const data = {
-            title: title.value,
+        const pubdata = {
+            title: title,
             category: {name: categorypost},
             tags: tagsarray,
-            description: description.value,
+            description: description,
             date: new Date()
         }
 
         const postPublication = async() => { 
-            api.post('/api/publication', data, {
+            const {data} = await api.post('/api/publication', pubdata, {
                 headers: {
                     Authorization: `Bearer ${credentials.token}`
                 }
             })
+
+            const publication: Publication = data.publication
+
+            if (files.current && files.current.files) {
+                const f = new FormData()
+                
+                for (let i = 0; i < files.current.files.length; i++) {
+                    f.append(files.current.files[i].name, files.current.files[i], files.current.files[i].name)
+                    if ('application/pdf' === files.current.files[0].type)
+                        publication.document.push(files.current.files[0].name)
+                    else if ('video/mp4' === files.current.files[0].type)
+                        publication.video.push(files.current.files[0].name)
+                    else
+                        publication.images.push(files.current.files[0].name)
+                }
+                api.post(`/api/file/publication/${publication.id}`, f, {
+                    headers: {
+                        Authorization: `Bearer ${credentials.token}`
+                    }
+                })
+            }
+
+            props.postPublication(publication)
         }
 
-        postPublication()
+        postPublication().then(() => {
+            props.setShowCreate(false)
+            setTitle('')
+            setCategory(0)
+            setSubcategory(-1)
+            setTags('')
+            setDescription('')
+        })
     }
 
     return (
@@ -102,20 +133,21 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                 <Form onSubmit={(e) => handleSubmit(e)}>
                     <Form.Group controlId="title">
                     <Form.Label>Title</Form.Label>
-                    <Form.Control type="text" placeholder="Enter title" />
+                    <Form.Control type="text" placeholder="Enter title" value={title} onChange={e => setTitle(e.target.value)}/>
                     </Form.Group>
 
                     <Form.Row>
                         <Form.Group as={Col} controlId="category">
                         <Form.Label>Category</Form.Label>
-                        <Form.Control as="select" onChange={(e) => {setSelectedCategory(parseInt(e.target.value))}}>
+                        <Form.Control as="select" value={category} onChange={(e) => {setCategory(parseInt(e.target.value))}}>
                             {renderCategories}
                         </Form.Control>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="subcategory">
                         <Form.Label>Subcategory</Form.Label>
-                        <Form.Control as="select">
+                        <Form.Control as="select" value={subcategory} onChange={(e) => {setSubcategory(parseInt(e.target.value))}}>
+                            <option value={-1}>Seleccionar subcategoria</option>
                             {renderSubcateogries}
                         </Form.Control>
                         </Form.Group>
@@ -124,16 +156,24 @@ const PublicationCreate = (props: PublicationCreateProps) => {
 
                     <Form.Group controlId="tags">
                         <Form.Label>Tags</Form.Label>
-                        <Form.Control type="text" placeholder="Tags" />
+                        <Form.Control type="text" placeholder="Tags" value={tags} onChange={e => setTags(e.target.value)}/>
                     </Form.Group>
 
                     <Form.Group controlId="description">
                         <Form.Label>Descripcion</Form.Label>
-                        <Form.Control as="textarea" rows={4}/>
+                        <Form.Control as="textarea" rows={4} value={description} onChange={e => setDescription(e.target.value)}/>
                     </Form.Group>
 
-                    <Button variant="primary" type="submit">
+                    <Form.Group controlId="files">
+                        <Form.Label>Files</Form.Label>
+                        <Form.File id="files" multiple={true} ref={files} accept="application/pdf,video/mp4,image/jpg,image/jpeg,image/png"/>
+                    </Form.Group>
+
+                    <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
                         Submit
+                    </Button>
+                    <Button variant="primary" type="button" onClick={() => props.setShowCreate(false)}>
+                        Cancel
                     </Button>
                 </Form>
             </div>

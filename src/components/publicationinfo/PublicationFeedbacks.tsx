@@ -27,7 +27,6 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
                     Authorization: `Bearer ${credentials.token}`
                 }
             })
-            console.log(data)
             setFeedbacks(data.feedbacks)
         }
 

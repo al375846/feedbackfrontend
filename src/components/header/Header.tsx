@@ -50,6 +50,7 @@ const Header = () => {
     }
 
     const renderLogin = () => {
+
         if (!credentials.token)
             return (
                 <div className="item">
@@ -61,7 +62,7 @@ const Header = () => {
         else
             return (
                 <div className="item">
-                    <Link to="/" className="item">
+                    <Link to={`/profile/${credentials.usertype}`} className="item">
                     <i className="user icon"></i>
                     {username}
                     </Link>
@@ -70,18 +71,6 @@ const Header = () => {
                     </Button>
                 </div>  
             )
-    }
-
-    const renderAdminOptions = () => {
-        if (credentials.usertype === 'admin')
-            return (
-                <div className="item">
-                    <Link to="/" className="item">
-                        Admin panel
-                    </Link>
-                </div>
-            )
-        return null
     }
 
     return (
@@ -95,7 +84,6 @@ const Header = () => {
             </Link>
             </div>
             <div className="right menu">
-                {renderAdminOptions()}
                 {renderLogin()}
             </div>
             <Modal show={show} onHide={handleClose}>

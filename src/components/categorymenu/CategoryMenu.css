@@ -1,0 +1,27 @@
+.horizontal-menu {
+    margin-top: 0.4em;
+    overflow-x: hidden;
+    pointer-events:fill;
+}
+
+.arrow-prev {
+    cursor: pointer;
+    float:left;
+    margin-right: 1em;
+}
+
+.arrow-next {
+    cursor: pointer;
+    float:right;
+}
+
+.category {
+    margin-right: 0.4em;
+    cursor: pointer;
+}
+.categories {
+    float: left;
+    display: flex;
+    overflow-x: hidden;
+    width: 91%;
+}

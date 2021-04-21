@@ -10,3 +10,10 @@ export interface SubCategory {
     name: string,
     description: string,
 }
+
+export interface CategoryRaw {
+    id: number,
+    name: string,
+    description: string,
+    parent: CategoryRaw | null
+}

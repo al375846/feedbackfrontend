@@ -160,7 +160,7 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                     </Form.Group>
 
                     <Form.Group controlId="description">
-                        <Form.Label>Descripcion</Form.Label>
+                        <Form.Label>Description</Form.Label>
                         <Form.Control as="textarea" rows={4} value={description} onChange={e => setDescription(e.target.value)}/>
                     </Form.Group>
 

@@ -7,6 +7,7 @@ import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Button } from 'react-bootstrap'
 import PublicationCreate from '../createpublication/PublicationCreate'
+import CategoryMenu from '../categorymenu/CategoryMenu'
 
 const PublicationList = () => {
 
@@ -15,6 +16,7 @@ const PublicationList = () => {
     const [finalSearchTerm, setFinalSearchTerm] = useState<string>('')
     const [cursor, setCursor] = useState<number>(-1)
     const [showCreate, setShowCreate] = useState<boolean>(false)
+    const [selected, setSelected] = useState(-2)
 
     const credentials = useContext(CredentialsContext)
 
@@ -30,7 +32,14 @@ const PublicationList = () => {
 
     useEffect(() => {
         const searchPublications = async () => {
-            const {data} = await api.get('/api/publication', {
+
+            let url: string = '/api/publication'
+            if (selected === -1)
+                url = '/api/publication/expert'
+            else if (selected >= 0)
+                url = `/api/publication/category/${selected}`
+
+            const {data} = await api.get(url, {
                 params: {
                     cursor: cursor,
                     filter: finalSearchTerm
@@ -46,7 +55,7 @@ const PublicationList = () => {
         if (credentials.token)
             searchPublications()
 
-    }, [finalSearchTerm, cursor, credentials.token])
+    }, [finalSearchTerm, cursor, credentials.token, selected])
 
     const pubs = publications.map((publication) => {
         return (
@@ -97,6 +106,7 @@ const PublicationList = () => {
     return (
         <div>
             {renderSearch()}
+            <CategoryMenu setSelected={setSelected} selected={selected}/>
             <div className="publication-list">
                 {pubs}
             </div>

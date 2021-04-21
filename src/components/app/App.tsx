@@ -6,6 +6,9 @@ import { CredentialsStore } from "../../contexts/CredentialsContext"
 import Header from "../header/Header"
 import FeedbackList from "../feedbacks/FeedbackList"
 import PublicationInfo from "../publicationinfo/PublicationInfo"
+import ApprenticeProfile from "../profiles/ApprenticeProfile"
+import ExpertProfile from "../profiles/ExpertProfile"
+import AdminProfile from "../profiles/AdminProfile"
 
 const App = () => {
 
@@ -17,6 +20,9 @@ const App = () => {
                 <Route path="/" exact component={PublicationList}/>
                 <Route path="/feedback" component={FeedbackList} />
                 <Route path="/publication/:id" component={PublicationInfo}/>
+                <Route path="/profile/apprentice" component={ApprenticeProfile}/>
+                <Route path="/profile/expert" component={ExpertProfile}/>
+                <Route path="/profile/admin" component={AdminProfile}/>
                 </BrowserRouter>
             </CredentialsStore>
         </div>

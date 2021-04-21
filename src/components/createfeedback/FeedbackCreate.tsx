@@ -77,7 +77,7 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
                 <Form onSubmit={(e) => handleSubmit(e)}>
 
                     <Form.Group controlId="description">
-                        <Form.Label>Descripcion</Form.Label>
+                        <Form.Label>Description</Form.Label>
                         <Form.Control as="textarea" rows={5} value={description} onChange={e => setDescription(e.target.value)}/>
                     </Form.Group>
 

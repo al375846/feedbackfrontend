@@ -33,7 +33,7 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
         if (credentials.token && !feedbacks)
             searchFeedbacks()
 
-    }, [feedbacks, credentials.token])
+    }, [feedbacks, credentials.token, props.id])
 
     if (!feedbacks)
         return (
@@ -41,10 +41,6 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
                 <Spinner animation="border" />
             </div> 
         )
-
-    const formatDate = (date: Date): string => {
-        return moment(date).format('LLL');
-    }
 
     const mymes: { [extension: string]: string }  = {
         jpg: 'image/jpg',
@@ -145,7 +141,7 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
         })
 
         return (
-            <Card className="feedback-card">
+            <Card className="feedback-card" key={feedback.id}>
             <Card.Header>
                 <div className="ui secondary menu">
                     <div className="right menu item">
@@ -172,7 +168,7 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
                     <div className="ui secondary menu">
                         <div className="metadata item">
                         <span className="date">
-                            {formatDate(feedback.date)}
+                            {moment(feedback.date).format('D MMM YYYY HH:mm:ss')}
                         </span>
                         </div>
                     </div>

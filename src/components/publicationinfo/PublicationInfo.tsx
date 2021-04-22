@@ -9,7 +9,7 @@ import api from '../../api/Api'
 import './PublicationInfo.css'
 import moment from 'moment'
 import PublicationFeedbacks from './PublicationFeedbacks'
-import FeedbackCreate from '../createfeedback/FeedbackCreate'
+import FeedbackCreate from './FeedbackCreate'
 
 type PublicationInfoParams = {id: string}
 
@@ -36,7 +36,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
         if (credentials.token && !publication)
             searchPublication()
             
-    }, [publication])
+    }, [publication, credentials.token, match.params.id])
     
     if (!publication)
         return (
@@ -140,11 +140,6 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             </Button>
         )
     })
-    
-
-    const formatDate = (date: Date): string => {
-        return moment(date).format('LLL');
-    }
 
     const renderTags = publication.tags.map((tag) => {
         return (
@@ -197,7 +192,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
                     <Badge variant="info">
                         <div>
                             <p style={{fontSize: '0.6em'}}>
-                                {formatDate(publication.date)}
+                                {moment(publication.date).format('D MMM YYYY HH:mm:ss')}
                             </p>
                         </div>
                         <div>

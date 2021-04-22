@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Badge, Button, Nav } from 'react-bootstrap'
+import { Badge } from 'react-bootstrap'
 
 import { CategoryRaw } from '../../entities/Category'
 import api from '../../api/Api'

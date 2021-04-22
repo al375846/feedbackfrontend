@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 
 import { Publication } from '../../entities/Publication'
-import PublicationCard from '../publicationcard/PublicationCard'
+import PublicationCard from './PublicationCard'
 import './PublicationList.css'
 import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Button } from 'react-bootstrap'
-import PublicationCreate from '../createpublication/PublicationCreate'
-import CategoryMenu from '../categorymenu/CategoryMenu'
+import PublicationCreate from './PublicationCreate'
+import CategoryMenu from './CategoryMenu'
 
 const PublicationList = () => {
 

@@ -3,9 +3,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Feedback } from '../../entities/Feedback'
 import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
+import { Spinner } from 'react-bootstrap'
 
 const FeedbackList = () => {
-    const [feedbacks, setFeedbacks] = useState<Array<Feedback>>([])
+    const [feedbacks, setFeedbacks] = useState<Array<Feedback>>()
     const [cursor, setCursor] = useState<number>(-1)
 
     const credentials = useContext(CredentialsContext)
@@ -24,8 +25,16 @@ const FeedbackList = () => {
             setFeedbacks(data.feedbacks)
         }
 
-        searchFeedbacks()
-    }, [cursor])
+        if (!feedbacks)
+            searchFeedbacks()
+    }, [cursor, credentials.token, feedbacks])
+
+    if (!feedbacks)
+        return (
+            <div>
+                <Spinner animation="border" />
+            </div> 
+        )
 
     const feeds = feedbacks.map((feedback) => {
         return (

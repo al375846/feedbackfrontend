@@ -6,9 +6,9 @@ import { CredentialsStore } from "../../contexts/CredentialsContext"
 import Header from "../header/Header"
 import FeedbackList from "../feedbacks/FeedbackList"
 import PublicationInfo from "../publicationinfo/PublicationInfo"
-import ApprenticeProfile from "../profiles/ApprenticeProfile"
-import ExpertProfile from "../profiles/ExpertProfile"
-import AdminProfile from "../profiles/AdminProfile"
+import ApprenticeProfile from "../profiles/apprentice/ApprenticeProfile"
+import ExpertProfile from "../profiles/expert/ExpertProfile"
+import AdminProfile from "../profiles/admin/AdminProfile"
 
 const App = () => {
 

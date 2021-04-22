@@ -1,6 +1,8 @@
 import React from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
-import ProfileInfo from './ProfileInfo'
+import FavCategoriesInfo from './FavCategoriesInfo'
+import HistoryInfo from '../HistoryInfo'
+import ProfileInfo from '../ProfileInfo'
 
 const ExpertProfile = () => {
 
@@ -12,10 +14,10 @@ const ExpertProfile = () => {
                     <ProfileInfo />
                 </Tab>
                 <Tab eventKey="history" title="History">
-                    
+                    <HistoryInfo />
                 </Tab>
                 <Tab eventKey="favcategories" title="Fav categories">
-                    
+                    <FavCategoriesInfo />
                 </Tab>
             </Tabs>
             </div>

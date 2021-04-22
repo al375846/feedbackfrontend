@@ -1,0 +1,21 @@
+.favourites-list {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    grid-gap: 1em;
+}
+
+.category-fav {
+    float: left;
+}
+
+.icon-fav {
+    float: right;
+    cursor: pointer;
+    color: yellow;
+}
+
+.fav-star {
+    cursor: pointer;
+    color: yellow;
+}

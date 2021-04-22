@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext, FormEvent, useRef } from 'react'
-import { Button, Col, Form, Spinner } from 'react-bootstrap'
+import React, { useState, useContext, FormEvent, useRef } from 'react'
+import { Button, Form } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import api from '../../api/Api'

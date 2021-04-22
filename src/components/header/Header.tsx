@@ -92,14 +92,14 @@ const Header = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group controlId="title">
+                        <Form.Group controlId="username">
                         <Form.Label>Username</Form.Label>
                         <Form.Control type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)}/>
                         </Form.Group>
 
-                        <Form.Group controlId="title">
+                        <Form.Group controlId="password">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="text" placeholder="Enter title" value={password} onChange={e => setPassword(e.target.value)}/>
+                        <Form.Control type="text" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)}/>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

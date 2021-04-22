@@ -11,10 +11,6 @@ import { Badge, Card } from 'react-bootstrap';
 
 const PublicationCard = (props: PublicationCardProps) => {
 
-    const formatDate = (date: Date): string => {
-        return moment(date).format('LLL');
-    }
-
     const renderTags = props.publication.tags.map((tag) => {
         return (
             <span className="render-tags" key={tag}>
@@ -61,7 +57,7 @@ const PublicationCard = (props: PublicationCardProps) => {
                     <div className="ui secondary menu">
                         <div className="metadata item">
                         <span className="date">
-                            {formatDate(props.publication.date)}
+                            {moment(props.publication.date).format('D MMM YYYY HH:mm:ss')}
                         </span>
                         </div>
                         <div className="right menu item">

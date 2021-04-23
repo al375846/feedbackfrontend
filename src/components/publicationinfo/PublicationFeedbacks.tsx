@@ -7,9 +7,12 @@ import { Feedback } from '../../entities/Feedback'
 import CredentialsContext from '../../contexts/CredentialsContext'
 import api from '../../api/Api'
 import './PublicationFeedbacks.css'
+import FeedbackCreate from './FeedbackCreate'
 
 export interface PublicationFeedbacksProps {
-    id: number
+    id: number,
+    visible: boolean,
+    setShowCreate: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
@@ -41,6 +44,16 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
                 <Spinner animation="border" />
             </div> 
         )
+
+    const postFeedback = (feedback: Feedback) => {
+        feedbacks.push(feedback)
+        feedbacks.sort((a, b) => {
+            if(a.id < b.id)
+                return 1;
+            else
+                return -1;
+        })
+    }
 
     const mymes: { [extension: string]: string }  = {
         jpg: 'image/jpg',
@@ -180,6 +193,7 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
     return (
         <div>
             {renderfeedbacks}
+            <FeedbackCreate visible={props.visible} publication={props.id} setShowCreate={props.setShowCreate} postFeedback={postFeedback}/>
         </div>
     )
 }

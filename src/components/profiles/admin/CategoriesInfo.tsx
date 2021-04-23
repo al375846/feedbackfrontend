@@ -11,7 +11,7 @@ const CategoriesInfo = () => {
 
     const [categories, setCategories] = useState<Category[]>()
     const [subcategories, setSubCategories] = useState<SubCategory[]>([])
-    const [category, setCategory] = useState<string>('')
+    const [categoryparent, setCategoryParent] = useState<string>('')
     const [add, setAdd] = useState<string>('category')
     const [showCreate, setShowCreate] = useState<boolean>(false)
     const credentials = useContext(CredentialsContext)
@@ -25,7 +25,7 @@ const CategoriesInfo = () => {
             })
             setCategories(data.categories)
             setSubCategories(data.categories[0].children)
-            setCategory(data.categories[0].name)
+            setCategoryParent(data.categories[0].name)
         }
 
         if (credentials.token && !categories)
@@ -41,7 +41,7 @@ const CategoriesInfo = () => {
         )
     
     const handleCategory = (cat: Category) => {
-        setCategory(cat.name)
+        setCategoryParent(cat.name)
         setSubCategories(cat.children? cat.children : [])
     }
 
@@ -78,6 +78,18 @@ const CategoriesInfo = () => {
         setAdd('subcategory')
         setShowCreate(true)
     }
+
+    const postCategory = (category: Category | null, subCategory: SubCategory | null) => {
+        if (add === 'category') {
+            categories.push(category!)
+        }
+        else {
+            const cat = categories.find(category =>
+                category.name === categoryparent
+            )
+            cat?.children.push(subCategory!)
+        }
+    }
     
     return (
         <div>
@@ -98,7 +110,7 @@ const CategoriesInfo = () => {
                     {renderSubcategories}
                 </div>
             </div>
-            <CategoryCreate parent={category} visible={showCreate} setShowCreate={setShowCreate} add={add}/>
+            <CategoryCreate parent={categoryparent} visible={showCreate} setShowCreate={setShowCreate} add={add} postCategory={postCategory}/>
         </div>
     )
 }

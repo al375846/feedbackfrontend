@@ -4,12 +4,14 @@ import { Button, Form } from 'react-bootstrap'
 import './CategoryCreate.css'
 import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
+import { Category, CategoryRaw, SubCategory } from '../../../entities/Category'
 
 export interface CategoryCreateProps {
     visible: boolean,
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
-    parent: string
-    add: string
+    parent: string,
+    add: string,
+    postCategory: (category: Category | null, subCategory: SubCategory | null) => void
 }
 
 const CategoryCreate = (props: CategoryCreateProps) => {
@@ -33,15 +35,21 @@ const CategoryCreate = (props: CategoryCreateProps) => {
             parent: props.add === 'category' ? null : {name: props.parent}
         }
 
-        const postCategory = async() => { 
+        const postNewCategory = async() => { 
             const {data} = await api.post('/api/category', catdata, {
                 headers: {
                     Authorization: `Bearer ${credentials.token}`
                 }
             })
+
+            const added: CategoryRaw = data.category
+            if (added.parent)
+                props.postCategory(null, {id: added.id, name: added.name, description: added.description})
+            else
+                props.postCategory({id: added.id, name: added.name, description: added.description, children: []}, null)
         }
 
-        postCategory().then(() => {
+        postNewCategory().then(() => {
             props.setShowCreate(false)
             setName('')
             setDescription('')

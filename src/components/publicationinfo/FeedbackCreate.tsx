@@ -10,7 +10,7 @@ export interface FeedbackCreateProps {
     publication: number,
     visible: boolean,
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
-    //postFeedback: (feedback: Feedback) => void
+    postFeedback: (feedback: Feedback) => void
 }
 
 const FeedbackCreate = (props: FeedbackCreateProps) => {
@@ -34,7 +34,7 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
             date: new Date()
         }
 
-        const postFeedback = async() => { 
+        const postFeedbackNew = async() => { 
             const {data} = await api.post(`/api/feedback/publication/${props.publication}`, feeddata, {
                 headers: {
                     Authorization: `Bearer ${credentials.token}`
@@ -62,10 +62,10 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
                 })
             }
 
-            //props.postFeedback(feedback)
+            props.postFeedback(feedback)
         }
 
-        postFeedback().then(() => {
+        postFeedbackNew().then(() => {
             props.setShowCreate(false)
             setDescription('')
         })

@@ -9,7 +9,6 @@ import api from '../../api/Api'
 import './PublicationInfo.css'
 import moment from 'moment'
 import PublicationFeedbacks from './PublicationFeedbacks'
-import FeedbackCreate from './FeedbackCreate'
 
 type PublicationInfoParams = {id: string}
 
@@ -212,8 +211,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
                 {renderPostFeedback()}
                 </div>
             </div>
-                <FeedbackCreate visible={showCreate} publication={publication.id} setShowCreate={setShowCreate}/>
-                <PublicationFeedbacks id={publication.id}/>
+                <PublicationFeedbacks id={publication.id} visible={showCreate} setShowCreate={setShowCreate}/>
         </div>
     )
 }

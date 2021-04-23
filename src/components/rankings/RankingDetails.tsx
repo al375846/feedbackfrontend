@@ -72,14 +72,14 @@ const RankingDetails = (props: RankingDetailsProps) => {
         )
     })
 
-    const renderrest = rest.map((rank) => {
+    const renderrest = rest.map((rank, index) => {
         return (
             <div>
             <Card>
                 <Card.Body>
-                    <Card.Title>{rank.name}</Card.Title>
+                    <Card.Title>{(index + 4) + '. ' + rank.name}</Card.Title>
                     <Card.Text>
-                    {rank.rate}
+                    {text + rank.rate}
                     </Card.Text>
                 </Card.Body>
             </Card>

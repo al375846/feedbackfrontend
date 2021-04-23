@@ -3,7 +3,7 @@ import { Button, Form } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import api from '../../api/Api'
-import './FeedbackCreate.css'
+import './PublicationInfoTotal.css'
 import { Feedback } from '../../entities/Feedback'
 
 export interface FeedbackCreateProps {

@@ -4,7 +4,7 @@ import CredentialsContext from '../../../contexts/CredentialsContext'
 import { Category, SubCategory } from '../../../entities/Category'
 import api from '../../../api/Api'
 import { Button, Card, Spinner } from 'react-bootstrap'
-import './CategoriesInfo.css'
+import '../ProfileTotal.css'
 import CategoryCreate from './CategoryCreate'
 
 const CategoriesInfo = () => {

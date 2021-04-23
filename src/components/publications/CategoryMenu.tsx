@@ -4,24 +4,11 @@ import { Badge } from 'react-bootstrap'
 import { CategoryRaw } from '../../entities/Category'
 import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
-import './CategoryMenu.css'
+import './PublicationTotal.css'
 
 export interface CategoryMenuProps {
     setSelected: React.Dispatch<React.SetStateAction<number>>
     selected: number
-}
-
-export interface MenuItemProps {
-    category: CategoryRaw,
-}
-
-export interface MenuProps {
-    categories: CategoryRaw[],
-}
-
-export interface ArrowProps {
-    text: string,
-    className: string
 }
 
 const CategoryMenu = (props: CategoryMenuProps) => {

@@ -35,12 +35,14 @@ const Header = () => {
     const onHandleLogin = async () => {
         await doLogin()
         await doUsertype()
+        credentials.onUsernameChange(username)
         setShow(false)
     }
 
     const onHandleLogout = async () => {
         credentials.onTokenChange('')
         credentials.onUsertypeChange('')
+        credentials.onUsernameChange('')
         setUsername('')
         setPassword('')
     }

@@ -1,0 +1,89 @@
+.publication-list {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30em, 1fr));
+    grid-gap: 1em;
+    grid-auto-rows: 20em;
+}
+
+.ui.card:first-child {
+    margin-top: 1em;
+}
+
+.ui.card:last-child {
+    margin-bottom: 1em;
+}
+
+.add-publication {
+    text-align: right;
+    margin-top: -2.5em;
+}
+
+.pagination {
+    margin-top: 1em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.publication-form {
+    width: 40%;
+    position: fixed;
+    right: 1em;
+    bottom: 1em;
+    z-index: 100;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 1em;
+}
+
+.create-form {
+    width: 93%;
+    margin-left: 1.5em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    margin-right: 1.5em;
+}
+
+.tags {
+    color: blue;
+}
+
+.tags-text {
+    margin-left: 0.8em;
+}
+
+.render-tags {
+    margin-right: 0.2em;
+}
+
+.publication-card {
+    height: 100%;
+}
+
+.horizontal-menu {
+    margin-top: 0.4em;
+    overflow-x: hidden;
+    pointer-events:fill;
+}
+
+.arrow-prev {
+    cursor: pointer;
+    float:left;
+    margin-right: 1em;
+}
+
+.arrow-next {
+    cursor: pointer;
+    float:right;
+}
+
+.category {
+    margin-right: 0.4em;
+    cursor: pointer;
+}
+.categories {
+    float: left;
+    display: flex;
+    overflow-x: hidden;
+    width: 91%;
+}

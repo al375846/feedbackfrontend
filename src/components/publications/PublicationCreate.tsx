@@ -4,7 +4,7 @@ import { Button, Col, Form, Spinner } from 'react-bootstrap'
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Category } from '../../entities/Category'
 import api from '../../api/Api'
-import './PublicationCreate.css'
+import './PublicationTotal.css'
 import { Publication } from '../../entities/Publication'
 
 export interface PublicationCreateProps {

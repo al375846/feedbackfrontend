@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment';
 import { Publication } from '../../entities/Publication';
-import './PublicationCard.css'
+import './PublicationTotal.css'
 import { Link } from 'react-router-dom';
 import { Badge, Card } from 'react-bootstrap';
 

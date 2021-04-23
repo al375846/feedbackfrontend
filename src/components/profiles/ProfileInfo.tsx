@@ -4,7 +4,7 @@ import { Button, Col, Form, Spinner } from 'react-bootstrap'
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { User } from '../../entities/User'
 import api from '../../api/Api'
-import './ProfileInfo.css'
+import './ProfileTotal.css'
 
 const ProfileInfo = () => {
 

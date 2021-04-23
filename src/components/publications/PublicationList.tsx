@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 
 import { Publication } from '../../entities/Publication'
 import PublicationCard from './PublicationCard'
-import './PublicationList.css'
+import './PublicationTotal.css'
 import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Button, Pagination } from 'react-bootstrap'

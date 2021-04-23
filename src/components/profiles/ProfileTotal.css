@@ -1,0 +1,102 @@
+.profile-icon {
+    margin-top: 1em;
+    margin-right: 1em;
+    float: left;
+    text-align: center;
+}
+
+.profile-info {
+    margin-top: 1em;
+    float: left;
+}
+
+.history-list {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30em, 1fr));
+    grid-gap: 1em;
+}
+
+.history-type {
+    float: left;
+}
+
+.history-date {
+    float: right;
+}
+
+.favourites-list {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    grid-gap: 1em;
+}
+
+.category-fav {
+    float: left;
+}
+
+.icon-fav {
+    float: right;
+    cursor: pointer;
+    color: yellow;
+}
+
+.fav-star {
+    cursor: pointer;
+    color: yellow;
+}
+
+.category-form {
+    width: 40%;
+    position: fixed;
+    right: 1em;
+    bottom: 1em;
+    z-index: 100;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 1em;
+}
+
+.create-form {
+    width: 93%;
+    margin-left: 1.5em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    margin-right: 1.5em;
+}
+
+.category-admin {
+    margin-top: 1em;
+    cursor: pointer;
+}
+
+.parent-categories {
+    float: left;
+    width: 48%;
+}
+
+.parent-subcategories {
+    float: right;
+    width: 48%;
+}
+
+.add-category {
+    margin-top: 1em;
+}
+
+.categories-names {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    grid-gap: 1em;
+    text-align: center;
+}
+
+.subcategories-names {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    grid-gap: 1em;
+    text-align: center;
+}

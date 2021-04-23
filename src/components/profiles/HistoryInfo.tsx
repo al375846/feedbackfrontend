@@ -4,7 +4,7 @@ import CredentialsContext from '../../contexts/CredentialsContext'
 import api from '../../api/Api'
 import { Card, Spinner } from 'react-bootstrap'
 import {History} from '../../entities/History'
-import './HistoryInfo.css'
+import './ProfileTotal.css'
 import moment from 'moment'
 
 const HistoryInfo = () => {

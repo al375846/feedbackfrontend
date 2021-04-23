@@ -1,7 +1,7 @@
 import React, { FormEvent, useContext, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 
-import './CategoryCreate.css'
+import '../ProfileTotal.css'
 import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { Category, CategoryRaw, SubCategory } from '../../../entities/Category'

@@ -4,7 +4,7 @@ import { Card, Spinner } from 'react-bootstrap'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { SubCategory, CategoryRaw } from '../../../entities/Category'
 import api from '../../../api/Api'
-import './FavCategoriesInfo.css'
+import '../ProfileTotal.css'
 
 const FavCategoriesInfo = () => {
 
@@ -50,23 +50,35 @@ const FavCategoriesInfo = () => {
         )
 
     const postFavCategory = async(id: number) => {
-        api.post(`/api/expert/category/${id}`, {}, {
+        const {data} = await api.post(`/api/expert/category/${id}`, {}, {
             headers: {
                 Authorization: `Bearer ${credentials.token}`
             }
         })
+        const sub: SubCategory = data.favCategory.category
+        setFavcategories([...favcategories, sub])
         const icon = document.getElementById(`star${id}`) as HTMLElement
         icon.className = 'star icon'
     }
 
-    const deleteFavCategory = async(id:number) => {
+    const deleteFavCategory = async(id:number, category: SubCategory) => {
         api.delete(`/api/expert/category/${id}`, {
             headers: {
                 Authorization: `Bearer ${credentials.token}`
             }
         })
+        const i = favcategories.indexOf(category)
+        favcategories.splice(i, 1)
         const icon = document.getElementById(`star${id}`) as HTMLElement
         icon.className = 'star outline icon'
+    }
+
+    const handleFav = (id: number) => {
+        const category = favcategories.find(cat => cat.id === id)
+        if (!category)
+            postFavCategory(id)
+        else
+            deleteFavCategory(id, category)
     }
 
     const renderFavIcon = (id: number) => {
@@ -74,9 +86,9 @@ const FavCategoriesInfo = () => {
             return fav.id
         })
         if (favIds.indexOf(id) === -1)
-            return <i id={`star${id}`} onClick={() => postFavCategory(id)} className="star outline icon"></i>
+            return <i id={`star${id}`} onClick={() => handleFav(id)} className="star outline icon"></i>
         else
-            return <i id={`star${id}`} onClick={() => deleteFavCategory(id)} className="star icon"></i>
+            return <i id={`star${id}`} onClick={() => handleFav(id)} className="star icon"></i>
     }
 
     const renderCategories = categories.map((category) => {

@@ -5,7 +5,7 @@ import PublicationCard from './PublicationCard'
 import './PublicationList.css'
 import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
-import { Button } from 'react-bootstrap'
+import { Button, Pagination } from 'react-bootstrap'
 import PublicationCreate from './PublicationCreate'
 import CategoryMenu from './CategoryMenu'
 
@@ -17,6 +17,9 @@ const PublicationList = () => {
     const [cursor, setCursor] = useState<number>(-1)
     const [showCreate, setShowCreate] = useState<boolean>(false)
     const [selected, setSelected] = useState(-2)
+    const [itemSize, setItemsize] = useState<number>(0)
+    const [isLast, setIslast] = useState<boolean>(false)
+    const [prevCursors, setPrevcursors] = useState<number[]>([])
 
     const credentials = useContext(CredentialsContext)
 
@@ -50,6 +53,8 @@ const PublicationList = () => {
             })
 
             setPublications(data.publications)
+            setItemsize(data.itemSize)
+            setIslast(data.leftSize === 0)
         }
 
         if (credentials.token)
@@ -73,7 +78,7 @@ const PublicationList = () => {
             else
                 return -1;
         })
-        if (publications.length > 25)
+        if (publications.length > itemSize)
             publications.splice(publications.length - 1, 1)
     }
 
@@ -103,12 +108,34 @@ const PublicationList = () => {
             )
     }
 
+    const searchNext = () => {
+        if (!isLast) {
+            const newCursor = publications[0].id + 1
+            setPrevcursors([...prevCursors, newCursor])
+            setCursor(publications[itemSize - 1].id)
+        }
+    }
+
+    const searchPrev = () => {
+        if (cursor !== -1 && prevCursors.length > 0) {
+            const newCursor = prevCursors[prevCursors.length - 1]
+            prevCursors.pop()
+            setCursor(newCursor)
+        }
+    }
+
     return (
         <div>
             {renderSearch()}
             <CategoryMenu setSelected={setSelected} selected={selected}/>
             <div className="publication-list">
                 {pubs}
+            </div>
+            <div className="pagination">
+                <Pagination>
+                    <Pagination.Prev onClick={searchPrev}/>
+                    <Pagination.Next onClick={searchNext}/>
+                </Pagination>
             </div>
             <PublicationCreate visible={showCreate} setShowCreate={setShowCreate} postPublication={postPublication}/>
         </div>

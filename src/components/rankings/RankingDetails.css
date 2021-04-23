@@ -1,0 +1,17 @@
+.ranking {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(10em, 1fr));
+    grid-gap: 1em;
+}
+
+.top-ranking {
+    text-align: center;
+}
+
+.rest {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30em, 1fr));
+    grid-gap: 1em;
+}

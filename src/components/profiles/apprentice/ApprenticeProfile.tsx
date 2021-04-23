@@ -8,7 +8,7 @@ const ApprenticeProfile = () => {
     return (
         <div>
             <div>
-            <Tabs fill defaultActiveKey="profileap" id="uncontrolled-tab-example">
+            <Tabs fill defaultActiveKey="profileap" id="apprentice-profile">
                 <Tab eventKey="profileap" title="Profile">
                     <ProfileInfo />
                 </Tab>

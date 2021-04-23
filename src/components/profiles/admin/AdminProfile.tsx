@@ -6,7 +6,7 @@ const AdminProfile = () => {
     return (
         <div>
             <div>
-            <Tabs fill defaultActiveKey="categories" id="uncontrolled-tab-example">
+            <Tabs fill defaultActiveKey="categories" id="admin-profile">
                 <Tab eventKey="categories" title="Categories">
                     <CategoriesInfo />
                 </Tab>

@@ -1,4 +1,5 @@
 import { Publication } from "./Publication";
+import { Rate } from "./Rate";
 
 export interface Feedback {
     id: number,
@@ -9,4 +10,5 @@ export interface Feedback {
     images: Array<string>,
     expert: {username: string},
     date: Date
+    valoration: Rate | null
 }

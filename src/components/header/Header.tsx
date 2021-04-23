@@ -79,8 +79,8 @@ const Header = () => {
             <Link to="/" className="item">
                 Home
             </Link>
-            <Link to="/feedback" className="item">
-                Feedbacks
+            <Link to="/ranking" className="item">
+                Rankings
             </Link>
             </div>
             <div className="right menu">

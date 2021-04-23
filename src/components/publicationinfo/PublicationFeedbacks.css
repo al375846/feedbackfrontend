@@ -1,3 +1,11 @@
 .feedback-card {
     margin-bottom: 1em;
 }
+
+.rating {
+    color: yellow;
+}
+
+.star {
+    cursor: pointer;
+}

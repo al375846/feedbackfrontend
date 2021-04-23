@@ -9,7 +9,7 @@ const ExpertProfile = () => {
     return (
         <div>
             <div>
-            <Tabs fill defaultActiveKey="profile" id="uncontrolled-tab-example">
+            <Tabs fill defaultActiveKey="profile" id="expert-profile">
                 <Tab eventKey="profile" title="Profile">
                     <ProfileInfo />
                 </Tab>

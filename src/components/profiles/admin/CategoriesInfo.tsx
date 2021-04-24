@@ -81,7 +81,9 @@ const CategoriesInfo = () => {
 
     const postCategory = (category: Category | null, subCategory: SubCategory | null) => {
         if (add === 'category') {
-            categories.push(category!)
+            const newcategories = [...categories]
+            newcategories.push(category!)
+            setCategories(newcategories)
         }
         else {
             const cat = categories.find(category =>

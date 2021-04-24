@@ -68,7 +68,9 @@ const FavCategoriesInfo = () => {
             }
         })
         const i = favcategories.indexOf(category)
-        favcategories.splice(i, 1)
+        const newfavs = [...favcategories]
+        newfavs.splice(i, 1)
+        setFavcategories(newfavs)
         const icon = document.getElementById(`star${id}`) as HTMLElement
         icon.className = 'star outline icon'
     }

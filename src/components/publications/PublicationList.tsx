@@ -71,15 +71,9 @@ const PublicationList = () => {
     })
 
     const postPublication = (publication: Publication) => {
-        publications.push(publication)
-        publications.sort((a, b) => {
-            if(a.id < b.id)
-                return 1;
-            else
-                return -1;
-        })
-        if (publications.length > itemSize)
-            publications.splice(publications.length - 1, 1)
+        const newpublications = [publication, ...publications]
+        newpublications.pop()
+        setPublications(newpublications)
     }
 
     const renderSearch = () => {

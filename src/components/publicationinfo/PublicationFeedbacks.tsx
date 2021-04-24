@@ -43,17 +43,10 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
         )
 
     const postFeedback = (feedback: Feedback) => {
-        feedbacks.push(feedback)
-        feedbacks.sort((a, b) => {
-            if(a.id < b.id)
-                return 1;
-            else
-                return -1;
-        })
+        setFeedbacks([feedback, ...feedbacks])
     }
 
     const renderfeedbacks = feedbacks.map((feedback) => {
-
         return (
             <FeedbackCard feedback={feedback} username={props.publication.apprentice.username}/>
         )

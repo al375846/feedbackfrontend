@@ -10,6 +10,15 @@ export interface RankingDetailsProps {
     type: string
 }
 
+const rankinginfo: { [type: string]: string }  = {
+    ratedexperts: 'Rate: ',
+    activeexperts: 'Feedbacks given: ',
+    activecategories: 'Publications: ',
+    1: 'gold-medal.png',
+    0: 'silver-medal.png',
+    2: 'bronze-medal.png'
+}
+
 const RankingDetails = (props: RankingDetailsProps) => {
 
     const [ranking, setRanking] = useState<Ranking[]>()
@@ -41,30 +50,15 @@ const RankingDetails = (props: RankingDetailsProps) => {
     const orderfirst = [first[1], first[0], first[2]]
     const rest = ranking.slice(3)
 
-    let text: string
-    if (props.type === 'rated/experts')
-        text = 'Rate: '
-    else if (props.type === 'active/experts')
-        text = 'Feedbacks given: '
-    else
-        text = 'Publications: '
-
     const renderfirst = orderfirst.map((rank, index) => {
-        let img: string
-        if (index === 1)
-            img = 'gold-medal.png'
-        else if (index === 0)
-            img = 'silver-medal.png'
-        else
-            img = 'bronze-medal.png'
         return (
             <div className="top-ranking" key={rank.id}>
             <Card>
-                <Card.Img variant="top" src={`/images/${img}`} />
+                <Card.Img variant="top" src={`/images/${rankinginfo[index.toString()]}`} />
                 <Card.Body>
                     <Card.Title>{rank.name}</Card.Title>
                     <Card.Text>
-                    {text + rank.rate}
+                    {rankinginfo[props.type.replace('/', '')] + rank.rate}
                     </Card.Text>
                 </Card.Body>
             </Card>
@@ -74,12 +68,12 @@ const RankingDetails = (props: RankingDetailsProps) => {
 
     const renderrest = rest.map((rank, index) => {
         return (
-            <div>
+            <div key={rank.id}>
             <Card>
                 <Card.Body>
                     <Card.Title>{(index + 4) + '. ' + rank.name}</Card.Title>
                     <Card.Text>
-                    {text + rank.rate}
+                    {rankinginfo[props.type.replace('/', '')] + rank.rate}
                     </Card.Text>
                 </Card.Body>
             </Card>

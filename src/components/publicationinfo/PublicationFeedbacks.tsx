@@ -55,7 +55,8 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
     return (
         <div>
             {renderfeedbacks}
-            <FeedbackCreate visible={props.visible} publication={props.publication.id} setShowCreate={props.setShowCreate} postFeedback={postFeedback}/>
+            <FeedbackCreate visible={props.visible} publication={props.publication.id} 
+            setShowCreate={props.setShowCreate} postFeedback={postFeedback}/>
         </div>
     )
 }

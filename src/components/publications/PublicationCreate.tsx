@@ -119,11 +119,7 @@ const PublicationCreate = (props: PublicationCreateProps) => {
 
         postPublication().then(() => {
             props.setShowCreate(false)
-            setTitle('')
-            setCategory(0)
-            setSubcategory(-1)
-            setTags('')
-            setDescription('')
+            setTitle(''); setCategory(0); setSubcategory(-1); setTags(''); setDescription('')
         })
     }
 

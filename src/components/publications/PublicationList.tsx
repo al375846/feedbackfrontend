@@ -76,29 +76,14 @@ const PublicationList = () => {
         setPublications(newpublications)
     }
 
-    const renderSearch = () => {
+    const renderPost = () => {
         if (credentials.usertype === 'apprentice')
             return (
-                <div className="ui form">
-                <div className="ui fluid icon input" style={{marginRight: '13em'}}>
-                    <input value={searchTerm} placeholder="Search publications" type="text" className="input" onChange={e => setSearchTerm(e.target.value)}/>  
-                    <i className="search icon"></i>
-                </div>
                 <div className="add-publication">
                     <Button onClick={() => {setShowCreate(!showCreate)}}>
                     Post your publication
                     </Button>  
                 </div>
-            </div>
-            )
-        else
-            return (
-                <div className="ui form">
-                <div className="ui fluid icon input">
-                    <input value={searchTerm} placeholder="Search publications" type="text" className="input" onChange={e => setSearchTerm(e.target.value)}/>  
-                    <i className="search icon"></i>
-                </div>
-            </div>
             )
     }
 
@@ -113,14 +98,23 @@ const PublicationList = () => {
     const searchPrev = () => {
         if (cursor !== -1 && prevCursors.length > 0) {
             const newCursor = prevCursors[prevCursors.length - 1]
-            prevCursors.pop()
+            const newprevcursors = [...prevCursors]
+            newprevcursors.pop()
             setCursor(newCursor)
+            setPrevcursors(newprevcursors)
         }
     }
 
     return (
         <div>
-            {renderSearch()}
+            <div className="ui form">
+                <div className={`ui fluid icon input ${credentials.usertype === 'apprentice' ? 'posting' : ''}`}>
+                    <input value={searchTerm} placeholder="Search publications" 
+                    type="text" className="input" onChange={e => setSearchTerm(e.target.value)}/>  
+                    <i className="search icon"></i>
+                </div>
+                {renderPost()}
+            </div>
             <CategoryMenu setSelected={setSelected} selected={selected}/>
             <div className="publication-list">
                 {pubs}

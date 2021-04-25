@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
@@ -11,7 +11,16 @@ const Header = () => {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [show, setShow] = useState<boolean>(false)
-    let token = ''
+
+    useEffect(() => {
+        const tokenstored = localStorage.getItem('token')
+        if (tokenstored) {
+            credentials.onTokenChange(tokenstored)
+            setUsername(localStorage.getItem('username')!)
+            credentials.onUsertypeChange(localStorage.getItem('usertype')!)
+        }
+            
+    }, [credentials])
 
     const doLogin = async () => {
         const {data} = await api.post('/api/login_check', {
@@ -19,17 +28,19 @@ const Header = () => {
             password: password
         })
         credentials.onTokenChange(data.token)
-        token = data.token
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('username', username)
     }
 
     const doUsertype = async () => {
         const {data} = await api.get('/api/usertype', {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
 
         credentials.onUsertypeChange(data.usertype)
+        localStorage.setItem('usertype', data.usertype)
     }
 
     const onHandleLogin = async () => {
@@ -40,6 +51,7 @@ const Header = () => {
     }
 
     const onHandleLogout = async () => {
+        localStorage.removeItem('token')
         credentials.onTokenChange('')
         credentials.onUsertypeChange('')
         credentials.onUsernameChange('')

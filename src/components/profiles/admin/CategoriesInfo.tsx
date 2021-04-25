@@ -6,10 +6,11 @@ import api from '../../../api/Api'
 import { Button, Card, Spinner } from 'react-bootstrap'
 import '../ProfileTotal.css'
 import CategoryCreate from './CategoryCreate'
+import CategoryAdminContext from '../../../contexts/CategoryAdminContext'
 
 const CategoriesInfo = () => {
 
-    const [categories, setCategories] = useState<Category[]>()
+    const categoryadmin = useContext(CategoryAdminContext)
     const [subcategories, setSubCategories] = useState<SubCategory[]>([])
     const [categoryparent, setCategoryParent] = useState<string>('')
     const [add, setAdd] = useState<string>('category')
@@ -23,19 +24,19 @@ const CategoriesInfo = () => {
                     Authorization: `Bearer ${credentials.token}`
                 }
             })
-            setCategories(data.categories)
+            categoryadmin.onCategoriesChange(data.categories)
             setSubCategories(data.categories[0].children)
             setCategoryParent(data.categories[0].name)
         }
 
-        if (credentials.token && !categories)
+        if (credentials.token && !categoryadmin.categories)
             searchCategories()
 
-    }, [categories, credentials.token])
+    }, [credentials.token, categoryadmin])
 
-    if (!categories)
+    if (!categoryadmin.categories)
         return (
-            <div>
+            <div className="loading">
                 <Spinner animation="border" />
             </div> 
         )
@@ -45,7 +46,7 @@ const CategoriesInfo = () => {
         setSubCategories(cat.children? cat.children : [])
     }
 
-    const renderCategories = categories.map((category) => {
+    const renderCategories = categoryadmin.categories.map((category) => {
         return (
             <div key={category.id} className="category-admin" onClick={() => handleCategory(category)}>
                 <Card>
@@ -81,12 +82,12 @@ const CategoriesInfo = () => {
 
     const postCategory = (category: Category | null, subCategory: SubCategory | null) => {
         if (add === 'category') {
-            const newcategories = [...categories]
+            const newcategories = [...categoryadmin.categories!]
             newcategories.push(category!)
-            setCategories(newcategories)
+            categoryadmin.onCategoriesChange(newcategories)
         }
         else {
-            const cat = categories.find(category =>
+            const cat = categoryadmin.categories!.find(category =>
                 category.name === categoryparent
             )
             cat?.children.push(subCategory!)

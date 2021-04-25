@@ -100,3 +100,19 @@
     grid-gap: 1em;
     text-align: center;
 }
+
+.suggestion-list {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
+    grid-gap: 1em;
+    grid-auto-rows: 15em;
+}
+
+.suggestion-right {
+    float: right;
+}
+
+.suggestion-left {
+    float: left;
+}

@@ -64,6 +64,9 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
 
     return (
         <div>
+            <div className="publication-report">
+                <i className="big exclamation circle icon"></i>
+            </div>
             <div className="ui header">
                 <h1>{publication.title}</h1>
             </div>

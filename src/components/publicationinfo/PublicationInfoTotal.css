@@ -64,3 +64,12 @@
 .add-feedback {
     text-align: right;
 }
+.publication-title {
+    float: left;
+}
+
+.publication-report{
+    float: right;
+    color: red;
+    cursor: pointer;
+}

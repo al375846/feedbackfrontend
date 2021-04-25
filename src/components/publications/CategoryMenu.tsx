@@ -42,11 +42,20 @@ const CategoryMenu = (props: CategoryMenuProps) => {
             searchCategories()
     }, [credentials.token, credentials.usertype])
 
+    useEffect(() => {
+        divCategory.current!.addEventListener('wheel', e => {
+          e.preventDefault()
+          divCategory.current!.scrollTo({
+            left: divCategory.current!.scrollLeft + e.deltaY
+          })
+        })
+      }, [])
+
     const setVariant = (id: number) => {
         if (id === props.selected)
             return 'primary'
         else
-        return 'light'
+            return 'light'
     }
 
     const renderCategories = categories.map((category) => {
@@ -61,19 +70,19 @@ const CategoryMenu = (props: CategoryMenuProps) => {
         )
     })
 
-    const scollLeft = () => {
+    const scrollLeft = () => {
         let actual = divCategory.current!.scrollLeft
         divCategory.current?.scrollTo({left: actual - 200})
     }
 
-    const scollRight = () => {
+    const scrollRight = () => {
         let actual = divCategory.current!.scrollLeft
         divCategory.current?.scrollTo({left: actual + 200})
     }
 
     return (
         <div className="horizontal-menu">
-            <div className="arrow-prev" onClick={scollLeft}>
+            <div className="arrow-prev" onClick={scrollLeft}>
                 <h4>
                     <Badge variant="secondary">
                     <i className="angle left icon"></i>
@@ -81,7 +90,7 @@ const CategoryMenu = (props: CategoryMenuProps) => {
                 </h4>
             </div>
             <div className="categories" ref={divCategory}>{renderCategories}</div>
-            <div className="arrow-next" onClick={scollRight}>
+            <div className="arrow-next" onClick={scrollRight}>
                 <h4>
                     <Badge variant="secondary">
                     <i className="angle right icon"></i>

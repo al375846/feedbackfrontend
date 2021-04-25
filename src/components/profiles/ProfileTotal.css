@@ -8,6 +8,19 @@
 .profile-info {
     margin-top: 1em;
     float: left;
+    width: 52%;
+}
+
+.profile-submit {
+    margin-right: 1em;
+}
+
+.profile-buttons {
+    margin-top: 1em;
+}
+
+.profile-edit {
+    margin-right: 1em;
 }
 
 .history-list {

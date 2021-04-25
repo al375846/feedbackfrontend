@@ -54,9 +54,15 @@ const ProfileInfo = () => {
     const renderSubmitButton = () => {
         if (edit)
             return (
-                <Button variant="primary" type="submit">
+                <div>
+                <Button variant="primary" type="submit" className="profile-submit">
                     Submit
                 </Button>
+                <Button onClick={() => setEdit(!edit)}>
+                    Cancel
+                </Button>
+                </div>
+                
             )
         return null
     }
@@ -65,10 +71,16 @@ const ProfileInfo = () => {
         <div>
             <div className="profile-icon">
                 <img className="ui medium bordered image" alt="Profile" src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Elliot_Grieveson.png" />
-                <Button onClick={() => setEdit(!edit)}>
-                    <i className="edit outline icon"></i>
-                    Editar
-                </Button>
+                <div className="profile-buttons">
+                    <Button onClick={() => setEdit(!edit)} className="profile-edit">
+                        <i className="edit outline icon"></i>
+                        Editar
+                    </Button>
+                    <Button variant="danger" >
+                        <i className="trash icon"></i>
+                        Eliminar
+                    </Button>
+                </div>
             </div>
             <div className="profile-info">
                 <Form>

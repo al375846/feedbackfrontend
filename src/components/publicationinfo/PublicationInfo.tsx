@@ -9,6 +9,7 @@ import './PublicationInfoTotal.css'
 import moment from 'moment'
 import PublicationFeedbacks from './PublicationFeedbacks'
 import FilesInfo from './FilesInfo'
+import IncidenceModal from './IncidenceModal'
 
 type PublicationInfoParams = {id: string}
 
@@ -17,6 +18,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
     const [publication, setPublication] = useState<Publication>()
     const credentials = useContext(CredentialsContext)
     const [showCreate, setShowCreate] = useState<boolean>(false)
+    const [showIncidence, setShowIncidence] = useState<boolean>(false)
 
     useEffect(() => {
         const searchPublication = async () => {
@@ -65,7 +67,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
     return (
         <div>
             <div className="publication-report">
-                <i className="big exclamation circle icon"></i>
+                <i className="big exclamation circle icon" onClick={() => setShowIncidence(true)}></i>
             </div>
             <div className="ui header">
                 <h1>{publication.title}</h1>
@@ -114,6 +116,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
                 </div>
             </div>
                 <PublicationFeedbacks visible={showCreate} setShowCreate={setShowCreate} publication={publication}/>
+                <IncidenceModal show={showIncidence} setShow={setShowIncidence} id={match.params.id}/>
         </div>
     )
 }

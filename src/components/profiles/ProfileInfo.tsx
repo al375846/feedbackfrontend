@@ -5,6 +5,7 @@ import CredentialsContext from '../../contexts/CredentialsContext'
 import { User } from '../../entities/User'
 import api from '../../api/Api'
 import './ProfileTotal.css'
+import SuggestionCreate from './SuggestionCreate'
 
 const ProfileInfo = () => {
 
@@ -116,6 +117,7 @@ const ProfileInfo = () => {
                     </Form.Row>
                     {renderSubmitButton()}
                 </Form>
+                <SuggestionCreate />
             </div>
         </div>
     )

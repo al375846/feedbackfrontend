@@ -14,10 +14,11 @@ const Header = () => {
 
     useEffect(() => {
         const tokenstored = localStorage.getItem('token')
-        if (tokenstored) {
+        if (tokenstored && !credentials.token) {
             credentials.onTokenChange(tokenstored)
             setUsername(localStorage.getItem('username')!)
             credentials.onUsertypeChange(localStorage.getItem('usertype')!)
+            credentials.onUsernameChange(localStorage.getItem('username')!)
         }
             
     }, [credentials])
@@ -52,6 +53,8 @@ const Header = () => {
 
     const onHandleLogout = async () => {
         localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        localStorage.removeItem('usertype')
         credentials.onTokenChange('')
         credentials.onUsertypeChange('')
         credentials.onUsernameChange('')

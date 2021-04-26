@@ -87,22 +87,6 @@ const ProfileInfo = () => {
             
     }
 
-    const renderSubmitButton = () => {
-        if (edit)
-            return (
-                <div>
-                <Button variant="primary" type="submit" className="profile-submit">
-                    Submit
-                </Button>
-                <Button onClick={() => setEdit(!edit)}>
-                    Cancel
-                </Button>
-                </div>
-                
-            )
-        return null
-    }
-
     return (
         <div>
             <div className="profile-icon">
@@ -115,6 +99,12 @@ const ProfileInfo = () => {
                     <Button variant="danger" >
                         <i className="trash icon"></i>
                         Eliminar
+                    </Button>
+                </div>
+                <div className="change-password">
+                    <Button>
+                        <i className="key icon"></i>
+                        Change password
                     </Button>
                 </div>
             </div>
@@ -150,7 +140,12 @@ const ProfileInfo = () => {
                     <Form.Control type="text" value={phone} readOnly={!edit} onChange={(e) => setPhone(e.target.value)}/>
                     </Form.Group>
                     </Form.Row>
-                    {renderSubmitButton()}
+                    <Button variant="primary" type="submit" className="profile-submit" disabled={!edit}>
+                    Submit
+                    </Button>
+                    <Button onClick={() => setEdit(!edit)} disabled={!edit}>
+                        Cancel
+                    </Button>
                 </Form>
                 <SuggestionCreate />
             </div>

@@ -10,6 +10,9 @@
     float: left;
     width: 52%;
 }
+.change-password {
+    margin-top: 1em;
+}
 
 .profile-submit {
     margin-right: 1em;

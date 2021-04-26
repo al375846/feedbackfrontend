@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { Button, Col, Form, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
@@ -14,7 +14,7 @@ const ProfileInfo = () => {
     const [edit, setEdit] = useState<boolean>(false)
     const [name, setName] = useState<string>('')
     const [lastname, setLastname] = useState<string>('')
-    const [userame, setUsername] = useState<string>('')
+    const [username, setUsername] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [address, setAddress] = useState<string>('')
     const [phone, setPhone] = useState<string>('')
@@ -52,6 +52,41 @@ const ProfileInfo = () => {
             </div> 
         )
 
+    const handleEdit = async(e: FormEvent) => {
+        e.preventDefault()
+        
+        const userdata = {
+            username: username,
+            email: email,
+            name: name,
+            lastname: lastname,
+            address: address,
+            phone: phone
+        }
+
+        const {data} = await api.put('/api/user', userdata, {
+            headers: {
+                Authorization: `Bearer ${credentials.token}`
+            }
+        })
+
+        if (data.user.username !== credentials.username) {
+            localStorage.removeItem('token')
+            localStorage.removeItem('username')
+            localStorage.removeItem('usertype')
+            credentials.onTokenChange('')
+            credentials.onUsertypeChange('')
+            credentials.onUsernameChange('')
+            const link = document.createElement('a')
+            link.href = '/'
+            document.body.appendChild(link)
+            link.click()
+        }
+
+        setEdit(false)
+            
+    }
+
     const renderSubmitButton = () => {
         if (edit)
             return (
@@ -84,7 +119,7 @@ const ProfileInfo = () => {
                 </div>
             </div>
             <div className="profile-info">
-                <Form>
+                <Form onSubmit={e => handleEdit(e)}>
                     <Form.Row>
                     <Form.Group as={Col} controlId="userName">
                     <Form.Label>Name</Form.Label>
@@ -98,7 +133,7 @@ const ProfileInfo = () => {
                     <Form.Row>
                     <Form.Group as={Col} controlId="userUsername">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" value={userame} readOnly={!edit} onChange={(e) => setUsername(e.target.value)}/>
+                    <Form.Control type="text" value={username} readOnly={!edit} onChange={(e) => setUsername(e.target.value)}/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="userEmail">
                     <Form.Label>Email</Form.Label>

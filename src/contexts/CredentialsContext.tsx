@@ -10,7 +10,8 @@ export interface CredentialsData {
 }
 
 const CredentialsContext = React.createContext<CredentialsData>({
-    token: '', usertype: 'apprentice', username: '', onTokenChange: () => null, onUsertypeChange: () => null, onUsernameChange: () => null
+    token: '', usertype: 'apprentice', username: '',
+    onTokenChange: () => null, onUsertypeChange: () => null, onUsernameChange: () => null
 })
 
 export const CredentialsProvider = CredentialsContext.Provider
@@ -37,7 +38,7 @@ export const CredentialsStore = (props: CredentialsStoreProps) => {
     }
 
     return (
-        <CredentialsContext.Provider value={{token: token, usertype: usertype, username: username, 
+        <CredentialsContext.Provider value={{token: token, usertype: usertype, username: username,
         onTokenChange:onTokenChange, onUsertypeChange:onUsertypeChange, onUsernameChange:onUsernameChange}}>
             {props.children}
         </CredentialsContext.Provider>

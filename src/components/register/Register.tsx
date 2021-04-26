@@ -77,7 +77,7 @@ const Register = () => {
                 </Form.Row>
                 <Form.Row>
                 <Form.Group as={Col} controlId="registerAddress">
-                <Form.Label>Addres</Form.Label>
+                <Form.Label>Address</Form.Label>
                 <Form.Control type="text" value={address} onChange={(e) => setAddress(e.target.value)}/>
                 </Form.Group>
                 <Form.Group as={Col} controlId="registerPhone">

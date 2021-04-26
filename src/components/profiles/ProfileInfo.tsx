@@ -106,6 +106,8 @@ const ProfileInfo = () => {
                         <i className="key icon"></i>
                         Change password
                     </Button>
+                    <i className="info icon" 
+                        title="Si cambia su contraseña tendrá que volver a iniciar sesión" />
                 </div>
             </div>
             <div className="profile-info">
@@ -122,7 +124,10 @@ const ProfileInfo = () => {
                     </Form.Row>
                     <Form.Row>
                     <Form.Group as={Col} controlId="userUsername">
-                    <Form.Label>Username</Form.Label>
+                    <Form.Label>
+                        Username <i className="info circle icon" 
+                        title="Si cambia su nombre de usuario tendrá que volver a iniciar sesión" />
+                    </Form.Label>
                     <Form.Control type="text" value={username} readOnly={!edit} onChange={(e) => setUsername(e.target.value)}/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="userEmail">
@@ -132,7 +137,7 @@ const ProfileInfo = () => {
                     </Form.Row>
                     <Form.Row>
                     <Form.Group as={Col} controlId="userAddress">
-                    <Form.Label>Addres</Form.Label>
+                    <Form.Label>Address</Form.Label>
                     <Form.Control type="text" value={address} readOnly={!edit} onChange={(e) => setAddress(e.target.value)}/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="userPhone">

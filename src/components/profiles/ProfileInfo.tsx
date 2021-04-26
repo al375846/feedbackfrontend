@@ -111,7 +111,7 @@ const ProfileInfo = () => {
                     <Form.Control type="text" value={address} readOnly={!edit} onChange={(e) => setAddress(e.target.value)}/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="userPhone">
-                    <Form.Label>Lastname</Form.Label>
+                    <Form.Label>Phone</Form.Label>
                     <Form.Control type="text" value={phone} readOnly={!edit} onChange={(e) => setPhone(e.target.value)}/>
                     </Form.Group>
                     </Form.Row>

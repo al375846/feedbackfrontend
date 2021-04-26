@@ -67,6 +67,7 @@ const LoginModal = (props: IncidenceModalProps) => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
+                    ¿Aun no esta registrado? Hagalo <a href="/register" className="item" onClick={() => props.setShow(false)}>aqui</a>
                     <Button variant="secondary" onClick={() => props.setShow(false)}>
                         Close
                     </Button>

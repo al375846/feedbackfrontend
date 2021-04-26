@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
-import api from '../../api/Api'
 import LoginModal from '../login/LoginModal'
 
 const Header = () => {

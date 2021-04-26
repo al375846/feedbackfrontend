@@ -62,12 +62,13 @@ const FeedbackCard = (props: FeedbackCardProps) => {
         let rendered = []
         if (props.username === credentials.username)
             for (let i = 0; i < 5; i++)
-                rendered.push(<i className={`star ${getoutline(i + 1)} icon`} onClick={() => handleRatingClick(i + 1)}></i>)
+                rendered.push(<i key={`star${i}`} className={`star ${getoutline(i + 1)} icon`} onClick={() => handleRatingClick(i + 1)}></i>)
         return rendered
     }
 
     return (
-        <Card className="feedback-card" key={props.feedback.id}>
+        <div key={props.feedback.id}>
+        <Card className="feedback-card" >
             <Card.Header>
                 <div className="ui secondary menu">
                     <div className="item">
@@ -101,6 +102,7 @@ const FeedbackCard = (props: FeedbackCardProps) => {
                     </div>
                 </small>
         </Card>
+        </div>
     )
 }
 

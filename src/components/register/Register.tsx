@@ -1,8 +1,7 @@
-import React, { FormEvent, useContext, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { Button, Col, Form } from 'react-bootstrap'
 
 import api from '../../api/Api'
-import CredentialsContext from '../../contexts/CredentialsContext'
 import './Register.css'
 
 const Register = () => {

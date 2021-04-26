@@ -16,7 +16,6 @@ const Register = () => {
     const [password, setPassword] = useState<string>('')
     const [confirmpassword, setConfirmpassword] = useState<string>('')
     const [type, setType] = useState<string>('')
-    const credentials = useContext(CredentialsContext)
 
     const login = async() => {
         const {data} = await api.post('/api/login_check', {

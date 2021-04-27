@@ -6,6 +6,8 @@ import { User } from '../../entities/User'
 import api from '../../api/Api'
 import './ProfileTotal.css'
 import SuggestionCreate from './SuggestionCreate'
+import DeleteUserModal from './DeleteUserModal'
+import ChangePasswordModal from './ChangePasswordModal'
 
 const ProfileInfo = () => {
 
@@ -18,6 +20,8 @@ const ProfileInfo = () => {
     const [email, setEmail] = useState<string>('')
     const [address, setAddress] = useState<string>('')
     const [phone, setPhone] = useState<string>('')
+    const [deletemodal, setDeletemodal] = useState<boolean>(false)
+    const [passwordmodal, setPasswordmodal] = useState<boolean>(false)
 
     useEffect(() => {
         const searchUser = async () => {
@@ -96,18 +100,16 @@ const ProfileInfo = () => {
                         <i className="edit outline icon"></i>
                         Editar
                     </Button>
-                    <Button variant="danger" >
+                    <Button variant="danger" onClick={() => setDeletemodal(true)}>
                         <i className="trash icon"></i>
                         Eliminar
                     </Button>
                 </div>
                 <div className="change-password">
-                    <Button>
+                    <Button variant="secondary" onClick={() => setPasswordmodal(true)}>
                         <i className="key icon"></i>
                         Change password
                     </Button>
-                    <i className="info icon" 
-                        title="Si cambia su contraseña tendrá que volver a iniciar sesión" />
                 </div>
             </div>
             <div className="profile-info">
@@ -153,6 +155,8 @@ const ProfileInfo = () => {
                     </Button>
                 </Form>
                 <SuggestionCreate />
+                <DeleteUserModal show={deletemodal} setShow={setDeletemodal}/>
+                <ChangePasswordModal show={passwordmodal} setShow={setPasswordmodal}/>
             </div>
         </div>
     )

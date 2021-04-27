@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
-import LoginModal from '../login/LoginModal'
+import LoginModal, { doLogout } from '../login/LoginModal'
 
 const Header = () => {
 
@@ -21,9 +21,7 @@ const Header = () => {
     }, [credentials])
 
     const onHandleLogout = async () => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('username')
-        localStorage.removeItem('usertype')
+        doLogout()
         credentials.onTokenChange('')
         credentials.onUsertypeChange('')
         credentials.onUsernameChange('')

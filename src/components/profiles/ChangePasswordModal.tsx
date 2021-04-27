@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import api from '../../api/Api'
+import { doLogin } from '../login/LoginModal'
 
 export interface ChangePasswordModalProps {
     show: boolean,
@@ -18,15 +19,6 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
 
     if (!props.show) return null
 
-    const doLogin = async () => {
-        const {data} = await api.post('/api/login_check', {
-            username: credentials.username,
-            password: newpassword
-        })
-        credentials.onTokenChange(data.token)
-        localStorage.setItem('token', data.token)
-    }
-
     const handleSubmit = async() => {
 
         const passdata = {
@@ -39,7 +31,7 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
             }
         })
 
-        await doLogin()
+        await doLogin(credentials.username, newpassword)
 
         props.setShow(false)
         setPassword('')

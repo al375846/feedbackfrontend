@@ -2,6 +2,7 @@ import React, { FormEvent, useState } from 'react'
 import { Button, Col, Form } from 'react-bootstrap'
 
 import api from '../../api/Api'
+import { doLogin } from '../login/LoginModal'
 import './Register.css'
 
 const Register = () => {
@@ -15,15 +16,6 @@ const Register = () => {
     const [password, setPassword] = useState<string>('')
     const [confirmpassword, setConfirmpassword] = useState<string>('')
     const [type, setType] = useState<string>('')
-
-    const login = async() => {
-        const {data} = await api.post('/api/login_check', {
-            username: username,
-            password: password
-        })
-        localStorage.setItem('token', data.token)
-        console.log(data)
-    }
 
     const handleSubmit = async(e: FormEvent) => {
         e.preventDefault()
@@ -43,7 +35,7 @@ const Register = () => {
         localStorage.setItem('usertype', type)
         console.log(data)
 
-        await login()
+        await doLogin(username, password)
 
         const link = document.createElement('a')
         link.href = '/'

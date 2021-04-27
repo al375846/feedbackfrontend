@@ -72,13 +72,13 @@ const FeedbackCard = (props: FeedbackCardProps) => {
             <Card.Header>
                 <div className="ui secondary menu">
                     <div className="item">
+                        <i className="user icon" />
+                        {props.feedback.expert.username}
+                    </div>
+                    <div className="right menu item">
                         <div className="rating">
                         {renderstars()}
                         </div>
-                    </div>
-                    <div className="right menu item">
-                        <i className="user icon" />
-                        {props.feedback.expert.username}
                     </div>
                 </div>
             </Card.Header>

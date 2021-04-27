@@ -12,7 +12,8 @@ import { Publication } from '../../entities/Publication'
 export interface PublicationFeedbacksProps {
     visible: boolean,
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
-    publication: Publication
+    publication: Publication,
+    setAlert: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
@@ -44,6 +45,10 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
 
     const postFeedback = (feedback: Feedback) => {
         setFeedbacks([feedback, ...feedbacks])
+        props.setAlert(true)
+        setTimeout(() => {
+            props.setAlert(false)
+        }, 3000)
     }
 
     const renderfeedbacks = feedbacks.map((feedback) => {

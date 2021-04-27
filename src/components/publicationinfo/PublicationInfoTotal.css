@@ -73,3 +73,12 @@
     color: red;
     cursor: pointer;
 }
+
+.feedback-created {
+    position: fixed;
+    bottom: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+}

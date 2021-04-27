@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Badge, Button, Spinner } from 'react-bootstrap'
+import { Alert, Badge, Button, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Publication } from '../../entities/Publication'
@@ -19,6 +19,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
     const credentials = useContext(CredentialsContext)
     const [showCreate, setShowCreate] = useState<boolean>(false)
     const [showIncidence, setShowIncidence] = useState<boolean>(false)
+    const [alert, setAlert] = useState<boolean>(false)
 
     useEffect(() => {
         const searchPublication = async () => {
@@ -115,8 +116,13 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
                 {renderPostFeedback()}
                 </div>
             </div>
-                <PublicationFeedbacks visible={showCreate} setShowCreate={setShowCreate} publication={publication}/>
+                <PublicationFeedbacks visible={showCreate} setShowCreate={setShowCreate} publication={publication} setAlert={setAlert}/>
                 <IncidenceModal show={showIncidence} setShow={setShowIncidence} id={match.params.id}/>
+                <div className="feedback-created">
+                <Alert variant="success" show={alert} onClose={() => setAlert(false)} dismissible={true}>
+                    Feedback creado con exito
+                </Alert>
+                </div>
         </div>
     )
 }

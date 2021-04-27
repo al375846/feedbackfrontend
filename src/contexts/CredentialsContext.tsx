@@ -21,9 +21,14 @@ export interface CredentialsStoreProps {
 }
 
 export const CredentialsStore = (props: CredentialsStoreProps) => {
-    const [token, setToken] = useState<string>('')
-    const [usertype, setUsertype] = useState<string>('apprentice')
-    const [username, setUsername] = useState<string>('')
+
+    const tokenstored = localStorage.getItem('token')
+    const typestored = localStorage.getItem('usertype')
+    const namestored = localStorage.getItem('username')
+
+    const [token, setToken] = useState<string>(tokenstored ? tokenstored : '')
+    const [usertype, setUsertype] = useState<string>(typestored ? typestored : 'apprentice')
+    const [username, setUsername] = useState<string>(namestored ? namestored : '')
 
     const onTokenChange = (token: string) => {
         setToken(token)

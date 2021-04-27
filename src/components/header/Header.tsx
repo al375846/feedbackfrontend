@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
@@ -9,16 +9,6 @@ const Header = () => {
 
     const credentials = useContext(CredentialsContext)
     const [show, setShow] = useState<boolean>(false)
-
-    useEffect(() => {
-        const tokenstored = localStorage.getItem('token')
-        if (tokenstored && !credentials.token) {
-            credentials.onTokenChange(tokenstored)
-            credentials.onUsertypeChange(localStorage.getItem('usertype')!)
-            credentials.onUsernameChange(localStorage.getItem('username')!)
-        }
-            
-    }, [credentials])
 
     const onHandleLogout = async () => {
         doLogout()

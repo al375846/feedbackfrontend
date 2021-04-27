@@ -12,6 +12,7 @@ import RankingInfo from "../rankings/RankingInfo"
 import Register from "../register/Register"
 
 const App = () => {
+
     return (
         <div className="ui container" style={{marginTop: '10px'}}>
             <CredentialsStore>

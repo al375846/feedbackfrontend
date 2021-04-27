@@ -36,6 +36,15 @@
     border-radius: 1em;
 }
 
+.publication-created {
+    position: fixed;
+    bottom: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+}
+
 .create-form {
     width: 93%;
     margin-left: 1.5em;

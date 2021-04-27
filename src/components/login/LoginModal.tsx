@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { createPortal } from "react-dom"
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
 import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
@@ -11,22 +11,25 @@ export interface IncidenceModalProps {
 }
 
 export const doLogin = async (username: string, password: string) => {
-    const {data} = await api.post('/api/login_check', {
+    await api.post('/api/login_check', {
         username: username,
         password: password
     })
-    localStorage.setItem('token', data.token)
-    localStorage.setItem('username', username)
+    .then(response => {
+        console.log(response.status.toString())
+        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('username', username)
+    })
 }
 
 export const doUsertype = async () => {
-    const {data} = await api.get('/api/usertype', {
+    await api.get('/api/usertype', {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }
+    }).then(response => {
+        localStorage.setItem('usertype', response.data.usertype)
     })
-
-    localStorage.setItem('usertype', data.usertype)
 }
 
 export const doLogout = async () => {
@@ -39,20 +42,33 @@ const LoginModal = (props: IncidenceModalProps) => {
 
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+    const [alert, setAlert] = useState<boolean>(false)
     const credentials = useContext(CredentialsContext)
 
     if (!props.show) return null
 
     const handleLogin = async() => {
         await doLogin(username, password)
-        await doUsertype()
-        credentials.onTokenChange(localStorage.getItem('token')!)
-        credentials.onUsertypeChange(localStorage.getItem('usertype')!)
-        credentials.onUsernameChange(username)
-        props.setShow(false)
-        setUsername('')
-        setPassword('')
+        .then(() => {
+            credentials.onTokenChange(localStorage.getItem('token')!)
+            credentials.onUsernameChange(username)
+        })
+        .catch(() => handleVisible())
+        
+        await doUsertype().then(() => {
+            credentials.onUsertypeChange(localStorage.getItem('usertype')!)
+            props.setShow(false)
+            setUsername('')
+            setPassword('')
+        }).catch(() => {})
     }
+
+    const handleVisible = () => {
+        setAlert(true)
+        setTimeout(() => {
+            setAlert(false)
+        }, 3000)
+    } 
 
     const ModalDom = (
         <Modal show={props.show} onHide={() => props.setShow(false)}>
@@ -71,6 +87,9 @@ const LoginModal = (props: IncidenceModalProps) => {
                     <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)}/>
                     </Form.Group>
                 </Form>
+                <Alert variant="danger" show={alert} onClose={() => setAlert(false)} dismissible={true}>
+                    Usuario o contraseña incorrectos
+                </Alert>
             </Modal.Body>
             <Modal.Footer>
                 ¿Aun no esta registrado? Hagalo <a href="/register" className="item" onClick={() => props.setShow(false)}>aqui</a>

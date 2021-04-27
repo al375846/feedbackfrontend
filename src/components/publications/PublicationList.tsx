@@ -5,7 +5,7 @@ import PublicationCard from './PublicationCard'
 import './PublicationTotal.css'
 import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
-import { Button, Pagination } from 'react-bootstrap'
+import { Alert, Button, Pagination } from 'react-bootstrap'
 import PublicationCreate from './PublicationCreate'
 import CategoryMenu from './CategoryMenu'
 
@@ -20,6 +20,7 @@ const PublicationList = () => {
     const [itemSize, setItemsize] = useState<number>(0)
     const [isLast, setIslast] = useState<boolean>(false)
     const [prevCursors, setPrevcursors] = useState<number[]>([])
+    const [alert, setAlert] = useState<boolean>(false)
 
     const credentials = useContext(CredentialsContext)
 
@@ -74,6 +75,10 @@ const PublicationList = () => {
         const newpublications = [publication, ...publications]
         newpublications.pop()
         setPublications(newpublications)
+        setAlert(true)
+        setTimeout(() => {
+            setAlert(false)
+        }, 3000)
     }
 
     const renderPost = () => {
@@ -126,6 +131,11 @@ const PublicationList = () => {
                 </Pagination>
             </div>
             <PublicationCreate visible={showCreate} setShowCreate={setShowCreate} postPublication={postPublication}/>
+            <div className="publication-created">
+                <Alert variant="success" show={alert} onClose={() => setAlert(false)} dismissible={true}>
+                    Publicación creada con exito
+                </Alert>
+            </div>
         </div>
     )
 }

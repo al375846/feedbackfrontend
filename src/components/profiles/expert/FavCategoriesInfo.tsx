@@ -55,7 +55,7 @@ const FavCategoriesInfo = () => {
                 Authorization: `Bearer ${credentials.token}`
             }
         })
-        const sub: SubCategory = data.favCategory.category
+        const sub: SubCategory = data.favCategory
         setFavcategories([...favcategories, sub])
         const icon = document.getElementById(`star${id}`) as HTMLElement
         icon.className = 'star icon'

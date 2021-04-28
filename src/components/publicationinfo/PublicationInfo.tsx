@@ -63,6 +63,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             )
     }
 
+
     const files = [...publication.images, ...publication.video, ...publication.document]
 
     return (

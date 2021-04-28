@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>
+      window.OneSignal = window.OneSignal || [];
+      OneSignal.push(function() {
+        OneSignal.init({
+          appId: "577d1044-4e8f-423a-b22d-1eedfff41a75",
+        });
+      });
+    </script>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -1,5 +1,5 @@
 import React, { FormEvent, useContext, useEffect, useState } from 'react'
-import { Button, Form, Spinner } from 'react-bootstrap'
+import { Alert, Button, Form, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Category } from '../../entities/Category'
@@ -13,6 +13,9 @@ const SuggestionCreate = () => {
     const [categories, setCategories] = useState<Category[]>()
     const [category, setCategory] = useState<number>(-1)
     const [type, setType] = useState<string>('')
+    const [alert, setAlert] = useState<boolean>(false)
+    const [variant, setVariant] = useState<string>('')
+    const [message, setMessage] = useState<string>('')
 
     useEffect(() => {
         const searchCategories = async () => {
@@ -42,12 +45,18 @@ const SuggestionCreate = () => {
         )
     })
 
+    const popupAlert = () => {
+        setAlert(true)
+        setTimeout(() => {
+            setAlert(false)
+        }, 3000)
+    }
+
     const handleSubmit = async(e: FormEvent) => {
         e.preventDefault()
 
-        let parent = null
-        if (type === 'category')
-            parent = category === -1 ? null : {name: categories[category].name}
+        const parent = category === -1 || type !== 'category' ? null : {name: categories[category].name}
+
         const sugdata = {
             name: name,
             type: type,
@@ -55,19 +64,24 @@ const SuggestionCreate = () => {
             parent: parent,
             date: new Date()
         }
+        console.log(sugdata)
 
-       const postNewSuggestion = async() => { 
-            await api.post('/api/suggestion', sugdata, {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-        }
-
-        postNewSuggestion().then(() => {
+        await api.post('/api/suggestion', sugdata, {
+            headers: {
+                Authorization: `Bearer ${credentials.token}`
+            }
+        }).then(() => {
             setName('')
             setDescription('')
+            setVariant('success')
+            setMessage('Sugerencia enviada')
+        }).catch(() => {
+            setVariant('danger')
+            setMessage('El nombre de la sugerencia ya existe')
         })
+
+        popupAlert()
+        
     }
 
     const renderparent = () => {
@@ -89,22 +103,25 @@ const SuggestionCreate = () => {
             <Form.Label>¿Alguna sugerencia?</Form.Label>
             <Form.Group controlId="suggestion-name">
             <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter name" value={name} onChange={e => setName(e.target.value)}/>
+            <Form.Control type="text" placeholder="Enter name" value={name} onChange={e => setName(e.target.value)} required={true}/>
             </Form.Group>
             <Form.Group>
-                <Form.Label>Tipo de sugerencia</Form.Label>
-                <Form.Check type='radio' id="category" label="Category" name="types" value="category" onChange={e => setType(e.target.value)}/>
-                <Form.Check type='radio' id="upgrade" label="Upgrade" name="types" value="upgrade" onChange={e => setType(e.target.value)}/>
+            <Form.Label>Tipo de sugerencia</Form.Label>
+            <Form.Check type='radio' id="category" label="Category" name="types" value="category" onChange={e => setType(e.target.value)} required={true}/>
+            <Form.Check type='radio' id="upgrade" label="Upgrade" name="types" value="upgrade" onChange={e => setType(e.target.value)}/>
             </Form.Group>
             {renderparent()}
             <Form.Group controlId="suggestion-description">
                 <Form.Label>Description</Form.Label>
-                <Form.Control as="textarea" rows={4} value={description} onChange={e => setDescription(e.target.value)}/>
+                <Form.Control as="textarea" rows={4} value={description} onChange={e => setDescription(e.target.value)} required={true}/>
             </Form.Group>
             <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
                 Submit
             </Button>
         </Form>
+        <Alert variant={variant} show={alert} onClose={() => setAlert(false)} dismissible={true}>
+            {message}
+        </Alert>
         </div>
         
     )

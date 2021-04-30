@@ -16,7 +16,6 @@ export const doLogin = async (username: string, password: string) => {
         password: password
     })
     .then(response => {
-        console.log(response.status.toString())
         localStorage.setItem('token', response.data.token)
         localStorage.setItem('username', username)
     })
@@ -33,10 +32,20 @@ export const doUsertype = async () => {
 }
 
 export const doLogout = async () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('username')
-    localStorage.removeItem('usertype')
-    localStorage.removeItem('onesignal')
+    const logdata = {
+        onesignal: localStorage.getItem('onesignal')
+    }
+    await api.post('/api/logout', logdata, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    }).then(() => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        localStorage.removeItem('usertype')
+        localStorage.removeItem('onesignal')
+    })
+   
 }
 
 export const doOneSignalLogin = async () => {

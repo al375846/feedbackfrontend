@@ -12,6 +12,7 @@ const SuggestionCreate = () => {
     const [description, setDescription] = useState<string>('')
     const [categories, setCategories] = useState<Category[]>()
     const [category, setCategory] = useState<number>(-1)
+    const [type, setType] = useState<string>('')
 
     useEffect(() => {
         const searchCategories = async () => {
@@ -44,14 +45,18 @@ const SuggestionCreate = () => {
     const handleSubmit = async(e: FormEvent) => {
         e.preventDefault()
 
-        const parent = category === -1 ? null : {name: categories[category].name}
+        let parent = null
+        if (type === 'category')
+            parent = category === -1 ? null : {name: categories[category].name}
         const sugdata = {
             name: name,
+            type: type,
             description: description,
-            parent: parent
+            parent: parent,
+            date: new Date()
         }
 
-        const postNewSuggestion = async() => { 
+       const postNewSuggestion = async() => { 
             await api.post('/api/suggestion', sugdata, {
                 headers: {
                     Authorization: `Bearer ${credentials.token}`
@@ -65,14 +70,9 @@ const SuggestionCreate = () => {
         })
     }
 
-    return(
-        <div className="suggestion-create">
-        <Form onSubmit={(e) => handleSubmit(e)}>
-            <Form.Label>¿Alguna sugerencia para nueva cateogria?</Form.Label>
-            <Form.Group controlId="suggestion-name">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter name" value={name} onChange={e => setName(e.target.value)}/>
-            </Form.Group>
+    const renderparent = () => {
+        if (type === 'category')
+            return  (
             <Form.Group controlId="suggestion-category">
             <Form.Label>Parent</Form.Label>
             <Form.Control as="select" value={category} onChange={(e) => {setCategory(parseInt(e.target.value))}}>
@@ -80,6 +80,23 @@ const SuggestionCreate = () => {
                 {renderCategories}
             </Form.Control>
             </Form.Group>
+            )
+    }
+
+    return(
+        <div className="suggestion-create">
+        <Form onSubmit={(e) => handleSubmit(e)}>
+            <Form.Label>¿Alguna sugerencia?</Form.Label>
+            <Form.Group controlId="suggestion-name">
+            <Form.Label>Name</Form.Label>
+            <Form.Control type="text" placeholder="Enter name" value={name} onChange={e => setName(e.target.value)}/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Tipo de sugerencia</Form.Label>
+                <Form.Check type='radio' id="category" label="Category" name="types" value="category" onChange={e => setType(e.target.value)}/>
+                <Form.Check type='radio' id="upgrade" label="Upgrade" name="types" value="upgrade" onChange={e => setType(e.target.value)}/>
+            </Form.Group>
+            {renderparent()}
             <Form.Group controlId="suggestion-description">
                 <Form.Label>Description</Form.Label>
                 <Form.Control as="textarea" rows={4} value={description} onChange={e => setDescription(e.target.value)}/>

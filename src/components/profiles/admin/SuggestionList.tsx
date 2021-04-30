@@ -80,26 +80,9 @@ const SuggestionList = () => {
         setSuggestions([...newsuggestions])
     }
 
-    const rendersuggestions = suggestions.map((suggestion) => {
-        return (
-            <Card key={suggestion.id}>
-                <Card.Header>
-                <div className="suggestion-left">
-                    {suggestion.name}
-                </div>
-                <div className="suggestion-right">
-                    {suggestion.parent ? suggestion.parent.name : 'Categoría principal'}
-                </div>
-                </Card.Header>
-                <Card.Body>
-                <div className="content">
-                    <div className="comment">
-                        <div className="content">
-                            <div className="text">{suggestion.description}</div>
-                        </div>
-                    </div>
-                </div>
-                </Card.Body>
+    const renderbuttons = (suggestion: Suggestion) => {
+        if (suggestion.type === 'category')
+            return (
                 <Card.Footer>
                     <div className="suggestion-left">
                         <Button onClick={() => handleAccept(suggestion)}>
@@ -112,6 +95,37 @@ const SuggestionList = () => {
                         </Button>
                     </div>
                 </Card.Footer>
+            )
+    }
+
+    const rendertype = (suggestion: Suggestion) => {
+        if (suggestion.type === 'category')
+            return suggestion.parent ? `Subcategoria: ${suggestion.parent.name}` : 'Categoría principal'
+        else
+            return 'Mejora'
+    }
+
+    const rendersuggestions = suggestions.map((suggestion) => {
+        return (
+            <Card key={suggestion.id}>
+                <Card.Header>
+                <div className="suggestion-left">
+                    {suggestion.name}
+                </div>
+                <div className="suggestion-right">
+                    {rendertype(suggestion)}
+                </div>
+                </Card.Header>
+                <Card.Body>
+                <div className="content">
+                    <div className="comment">
+                        <div className="content">
+                            <div className="text">{suggestion.description}</div>
+                        </div>
+                    </div>
+                </div>
+                </Card.Body>
+                {renderbuttons(suggestion)}
             </Card>
         )
     })

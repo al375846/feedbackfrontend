@@ -1,11 +1,9 @@
 import React, { useContext, useState } from 'react'
 import { createPortal } from "react-dom"
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
-import {isChrome, isSafari, isFirefox, isEdge} from 'react-device-detect'
 
 import api from '../../api/Api'
 import CredentialsContext from '../../contexts/CredentialsContext'
-import axios from 'axios'
 
 export interface IncidenceModalProps {
     show: boolean,
@@ -43,44 +41,21 @@ export const doLogout = async () => {
 
 export const doOneSignalLogin = async () => {
 
-    let devicetype = -1
-    if (isChrome)
-        devicetype = 5
-    else if (isFirefox)
-        devicetype = 8
-    else if (isEdge)
-        devicetype = 4
-    else if (isSafari)
-        devicetype = 7
-
-    if (devicetype === -1)
-        return
-
-    const onesignaldata = {
-        app_id: '577d1044-4e8f-423a-b22d-1eedfff41a75',
-        language: navigator.language,
-        device_type: devicetype,
-        game_version: 0.8
-    }
-
-    await axios.post('https://onesignal.com/api/v1/players', onesignaldata, {
-        headers: {
-            'Content-type': 'application/json'
-        }
-    }).then(response => {
-        localStorage.setItem('onesignal', response.data.id)
-    })
-
-    console.log(localStorage.getItem('onesignal'))
-
-    const logdata = {
-        onesignal: localStorage.getItem('onesignal')
-    }
-
-    await api.post('api/notification', logdata, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+    //@ts-ignore
+    await OneSignal.push(async function() {
+        //@ts-ignore
+        await OneSignal.getUserId(async function(userId: string) {
+            localStorage.setItem('onesignal', userId)
+            const logdata = {
+                onesignal: userId
+            }
+        
+            await api.post('api/notification', logdata, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+        })
     })
 }
 

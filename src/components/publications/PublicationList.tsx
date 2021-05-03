@@ -18,9 +18,10 @@ const PublicationList = () => {
     const [showCreate, setShowCreate] = useState<boolean>(false)
     const [selected, setSelected] = useState(-2)
     const [itemSize, setItemsize] = useState<number>(0)
-    const [isLast, setIslast] = useState<boolean>(true)
-    const [prevCursors, setPrevcursors] = useState<number[]>([])
+    const [page, setPage] = useState<number>(1)
+    const [left, setLeft] = useState<number>(0)
     const [alert, setAlert] = useState<boolean>(false)
+    const [pagination, setPagination] = useState<JSX.Element[]>()
 
     const credentials = useContext(CredentialsContext)
 
@@ -35,6 +36,7 @@ const PublicationList = () => {
         const {data} = await api.get(url, {
             params: {
                 cursor: cursor,
+                page: page,
                 filter: finalSearchTerm
             },
             headers: {
@@ -43,8 +45,12 @@ const PublicationList = () => {
         })
 
         setPublications(data.publications)
-        setItemsize(data.itemSize)
-        setIslast(data.leftSize === 0)
+        if (cursor === -1) {
+            setItemsize(data.itemSize)
+            setLeft(data.leftSize)
+            setCursor(data.publications[0].id + 1) 
+        }
+               
     }
 
     useEffect(() => {
@@ -62,7 +68,24 @@ const PublicationList = () => {
         if (credentials.token)
             searchPublications()
 
-    }, [finalSearchTerm, cursor, credentials.token, selected])
+    }, [finalSearchTerm, credentials.token, selected, page])
+
+    useEffect(() => {
+        const pag = []
+        const total = Math.ceil((left + itemSize) / itemSize)
+        for (let number = 1; number <= total; number++) {
+            pag.push(
+            <Pagination.Item key={number} active={number === page} onClick={() => setPage(number)}>
+                {number}
+            </Pagination.Item>,
+            )
+        }
+        setPagination(pag)
+    }, [selected, finalSearchTerm, page, left, itemSize])
+
+    useEffect(() => {
+        setCursor(-1)
+    }, [selected, finalSearchTerm])
 
     const pubs = publications.map((publication) => {
         return (
@@ -92,21 +115,21 @@ const PublicationList = () => {
     }
 
     const searchNext = () => {
-        if (!isLast) {
-            const newCursor = publications[0].id + 1
-            setPrevcursors([...prevCursors, newCursor])
-            setCursor(publications[itemSize - 1].id)
-        }
+        if (page !== Math.ceil((left + itemSize) / itemSize))
+            setPage(page + 1)
+    }
+    const searchLast = () => {
+        if (page !== Math.ceil((left + itemSize) / itemSize))
+            setPage(Math.ceil((left + itemSize) / itemSize))
     }
 
     const searchPrev = () => {
-        if (cursor !== -1 && prevCursors.length > 0) {
-            const newCursor = prevCursors[prevCursors.length - 1]
-            const newprevcursors = [...prevCursors]
-            newprevcursors.pop()
-            setCursor(newCursor)
-            setPrevcursors(newprevcursors)
-        }
+        if (page !== 1)
+            setPage(page - 1)
+    }
+    const searchFirst = () => {
+        if (page !== 1)
+            setPage(1)
     }
 
     return (
@@ -123,10 +146,13 @@ const PublicationList = () => {
             <div className="publication-list">
                 {pubs}
             </div>
-            <div className="pagination">
+            <div className="paginator">
                 <Pagination>
-                    <Pagination.Prev onClick={searchPrev}/>
-                    <Pagination.Next onClick={searchNext}/>
+                <Pagination.First onClick={searchFirst}/>
+                <Pagination.Prev onClick={searchPrev}/>
+                {pagination}
+                <Pagination.Next onClick={searchNext}/>
+                <Pagination.Last  onClick={searchLast}/>
                 </Pagination>
             </div>
             <PublicationCreate visible={showCreate} setShowCreate={setShowCreate} postPublication={postPublication}/>

@@ -11,24 +11,21 @@ export interface IncidenceModalProps {
 }
 
 export const doLogin = async (username: string, password: string) => {
-    api.post('/api/login_check', {
+    const {data} = await api.post('/api/login_check', {
         username: username,
         password: password
     })
-    .then(response => {
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('username', username)
-    })
+    localStorage.setItem('token', data.token)
+    localStorage.setItem('username', username)
 }
 
 export const doUsertype = async () => {
-    api.get('/api/usertype', {
+    const {data} = await api.get('/api/usertype', {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }
-    }).then(response => {
-        localStorage.setItem('usertype', response.data.usertype)
     })
+    localStorage.setItem('usertype', data.usertype)
 }
 
 export const doLogout = async () => {
@@ -78,14 +75,15 @@ const LoginModal = (props: IncidenceModalProps) => {
     if (!props.show) return null
 
     const handleLogin = async() => {
-        doLogin(username, password)
+        await doLogin(username, password)
         .then(() => {
             credentials.onTokenChange(localStorage.getItem('token')!)
             credentials.onUsernameChange(username)
         })
         .catch(() => handleVisible())
         
-        doUsertype().then(() => {
+        await doUsertype()
+        .then(() => {
             credentials.onUsertypeChange(localStorage.getItem('usertype')!)
             props.setShow(false)
             setUsername('')

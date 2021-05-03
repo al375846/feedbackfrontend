@@ -28,7 +28,7 @@ export const doUsertype = async () => {
     localStorage.setItem('usertype', data.usertype)
 }
 
-export const doLogout = async () => {
+export const doLogout = () => {
     const logdata = {
         onesignal: localStorage.getItem('onesignal')
     }
@@ -74,23 +74,20 @@ const LoginModal = (props: IncidenceModalProps) => {
 
     if (!props.show) return null
 
-    const handleLogin = async() => {
-        await doLogin(username, password)
+    const handleLogin = () => {
+        doLogin(username, password)
         .then(() => {
             credentials.onTokenChange(localStorage.getItem('token')!)
             credentials.onUsernameChange(username)
+            doUsertype().then(() => {
+                credentials.onUsertypeChange(localStorage.getItem('usertype')!)
+                props.setShow(false)
+                setUsername('')
+                setPassword('')
+            })
+            doOneSignalLogin()
         })
         .catch(() => handleVisible())
-        
-        await doUsertype()
-        .then(() => {
-            credentials.onUsertypeChange(localStorage.getItem('usertype')!)
-            props.setShow(false)
-            setUsername('')
-            setPassword('')
-        }).catch(() => {})
-
-        await doOneSignalLogin()
     }
 
     const handleVisible = () => {

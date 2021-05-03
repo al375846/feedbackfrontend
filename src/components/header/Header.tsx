@@ -18,7 +18,6 @@ const Header = () => {
     }
 
     const renderLogin = () => {
-
         if (!credentials.token)
             return (
                 <div className="item">

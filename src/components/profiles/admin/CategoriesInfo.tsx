@@ -17,17 +17,18 @@ const CategoriesInfo = () => {
     const [showCreate, setShowCreate] = useState<boolean>(false)
     const credentials = useContext(CredentialsContext)
 
+    const searchCategories = async () => {
+        const {data} = await api.get('/api/category', {
+            headers: {
+                Authorization: `Bearer ${credentials.token}`
+            }
+        })
+        categoryadmin.onCategoriesChange(data.categories)
+        setSubCategories(data.categories[0].children)
+        setCategoryParent(data.categories[0].name)
+    }
+
     useEffect(() => {
-        const searchCategories = async () => {
-            const {data} = await api.get('/api/category', {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-            categoryadmin.onCategoriesChange(data.categories)
-            setSubCategories(data.categories[0].children)
-            setCategoryParent(data.categories[0].name)
-        }
 
         if (credentials.token && !categoryadmin.categories)
             searchCategories()
@@ -80,18 +81,8 @@ const CategoriesInfo = () => {
         setShowCreate(true)
     }
 
-    const postCategory = (category: Category | null, subCategory: SubCategory | null) => {
-        if (add === 'category') {
-            const newcategories = [...categoryadmin.categories!]
-            newcategories.push(category!)
-            categoryadmin.onCategoriesChange(newcategories)
-        }
-        else {
-            const cat = categoryadmin.categories!.find(category =>
-                category.name === categoryparent
-            )
-            cat?.children.push(subCategory!)
-        }
+    const postCategory = () => {
+        searchCategories()
     }
     
     return (

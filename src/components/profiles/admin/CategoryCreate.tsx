@@ -11,7 +11,7 @@ export interface CategoryCreateProps {
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
     parent: string,
     add: string,
-    postCategory: (category: Category | null, subCategory: SubCategory | null) => void
+    postCategory: () => void
 }
 
 const CategoryCreate = (props: CategoryCreateProps) => {
@@ -41,12 +41,7 @@ const CategoryCreate = (props: CategoryCreateProps) => {
                     Authorization: `Bearer ${credentials.token}`
                 }
             })
-
-            const added: CategoryRaw = data.category
-            if (added.parent)
-                props.postCategory(null, {id: added.id, name: added.name, description: added.description})
-            else
-                props.postCategory({id: added.id, name: added.name, description: added.description, children: []}, null)
+            props.postCategory()
         }
 
         postNewCategory().then(() => {

@@ -68,24 +68,11 @@ const ProfileInfo = () => {
             phone: phone
         }
 
-        const {data} = await api.put('/api/user', userdata, {
+        await api.put('/api/user', userdata, {
             headers: {
                 Authorization: `Bearer ${credentials.token}`
             }
         })
-
-        if (data.user.username !== credentials.username) {
-            localStorage.removeItem('token')
-            localStorage.removeItem('username')
-            localStorage.removeItem('usertype')
-            credentials.onTokenChange('')
-            credentials.onUsertypeChange('')
-            credentials.onUsernameChange('')
-            const link = document.createElement('a')
-            link.href = '/'
-            document.body.appendChild(link)
-            link.click()
-        }
 
         setEdit(false)
             
@@ -125,13 +112,6 @@ const ProfileInfo = () => {
                     </Form.Group>
                     </Form.Row>
                     <Form.Row>
-                    <Form.Group as={Col} controlId="userUsername">
-                    <Form.Label>
-                        Username <i className="info circle icon" 
-                        title="Si cambia su nombre de usuario tendrá que volver a iniciar sesión" />
-                    </Form.Label>
-                    <Form.Control type="text" value={username} readOnly={!edit} onChange={(e) => setUsername(e.target.value)}/>
-                    </Form.Group>
                     <Form.Group as={Col} controlId="userEmail">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="text" value={email} readOnly={!edit} onChange={(e) => setEmail(e.target.value)}/>
@@ -150,7 +130,7 @@ const ProfileInfo = () => {
                     <Button variant="primary" type="submit" className="profile-submit" disabled={!edit}>
                     Submit
                     </Button>
-                    <Button onClick={() => setEdit(!edit)} disabled={!edit}>
+                    <Button variant="secondary" onClick={() => setEdit(!edit)} disabled={!edit}>
                         Cancel
                     </Button>
                 </Form>

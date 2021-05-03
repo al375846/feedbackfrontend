@@ -52,7 +52,7 @@ const SuggestionCreate = () => {
         }, 3000)
     }
 
-    const handleSubmit = async(e: FormEvent) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
 
         const parent = category === -1 || type !== 'category' ? null : {name: categories[category].name}
@@ -66,7 +66,7 @@ const SuggestionCreate = () => {
         }
         console.log(sugdata)
 
-        await api.post('/api/suggestion', sugdata, {
+        api.post('/api/suggestion', sugdata, {
             headers: {
                 Authorization: `Bearer ${credentials.token}`
             }

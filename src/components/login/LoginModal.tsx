@@ -11,7 +11,7 @@ export interface IncidenceModalProps {
 }
 
 export const doLogin = async (username: string, password: string) => {
-    await api.post('/api/login_check', {
+    api.post('/api/login_check', {
         username: username,
         password: password
     })
@@ -22,7 +22,7 @@ export const doLogin = async (username: string, password: string) => {
 }
 
 export const doUsertype = async () => {
-    await api.get('/api/usertype', {
+    api.get('/api/usertype', {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -35,7 +35,7 @@ export const doLogout = async () => {
     const logdata = {
         onesignal: localStorage.getItem('onesignal')
     }
-    await api.post('/api/logout', logdata, {
+    api.post('/api/logout', logdata, {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -78,14 +78,14 @@ const LoginModal = (props: IncidenceModalProps) => {
     if (!props.show) return null
 
     const handleLogin = async() => {
-        await doLogin(username, password)
+        doLogin(username, password)
         .then(() => {
             credentials.onTokenChange(localStorage.getItem('token')!)
             credentials.onUsernameChange(username)
         })
         .catch(() => handleVisible())
         
-        await doUsertype().then(() => {
+        doUsertype().then(() => {
             credentials.onUsertypeChange(localStorage.getItem('usertype')!)
             props.setShow(false)
             setUsername('')

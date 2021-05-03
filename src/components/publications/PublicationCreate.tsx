@@ -10,7 +10,7 @@ import { Publication } from '../../entities/Publication'
 export interface PublicationCreateProps {
     visible: boolean,
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
-    postPublication: (publication: Publication) => void
+    postPublication: () => void
 }
 
 const PublicationCreate = (props: PublicationCreateProps) => {
@@ -98,23 +98,17 @@ const PublicationCreate = (props: PublicationCreateProps) => {
             if (files.current && files.current.files) {
                 const f = new FormData()
                 
-                for (let i = 0; i < files.current.files.length; i++) {
+                for (let i = 0; i < files.current.files.length; i++)
                     f.append(files.current.files[i].name, files.current.files[i], files.current.files[i].name)
-                    if ('application/pdf' === files.current.files[0].type)
-                        publication.document.push(files.current.files[0].name)
-                    else if ('video/mp4' === files.current.files[0].type)
-                        publication.video.push(files.current.files[0].name)
-                    else
-                        publication.images.push(files.current.files[0].name)
-                }
+
                 api.post(`/api/file/publication/${publication.id}`, f, {
                     headers: {
                         Authorization: `Bearer ${credentials.token}`
                     }
+                }).then(() => {
+                    props.postPublication()
                 })
             }
-
-            props.postPublication(publication)
         }
 
         postPublication().then(() => {

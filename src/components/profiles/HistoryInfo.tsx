@@ -43,6 +43,7 @@ const HistoryInfo = () => {
             contenido = history.content.replace('*', '<i>').replace('*', '</i>')
         else
             contenido = history.content.replace('*', '<i>').slice(0, history.content.length + 1)
+            
         return (
             <div key={index}>
                 <Card>

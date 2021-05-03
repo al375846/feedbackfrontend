@@ -21,15 +21,16 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
     const [feedbacks, setFeedbacks] = useState<Feedback[]>()
     const credentials = useContext(CredentialsContext)
 
+    const searchFeedbacks = async () => {
+        const {data} = await api.get(`/api/publication/${props.publication.id}/feedback`, {
+            headers: {
+                Authorization: `Bearer ${credentials.token}`
+            }
+        })
+        setFeedbacks(data.feedbacks)
+    }
+
     useEffect(() => {
-        const searchFeedbacks = async () => {
-            const {data} = await api.get(`/api/publication/${props.publication.id}/feedback`, {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-            setFeedbacks(data.feedbacks)
-        }
 
         if (credentials.token && !feedbacks)
             searchFeedbacks()
@@ -43,8 +44,8 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
             </div> 
         )
 
-    const postFeedback = (feedback: Feedback) => {
-        setFeedbacks([feedback, ...feedbacks])
+    const postFeedback = () => {
+        searchFeedbacks()
         props.setAlert(true)
         setTimeout(() => {
             props.setAlert(false)

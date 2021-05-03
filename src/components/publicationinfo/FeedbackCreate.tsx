@@ -10,7 +10,7 @@ export interface FeedbackCreateProps {
     publication: number,
     visible: boolean,
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
-    postFeedback: (feedback: Feedback) => void
+    postFeedback: () => void
 }
 
 const FeedbackCreate = (props: FeedbackCreateProps) => {
@@ -46,23 +46,17 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
             if (files.current && files.current.files) {
                 const f = new FormData()
                 
-                for (let i = 0; i < files.current.files.length; i++) {
+                for (let i = 0; i < files.current.files.length; i++)
                     f.append(files.current.files[i].name, files.current.files[i], files.current.files[i].name)
-                    if ('application/pdf' === files.current.files[0].type)
-                        feedback.document.push(files.current.files[0].name)
-                    else if ('video/mp4' === files.current.files[0].type)
-                        feedback.video.push(files.current.files[0].name)
-                    else
-                        feedback.images.push(files.current.files[0].name)
-                }
+
                 api.post(`/api/file/feedback/${feedback.id}`, f, {
                     headers: {
                         Authorization: `Bearer ${credentials.token}`
                     }
+                }).then(() => {
+                    props.postFeedback()
                 })
             }
-
-            props.postFeedback(feedback)
         }
 
         postFeedbackNew().then(() => {

@@ -18,11 +18,34 @@ const PublicationList = () => {
     const [showCreate, setShowCreate] = useState<boolean>(false)
     const [selected, setSelected] = useState(-2)
     const [itemSize, setItemsize] = useState<number>(0)
-    const [isLast, setIslast] = useState<boolean>(false)
+    const [isLast, setIslast] = useState<boolean>(true)
     const [prevCursors, setPrevcursors] = useState<number[]>([])
     const [alert, setAlert] = useState<boolean>(false)
 
     const credentials = useContext(CredentialsContext)
+
+    const searchPublications = async () => {
+
+        let url: string = '/api/publication'
+        if (selected === -1)
+            url = '/api/publication/expert'
+        else if (selected >= 0)
+            url = `/api/publication/category/${selected}`
+
+        const {data} = await api.get(url, {
+            params: {
+                cursor: cursor,
+                filter: finalSearchTerm
+            },
+            headers: {
+                Authorization: `Bearer ${credentials.token}`
+            }
+        })
+
+        setPublications(data.publications)
+        setItemsize(data.itemSize)
+        setIslast(data.leftSize === 0)
+    }
 
     useEffect(() => {
         const time = setTimeout( () => {
@@ -35,28 +58,6 @@ const PublicationList = () => {
     }, [searchTerm])
 
     useEffect(() => {
-        const searchPublications = async () => {
-
-            let url: string = '/api/publication'
-            if (selected === -1)
-                url = '/api/publication/expert'
-            else if (selected >= 0)
-                url = `/api/publication/category/${selected}`
-
-            const {data} = await api.get(url, {
-                params: {
-                    cursor: cursor,
-                    filter: finalSearchTerm
-                },
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-
-            setPublications(data.publications)
-            setItemsize(data.itemSize)
-            setIslast(data.leftSize === 0)
-        }
 
         if (credentials.token)
             searchPublications()
@@ -71,10 +72,8 @@ const PublicationList = () => {
         )
     })
 
-    const postPublication = (publication: Publication) => {
-        const newpublications = [publication, ...publications]
-        newpublications.pop()
-        setPublications(newpublications)
+    const postPublication = () => {
+        searchPublications()
         setAlert(true)
         setTimeout(() => {
             setAlert(false)

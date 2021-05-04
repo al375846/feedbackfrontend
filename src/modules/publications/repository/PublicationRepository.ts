@@ -15,10 +15,22 @@ export interface PublicationResponseData {
     publications: Publication[]
 }
 
+export interface PublicationPostParams {
+    title: string,
+    category: {name: string},
+    tags: Array<string>,
+    description: string,
+    date: Date
+}
+
+interface PublicationInfoResponseData {
+    publication: Publication
+}
+
 export class PublicationRepository {
 
-    public async findById(id: string, token: string): Promise<AxiosResponse<Publication>> {
-        return await api.get<Publication>(`/api/publication/${id}`, {
+    public async findById(id: string, token: string): Promise<AxiosResponse<PublicationInfoResponseData>> {
+        return await api.get<PublicationInfoResponseData>(`/api/publication/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -58,6 +70,22 @@ export class PublicationRepository {
                 page: getparams.page,
                 filter: getparams.filter
             },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async postPublication(postparams: PublicationPostParams, token: string): Promise<AxiosResponse<PublicationInfoResponseData>> {
+        return await api.post('/api/publication', postparams, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async postFiles(id:number, files: FormData, token: string): Promise<void> {
+        await api.post(`/api/file/publication/${id}`, files, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

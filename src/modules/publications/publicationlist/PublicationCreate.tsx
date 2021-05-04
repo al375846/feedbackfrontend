@@ -6,6 +6,7 @@ import { Category } from '../../../entities/Category'
 import api from '../../../api/Api'
 import './PublicationTotal.css'
 import { Publication } from '../../../entities/Publication'
+import { PublicationPostParams, PublicationRepository } from '../repository/PublicationRepository'
 
 export interface PublicationCreateProps {
     visible: boolean,
@@ -24,6 +25,13 @@ const PublicationCreate = (props: PublicationCreateProps) => {
     const [category, setCategory] = useState<number>(0)
     const [subcategory, setSubcategory] = useState<number>(-1)
     const files = useRef<HTMLInputElement>(null)
+    const publicationRepository = new PublicationRepository();
+
+    const handlePost = () => {
+        props.postPublication();
+        props.setShowCreate(false)
+        setTitle(''); setCategory(0); setSubcategory(-1); setTags(''); setDescription('')
+    }
 
     useEffect(() => {
         const searchCategories = async () => {
@@ -78,43 +86,31 @@ const PublicationCreate = (props: PublicationCreateProps) => {
         else
             categorypost = categories[category].children[subcategory].name
 
-        const pubdata = {
+        const publicationData: PublicationPostParams = {
             title: title,
             category: {name: categorypost},
             tags: tagsarray,
             description: description,
             date: new Date()
-        }
+        };
 
-        const postPublication = async() => { 
-            const {data} = await api.post('/api/publication', pubdata, {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-
-            const publication: Publication = data.publication
-
+        publicationRepository.postPublication(publicationData, credentials.token)
+        .then(res => {
+            const publication = res.data.publication;
             if (files.current && files.current.files) {
-                const f = new FormData()
-                
+                const filesData = new FormData();
                 for (let i = 0; i < files.current.files.length; i++)
-                    f.append(files.current.files[i].name, files.current.files[i], files.current.files[i].name)
-
-                api.post(`/api/file/publication/${publication.id}`, f, {
-                    headers: {
-                        Authorization: `Bearer ${credentials.token}`
-                    }
-                }).then(() => {
-                    props.postPublication()
-                })
+                    filesData.append(files.current.files[i].name, files.current.files[i], files.current.files[i].name)
+                publicationRepository.postFiles(publication.id, filesData, credentials.token)
+                .then(() => handlePost())
+                .catch(err => window.alert(err))
+                .finally(() => {})
             }
-        }
-
-        postPublication().then(() => {
-            props.setShowCreate(false)
-            setTitle(''); setCategory(0); setSubcategory(-1); setTags(''); setDescription('')
+            else handlePost()
         })
+        .catch(err => window.alert(err))
+        .finally(() => {});
+
     }
 
     return (

@@ -4,7 +4,6 @@ import {Alert, Badge, Button, Spinner} from 'react-bootstrap'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import {Publication} from '../../../entities/Publication'
-import api from '../../../api/Api'
 import './PublicationInfoTotal.css'
 import moment from 'moment'
 import PublicationFeedbacks from './PublicationFeedbacks'
@@ -148,7 +147,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
         );
     }
 
-    return <h1>aaa</h1>;
+    return <h1>Please login</h1>;
 }
 
 export default PublicationInfo

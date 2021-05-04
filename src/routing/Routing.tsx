@@ -11,13 +11,8 @@ import PublicationInfo from "../modules/publications/publicationinfo/Publication
 import RankingInfo from "../modules/rankings/RankingInfo";
 import Register from "../modules/auth/register/Register";
 
-const Routing: FunctionComponent = (
-    {
-
-    }
-) => {
+const Routing: FunctionComponent = () => {
     return (
-
         <BrowserRouter>
             <Layout>
                 <Route path={ROUTE_BASE} exact component={PublicationList}/>

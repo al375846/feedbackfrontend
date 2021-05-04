@@ -3,11 +3,11 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Publication } from '../../../entities/Publication'
 import PublicationCard from './PublicationCard'
 import './PublicationTotal.css'
-import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
-import { Alert, Button, Pagination } from 'react-bootstrap'
+import { Alert, Button, Pagination, Spinner } from 'react-bootstrap'
 import PublicationCreate from './PublicationCreate'
 import CategoryMenu from './CategoryMenu'
+import { PublicationRepository, PublicationResponseData } from '../repository/PublicationRepository'
 
 const PublicationList = () => {
 
@@ -21,36 +21,45 @@ const PublicationList = () => {
     const [page, setPage] = useState<number>(1)
     const [left, setLeft] = useState<number>(0)
     const [alert, setAlert] = useState<boolean>(false)
-    const [pagination, setPagination] = useState<JSX.Element[]>()
+    
+    const [loading, setLoading] = useState<boolean>();
+    const publicationRepository = new PublicationRepository();
 
     const credentials = useContext(CredentialsContext)
 
-    const searchPublications = async () => {
-
-        let url: string = '/api/publication'
-        if (selected === -1)
-            url = '/api/publication/expert'
-        else if (selected >= 0)
-            url = `/api/publication/category/${selected}`
-
-        const {data} = await api.get(url, {
-            params: {
-                cursor: cursor,
-                page: page,
-                filter: finalSearchTerm
-            },
-            headers: {
-                Authorization: `Bearer ${credentials.token}`
-            }
-        })
-
+    const handleSearch = (data: PublicationResponseData) => {
         setPublications(data.publications)
         if (cursor === -1) {
             setItemsize(data.itemSize)
             setLeft(data.leftSize)
             setCursor(data.publications[0].id + 1) 
         }
-               
+    }
+
+    const searchPublications = async () => {
+
+        const getParams = {
+            cursor: cursor,
+            page: page,
+            filter: finalSearchTerm
+        }
+
+        setLoading(true);
+        if (selected === -1)
+            publicationRepository.findAllByExpert(getParams, credentials.token)
+            .then((res) => handleSearch(res.data))
+            .catch((err) => window.alert(err))
+            .finally(() => setLoading(false));
+        else if (selected >= 0)
+            publicationRepository.findAllByCategory(selected, getParams, credentials.token)
+            .then((res) => handleSearch(res.data))
+            .catch((err) => window.alert(err))
+            .finally(() => setLoading(false));
+        else
+            publicationRepository.findAll(getParams, credentials.token)
+            .then((res) => handleSearch(res.data))
+            .catch((err) => window.alert(err))
+            .finally(() => setLoading(false));            
     }
 
     useEffect(() => {
@@ -69,19 +78,6 @@ const PublicationList = () => {
             searchPublications()
 
     }, [finalSearchTerm, credentials.token, selected, page])
-
-    useEffect(() => {
-        const pag = []
-        const total = Math.ceil((left + itemSize) / itemSize)
-        for (let number = 1; number <= total; number++) {
-            pag.push(
-            <Pagination.Item key={number} active={number === page} onClick={() => setPage(number)}>
-                {number}
-            </Pagination.Item>,
-            )
-        }
-        setPagination(pag)
-    }, [selected, finalSearchTerm, page, left, itemSize])
 
     useEffect(() => {
         setCursor(-1)
@@ -115,8 +111,10 @@ const PublicationList = () => {
     }
 
     const searchNext = () => {
+        console.log("Antes" + page)
         if (page !== Math.ceil((left + itemSize) / itemSize))
             setPage(page + 1)
+            console.log("Despues" + page)
     }
     const searchLast = () => {
         if (page !== Math.ceil((left + itemSize) / itemSize))
@@ -130,6 +128,14 @@ const PublicationList = () => {
     const searchFirst = () => {
         if (page !== 1)
             setPage(1)
+    }
+
+    if (loading) {
+        return (
+            <div className="loading">
+                <Spinner animation="border"/>
+            </div>
+        )
     }
 
     return (
@@ -150,7 +156,7 @@ const PublicationList = () => {
                 <Pagination>
                 <Pagination.First onClick={searchFirst}/>
                 <Pagination.Prev onClick={searchPrev}/>
-                {pagination}
+                {/*pagination*/}
                 <Pagination.Next onClick={searchNext}/>
                 <Pagination.Last  onClick={searchLast}/>
                 </Pagination>

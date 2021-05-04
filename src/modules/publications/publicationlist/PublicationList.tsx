@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
 
-import { Publication } from '../../entities/Publication'
+import { Publication } from '../../../entities/Publication'
 import PublicationCard from './PublicationCard'
 import './PublicationTotal.css'
-import api from '../../api/Api'
-import CredentialsContext from '../../contexts/CredentialsContext'
+import api from '../../../api/Api'
+import CredentialsContext from '../../../contexts/CredentialsContext'
 import { Alert, Button, Pagination } from 'react-bootstrap'
 import PublicationCreate from './PublicationCreate'
 import CategoryMenu from './CategoryMenu'

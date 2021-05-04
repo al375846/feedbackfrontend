@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react'
 import { Button, Col, Form } from 'react-bootstrap'
 
-import api from '../../api/Api'
+import api from '../../../api/Api'
 import { doLogin, doUsertype } from '../login/LoginModal'
 import './Register.css'
 

@@ -2,8 +2,8 @@ import React, { useContext } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import { Button } from 'react-bootstrap'
 
-import CredentialsContext from '../../contexts/CredentialsContext'
-import api from '../../api/Api'
+import CredentialsContext from '../../../contexts/CredentialsContext'
+import api from '../../../api/Api'
 import './PublicationInfoTotal.css'
 
 export interface FilesInfoProps {

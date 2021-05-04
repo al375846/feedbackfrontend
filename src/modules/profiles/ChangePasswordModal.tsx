@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import api from '../../api/Api'
-import { doLogin } from '../login/LoginModal'
+import { doLogin } from '../auth/login/LoginModal'
 
 export interface ChangePasswordModalProps {
     show: boolean,

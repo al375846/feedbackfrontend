@@ -1,14 +1,15 @@
 import React, {FunctionComponent} from "react";
 import {BrowserRouter, Route} from "react-router-dom";
-import {ROUTE_BASE, ROUTE_REGISTER} from "./Routes";
-import PublicationList from "../modules/publications/PublicationList";
-import PublicationInfo from "../components/publicationinfo/PublicationInfo";
-import ApprenticeProfile from "../components/profiles/apprentice/ApprenticeProfile";
-import ExpertProfile from "../components/profiles/expert/ExpertProfile";
-import AdminProfile from "../components/profiles/admin/AdminProfile";
+
+import {ROUTE_BASE, ROUTE_PROFILE_ADMIN, ROUTE_PROFILE_APPRENTICE, ROUTE_PROFILE_EXPERT, ROUTE_PUBLICATION_INFO, ROUTE_RANKING, ROUTE_REGISTER} from "./Routes";
+import ApprenticeProfile from "../modules/profiles/apprentice/ApprenticeProfile";
+import ExpertProfile from "../modules/profiles/expert/ExpertProfile";
+import AdminProfile from "../modules/profiles/admin/AdminProfile";
+import Layout from "../components/layout/Layout";
+import PublicationList from "../modules/publications/publicationlist/PublicationList";
+import PublicationInfo from "../modules/publications/publicationinfo/PublicationInfo";
 import RankingInfo from "../modules/rankings/RankingInfo";
 import Register from "../modules/auth/register/Register";
-import Layout from "../components/layout/Layout";
 
 const Routing: FunctionComponent = (
     {
@@ -20,11 +21,11 @@ const Routing: FunctionComponent = (
         <BrowserRouter>
             <Layout>
                 <Route path={ROUTE_BASE} exact component={PublicationList}/>
-                <Route path="/publication/:id" exact component={PublicationInfo}/>
-                <Route path="/profile/apprentice" exact component={ApprenticeProfile}/>
-                <Route path="/profile/expert" exact component={ExpertProfile}/>
-                <Route path="/profile/admin" exact component={AdminProfile}/>
-                <Route path="/ranking" exact component={RankingInfo}/>
+                <Route path={ROUTE_PUBLICATION_INFO} exact component={PublicationInfo}/>
+                <Route path={ROUTE_PROFILE_APPRENTICE} exact component={ApprenticeProfile}/>
+                <Route path={ROUTE_PROFILE_EXPERT} exact component={ExpertProfile}/>
+                <Route path={ROUTE_PROFILE_ADMIN} exact component={AdminProfile}/>
+                <Route path={ROUTE_RANKING} exact component={RankingInfo}/>
                 <Route path={ROUTE_REGISTER} exact component={Register}/>
             </Layout>
         </BrowserRouter>

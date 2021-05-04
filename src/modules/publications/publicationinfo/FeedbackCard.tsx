@@ -2,11 +2,11 @@ import moment from 'moment'
 import React, { useContext, useEffect, useState } from 'react'
 import { Card } from 'react-bootstrap'
 
-import { Feedback } from '../../entities/Feedback'
-import api from '../../api/Api'
-import CredentialsContext from '../../contexts/CredentialsContext'
+import { Feedback } from '../../../entities/Feedback'
+import api from '../../../api/Api'
+import CredentialsContext from '../../../contexts/CredentialsContext'
 import './PublicationInfoTotal.css'
-import { Rate } from '../../entities/Rate'
+import { Rate } from '../../../entities/Rate'
 import FilesInfo from './FilesInfo'
 
 export interface FeedbackCardProps {

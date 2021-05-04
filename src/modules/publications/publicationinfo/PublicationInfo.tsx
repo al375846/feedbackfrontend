@@ -2,15 +2,15 @@ import React, {ReactNode, useContext, useEffect, useState} from 'react'
 import {RouteComponentProps} from 'react-router-dom'
 import {Alert, Badge, Button, Spinner} from 'react-bootstrap'
 
-import CredentialsContext from '../../contexts/CredentialsContext'
-import {Publication} from '../../entities/Publication'
-import api from '../../api/Api'
+import CredentialsContext from '../../../contexts/CredentialsContext'
+import {Publication} from '../../../entities/Publication'
+import api from '../../../api/Api'
 import './PublicationInfoTotal.css'
 import moment from 'moment'
 import PublicationFeedbacks from './PublicationFeedbacks'
 import FilesInfo from './FilesInfo'
 import IncidenceModal from './IncidenceModal'
-import {PublicationRepository} from "./repository/PublicationRepository";
+import {PublicationRepository} from "../repository/PublicationRepository";
 
 type PublicationInfoParams = { id: string }
 

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext, FormEvent, useRef } from 'react'
 import { Button, Col, Form, Spinner } from 'react-bootstrap'
 
-import CredentialsContext from '../../contexts/CredentialsContext'
-import { Category } from '../../entities/Category'
-import api from '../../api/Api'
+import CredentialsContext from '../../../contexts/CredentialsContext'
+import { Category } from '../../../entities/Category'
+import api from '../../../api/Api'
 import './PublicationTotal.css'
-import { Publication } from '../../entities/Publication'
+import { Publication } from '../../../entities/Publication'
 
 export interface PublicationCreateProps {
     visible: boolean,

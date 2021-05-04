@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import api from '../../api/Api'
-import { doLogout } from '../login/LoginModal'
+import { doLogout } from '../auth/login/LoginModal'
 
 export interface DeleteUserModalProps {
     show: boolean,

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Badge } from 'react-bootstrap'
 
-import { CategoryRaw } from '../../entities/Category'
-import api from '../../api/Api'
-import CredentialsContext from '../../contexts/CredentialsContext'
+import { CategoryRaw } from '../../../entities/Category'
+import api from '../../../api/Api'
+import CredentialsContext from '../../../contexts/CredentialsContext'
 import './PublicationTotal.css'
 
 export interface CategoryMenuProps {

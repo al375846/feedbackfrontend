@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 
-import { Feedback } from '../../entities/Feedback'
-import CredentialsContext from '../../contexts/CredentialsContext'
-import api from '../../api/Api'
+import { Feedback } from '../../../entities/Feedback'
+import CredentialsContext from '../../../contexts/CredentialsContext'
+import api from '../../../api/Api'
 import './PublicationInfoTotal.css'
 import FeedbackCreate from './FeedbackCreate'
 import FeedbackCard from './FeedbackCard'
-import { Publication } from '../../entities/Publication'
+import { Publication } from '../../../entities/Publication'
 
 export interface PublicationFeedbacksProps {
     visible: boolean,

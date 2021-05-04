@@ -41,6 +41,10 @@ export const doLogout = () => {
         localStorage.removeItem('username')
         localStorage.removeItem('usertype')
         localStorage.removeItem('onesignal')
+        const link = document.createElement('a')
+        link.href = '/'
+        document.body.appendChild(link)
+        link.click()
     })
    
 }

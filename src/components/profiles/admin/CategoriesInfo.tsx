@@ -24,8 +24,15 @@ const CategoriesInfo = () => {
             }
         })
         categoryadmin.onCategoriesChange(data.categories)
-        setSubCategories(data.categories[0].children)
-        setCategoryParent(data.categories[0].name)
+        if (!categoryadmin.categories) {
+            setSubCategories(data.categories[0].children)
+            setCategoryParent(data.categories[0].name)
+        }
+        else {
+            const cat = data.categories[data.categories.length - 1]
+            setCategoryParent(cat.name)
+            setSubCategories(cat.children)
+        }
     }
 
     useEffect(() => {
@@ -59,7 +66,7 @@ const CategoriesInfo = () => {
         )
     })
 
-    const renderSubcategories = subcategories.map((category) => {
+    const renderSubcategories = subcategories?.map((category) => {
         return (
             <div key={category.id} className="category-admin">
                 <Card>

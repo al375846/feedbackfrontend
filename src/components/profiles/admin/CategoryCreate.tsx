@@ -4,7 +4,6 @@ import { Button, Form } from 'react-bootstrap'
 import '../ProfileTotal.css'
 import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
-import { Category, CategoryRaw, SubCategory } from '../../../entities/Category'
 
 export interface CategoryCreateProps {
     visible: boolean,
@@ -21,12 +20,9 @@ const CategoryCreate = (props: CategoryCreateProps) => {
     const credentials = useContext(CredentialsContext)
 
     if (!props.visible)
-        return (
-            <div style={{display: 'none'}}>
-            </div>
-        )
+        return ( <div style={{display: 'none'}}> </div> )
 
-    const handleSubmit = async(e: FormEvent) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
 
         const catdata = {
@@ -35,16 +31,12 @@ const CategoryCreate = (props: CategoryCreateProps) => {
             parent: props.add === 'category' ? null : {name: props.parent}
         }
 
-        const postNewCategory = async() => { 
-            const {data} = await api.post('/api/category', catdata, {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
+        api.post('/api/category', catdata, {
+            headers: {
+                Authorization: `Bearer ${credentials.token}`
+            }
+        }).then(() => {
             props.postCategory()
-        }
-
-        postNewCategory().then(() => {
             props.setShowCreate(false)
             setName('')
             setDescription('')

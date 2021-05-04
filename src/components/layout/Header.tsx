@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
-import LoginModal, { doLogout } from '../login/LoginModal'
+import LoginModal, { doLogout } from '../../modules/auth/login/LoginModal'
 
 const Header = () => {
 

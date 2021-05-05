@@ -27,6 +27,9 @@ const PublicationCreate = (props: PublicationCreateProps) => {
     const files = useRef<HTMLInputElement>(null)
     const publicationRepository = new PublicationRepository();
 
+    const [loading, setLoading] = useState<boolean>(false)
+    const repository = new PublicationRepository();
+
     const handlePost = () => {
         props.postPublication();
         props.setShowCreate(false)
@@ -34,13 +37,12 @@ const PublicationCreate = (props: PublicationCreateProps) => {
     }
 
     useEffect(() => {
-        const searchCategories = async () => {
-            const {data} = await api.get('/api/category', {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-            setCategories(data.categories)
+        const searchCategories = () => {
+            setLoading(true)
+            repository.getCategories(credentials.token)
+            .then(res => setCategories(res.data.categories))
+            .catch(err => window.alert(err))
+            .finally(() => setLoading(false))
         }
 
         if (credentials.token && !categories)

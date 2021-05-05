@@ -81,6 +81,7 @@ const PublicationList = () => {
 
     useEffect(() => {
         setCursor(-1)
+        setPage(1)
     }, [selected, finalSearchTerm])
 
     const pubs = publications.map((publication) => {

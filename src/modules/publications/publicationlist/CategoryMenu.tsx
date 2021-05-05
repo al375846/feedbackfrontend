@@ -5,6 +5,7 @@ import { CategoryRaw } from '../../../entities/Category'
 import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import './PublicationTotal.css'
+import { PublicationRepository } from '../repository/PublicationRepository'
 
 export interface CategoryMenuProps {
     setSelected: React.Dispatch<React.SetStateAction<number>>
@@ -17,25 +18,34 @@ const CategoryMenu = (props: CategoryMenuProps) => {
     const credentials = useContext(CredentialsContext)
     const divCategory = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-        const searchCategories = async () => {
-            const {data} = await api.get('/api/category/raw', {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
+    const [loading, setLoading] = useState<boolean>();
+    const repository = new PublicationRepository();
 
-            data.categories.push({id: -2, name: 'Todas', description:'', parent: null})
-            if (credentials.usertype === 'expert')
-                data.categories.push({id: -1, name: 'Favoritas', description:'', parent: null})
-            const cats = data.categories as CategoryRaw[]
-            cats.sort((a, b) => {
-                if(a.id < b.id)
-                    return -1;
-                else
-                    return 1;
+    useEffect(() => {
+        const searchCategories = () => {
+            setLoading(true)
+            repository.getCategoriesRaw(credentials.token)
+            .then(res => {
+                res.data.categories.push({
+                    id: -2,
+                    name: 'Todas',
+                    description:'',
+                    parent: null
+                })
+                if (credentials.usertype === 'expert')
+                    res.data.categories.push({
+                        id: -1,
+                        name: 'Favoritas',
+                        description:'',
+                        parent: null
+                    })
+                res.data.categories.sort((a, b) => {
+                    return a.id < b.id ? -1 : 1
+                })
+                setCategories(res.data.categories)
             })
-            setCategories(cats)
+            .catch(err => window.alert(err))
+            .finally(() => setLoading(false))
         }
 
         if (credentials.token)
@@ -51,11 +61,8 @@ const CategoryMenu = (props: CategoryMenuProps) => {
         })
       }, [])
 
-    const setVariant = (id: number) => {
-        if (id === props.selected)
-            return 'primary'
-        else
-            return 'light'
+    const setVariant = (id: number): string => {
+        return id === props.selected ? 'primary' : 'light'
     }
 
     const renderCategories = categories.map((category) => {

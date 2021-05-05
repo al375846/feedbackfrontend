@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 
 import { Publication } from "../../../entities/Publication";
 import api from "../../../api/Api";
+import { Category, CategoryRaw } from "../../../entities/Category";
 
 interface PublicationGetParams {
     cursor: number,
@@ -25,6 +26,14 @@ export interface PublicationPostParams {
 
 interface PublicationInfoResponseData {
     publication: Publication
+}
+
+interface CategoriesRawResponse {
+    categories: CategoryRaw[]
+}
+
+interface CategoriesResponse {
+    categories: Category[]
 }
 
 export class PublicationRepository {
@@ -86,6 +95,22 @@ export class PublicationRepository {
 
     public async postFiles(id:number, files: FormData, token: string): Promise<void> {
         await api.post(`/api/file/publication/${id}`, files, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async getCategoriesRaw(token: string): Promise<AxiosResponse<CategoriesRawResponse>> {
+        return await api.get('/api/category/raw', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async getCategories(token: string): Promise<AxiosResponse<CategoriesResponse>> {
+        return await api.get('/api/category', {
             headers: {
                 Authorization: `Bearer ${token}`
             }

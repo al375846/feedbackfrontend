@@ -1,44 +1,37 @@
 import React, { FunctionComponent } from "react";
-import "./input-form.css";
 import { Form } from "react-bootstrap";
 import { UseFormRegister } from "react-hook-form";
 
-interface InputFormProps {
+interface InputSelectProps {
     name: string;
     label: string;
-    value: string;
-    type: string;
+    options: JSX.Element[];
     input: string;
     register: UseFormRegister<any>;
-    required: boolean
 }
 
-const InputForm: FunctionComponent<InputFormProps> = (
+const InputSelect: FunctionComponent<InputSelectProps> = (
     {
         name,
         label,
-        value,
-        type,
+        options,
         input,
-        register,
-        required
+        register
     }
 ) => {
     return (
-        <Form.Group
+        <Form.Group 
             controlId={name}
         >
             <Form.Label>{label}</Form.Label>
-            <Form.Control
-                type={type}
-                defaultValue={value}
+            <Form.Control 
+                as="select"
                 {...register(input)}
-                required={required}
-            />
+            >
+                {options}
+            </Form.Control>
         </Form.Group>
     );
 };
 
-export default InputForm;
-
-
+export default InputSelect;

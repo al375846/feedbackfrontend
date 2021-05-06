@@ -1,27 +1,26 @@
 import React, { FunctionComponent } from "react";
-import "./input-form.css";
 import { Form } from "react-bootstrap";
 import { UseFormRegister } from "react-hook-form";
 
-interface InputFormProps {
+interface InputTextAreaProps {
     name: string;
     label: string;
+    row: number
     value: string;
     type: string;
     input: string;
     register: UseFormRegister<any>;
-    required: boolean
 }
 
-const InputForm: FunctionComponent<InputFormProps> = (
+const InputTextArea: FunctionComponent<InputTextAreaProps> = (
     {
         name,
         label,
+        row,
         value,
         type,
         input,
-        register,
-        required
+        register
     }
 ) => {
     return (
@@ -30,15 +29,15 @@ const InputForm: FunctionComponent<InputFormProps> = (
         >
             <Form.Label>{label}</Form.Label>
             <Form.Control
+                as="textarea"
+                rows={row}
                 type={type}
                 defaultValue={value}
                 {...register(input)}
-                required={required}
+                required={true}
             />
         </Form.Group>
     );
 };
 
-export default InputForm;
-
-
+export default InputTextArea;

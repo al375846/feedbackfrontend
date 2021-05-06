@@ -40,14 +40,6 @@ const PublicationList = () => {
 
     const navigateToPublication = (id: number) => history.push(`/publication/${id}`)
 
-    const getParams = () => {
-        return {
-            cursor: cursor,
-            page: page,
-            filter: finalSearchTerm
-        }
-    }
-
     const postPublication = (publication: Publication) => navigateToPublication(publication.id)
 
     const renderPost = () => {
@@ -94,19 +86,26 @@ const PublicationList = () => {
     useEffect(() => {
 
         const searchPublications = () => {
+
+            const getParams =  {
+                cursor: cursor,
+                page: page,
+                filter: finalSearchTerm
+            }
+
             setLoading(true);
             if (selected === -1)
-                publicationRepository.findAllByExpert(getParams(), credentials.token)
+                publicationRepository.findAllByExpert(getParams, credentials.token)
                 .then((res) => handleSearch(res.data))
                 .catch((err) => window.alert(err))
                 .finally(() => setLoading(false));
             else if (selected >= 0)
-                publicationRepository.findAllByCategory(selected, getParams(), credentials.token)
+                publicationRepository.findAllByCategory(selected, getParams, credentials.token)
                 .then((res) => handleSearch(res.data))
                 .catch((err) => window.alert(err))
                 .finally(() => setLoading(false));
             else
-                publicationRepository.findAll(getParams(), credentials.token)
+                publicationRepository.findAll(getParams, credentials.token)
                 .then((res) => handleSearch(res.data))
                 .catch((err) => window.alert(err))
                 .finally(() => setLoading(false));            

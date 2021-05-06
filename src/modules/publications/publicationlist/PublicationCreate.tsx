@@ -1,11 +1,16 @@
-import React, { useState, useEffect, useContext, FormEvent, useRef } from 'react'
-import { Button, Col, Form, Spinner } from 'react-bootstrap'
+import React, { useState, useEffect, useContext, useRef } from 'react'
+import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
+import { useForm } from "react-hook-form";
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { Category } from '../../../entities/Category'
 import './PublicationTotal.css'
 import { PublicationPostParams, PublicationRepository } from '../repository/PublicationRepository'
 import { Publication } from '../../../entities/Publication'
+import InputForm from '../../../components/form/input/InputForm';
+import InputFile from '../../../components/form/files/InputFile';
+import InputSelect from '../../../components/form/select/InputSelect';
+import InputTextArea from '../../../components/form/textarea/InputTextArea';
 
 export interface PublicationCreateProps {
     visible: boolean,
@@ -13,35 +18,38 @@ export interface PublicationCreateProps {
     postPublication: (publication: Publication) => void
 }
 
+type PublicationCreateInput = {
+    title: string,
+    tags: string,
+    description: string,
+    category: string,
+    subcategory: string
+}
+
 const PublicationCreate = (props: PublicationCreateProps) => {
 
     const [categories, setCategories] = useState<Category[]>()
-    const credentials = useContext(CredentialsContext)
+    const files = useRef<HTMLInputElement>(null);
 
-    const [title, setTitle] = useState<string>('')
-    const [tags, setTags] = useState<string>('')
-    const [description, setDescription] = useState<string>('')
-    const [category, setCategory] = useState<number>(0)
-    const [subcategory, setSubcategory] = useState<number>(-1)
-    const files = useRef<HTMLInputElement>(null)
-    const publicationRepository = new PublicationRepository();
+    const credentials = useContext(CredentialsContext);
 
-    const [loading, setLoading] = useState<boolean>(false)
+    const { register, handleSubmit, watch } = useForm<PublicationCreateInput>();
+    const category = watch('category');
+    const subcategory = watch('subcategory');
+
     const repository = new PublicationRepository();
 
     const handlePost = (publication: Publication) => {
         props.setShowCreate(false);
-        setTitle(''); setCategory(0); setSubcategory(-1); setTags(''); setDescription('')
         props.postPublication(publication);
     }
 
     useEffect(() => {
         const searchCategories = () => {
-            setLoading(true)
             repository.getCategories(credentials.token)
             .then(res => setCategories(res.data.categories))
             .catch(err => window.alert(err))
-            .finally(() => setLoading(false))
+            .finally(() => {})
         }
 
         if (credentials.token && !categories)
@@ -50,111 +58,113 @@ const PublicationCreate = (props: PublicationCreateProps) => {
     }, [categories, credentials.token])
 
     if (!props.visible)
-        return (
-            <div style={{display: 'none'}}>
-            </div>
-        )
+        return <div style={{display: 'none'}}></div>
 
     if (!categories)
-        return (
-            <div>
-                <Spinner animation="border" />
-            </div> 
-        )
+        return <div className="loading"><Spinner animation="border"/></div>
 
-    const renderCategories = categories.map((category, index) => {
-        return (
-            <option value={index} key={category.name+index}>{category.name}</option>
-        )
-    })
-
-    let renderSubcateogries = null
-    if (categories[category].children) {
-        renderSubcateogries = categories[category].children.map((subcategory, index) => {
-            return (
-                <option value={index} key={subcategory.name+index}>{subcategory.name}</option>
-            )
+    const getSubCategories = () => {
+        const defaultOption = <option value={"-1"} key={"select -1"}>Seleccionar subcategoria</option>
+        const subCategories = categories.find(cat => cat.name === category)?.children?.map((subcategory, index) => {
+            return <option value={subcategory.name} key={subcategory.name+index}>{subcategory.name}</option>
         })
+        return [defaultOption, ...subCategories || []]
     }
 
-    const handleSubmit = async(e: FormEvent) => {
-        e.preventDefault()
+    const renderCategories = categories.map((category, index) => {
+        return <option value={category.name} key={category.name+index}>{category.name}</option>
+    })
 
-        const tagsarray = tags.split(' ')
-        let categorypost: string
-        if (subcategory === -1)
-            categorypost = categories[category].name
-        else
-            categorypost = categories[category].children[subcategory].name
+    const onSubmit = (data: PublicationCreateInput) => {
+
+        const categorypost = subcategory === "-1" ? category : subcategory
 
         const publicationData: PublicationPostParams = {
-            title: title,
+            title: data.title,
             category: {name: categorypost},
-            tags: tagsarray,
-            description: description,
+            tags: data.tags.split(' '),
+            description: data.description,
             date: new Date()
         };
-
+        
         let publication: Publication
-        publicationRepository.postPublication(publicationData, credentials.token)
+        repository.postPublication(publicationData, credentials.token)
         .then(res => {
             publication = res.data.publication;
             if (files.current && files.current.files) {
                 const filesData = new FormData();
                 for (let i = 0; i < files.current.files.length; i++)
                     filesData.append(files.current.files[i].name, files.current.files[i], files.current.files[i].name)
-                publicationRepository.postFiles(publication.id, filesData, credentials.token)
+                repository.postFiles(publication.id, filesData, credentials.token)
                 .then(() => {})
                 .catch(err => window.alert(err))
-                .finally(() => {});
+                .finally(() => handlePost(publication));
             }
         })
         .catch(err => window.alert(err))
         .finally(() => handlePost(publication));
-
     }
 
     return (
         <div className="publication-form">
             <div className="create-form">
-                <Form onSubmit={(e) => handleSubmit(e)}>
-                    <Form.Group controlId="title">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control type="text" placeholder="Enter title" value={title} onChange={e => setTitle(e.target.value)}/>
-                    </Form.Group>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                    <InputForm 
+                        name={"publication-title"}
+                        label={"Title"}
+                        value={""}
+                        type={"text"}
+                        required={true}
+                        input={'title'}
+                        register={register}
+                    />
+                    <Row>
+                        <Col>
+                        <InputSelect 
+                            name={"publication-category"}
+                            label={"Category"}
+                            options={renderCategories}
+                            input={'category'}
+                            register={register}
+                        />
+                        </Col>
+                        <Col>
+                        <InputSelect 
+                            name={"publication-subcategory"}
+                            label={"Subcategory"}
+                            options={getSubCategories()}
+                            input={'subcategory'}
+                            register={register}
+                        />
+                        </Col>
+                    </Row>
 
-                    <Form.Row>
-                        <Form.Group as={Col} controlId="category">
-                        <Form.Label>Category</Form.Label>
-                        <Form.Control as="select" value={category} onChange={(e) => {setCategory(parseInt(e.target.value))}}>
-                            {renderCategories}
-                        </Form.Control>
-                        </Form.Group>
+                    <InputForm 
+                        name={"publication-tags"}
+                        label={"Tags"}
+                        value={""}
+                        type={"text"}
+                        required={false}
+                        input={'tags'}
+                        register={register}
+                    />
 
-                        <Form.Group as={Col} controlId="subcategory">
-                        <Form.Label>Subcategory</Form.Label>
-                        <Form.Control as="select" value={subcategory} onChange={(e) => {setSubcategory(parseInt(e.target.value))}}>
-                            <option value={-1}>Seleccionar subcategoria</option>
-                            {renderSubcateogries}
-                        </Form.Control>
-                        </Form.Group>
+                    <InputTextArea 
+                        name={"publication-description"}
+                        label={"Description"}
+                        row={4}
+                        value={""}
+                        type={"text"}
+                        input={'description'}
+                        register={register}
+                    />
 
-                    </Form.Row>
-
-                    <Form.Group controlId="tags">
-                        <Form.Label>Tags</Form.Label>
-                        <Form.Control type="text" placeholder="Tags" value={tags} onChange={e => setTags(e.target.value)}/>
-                    </Form.Group>
-
-                    <Form.Group controlId="description">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control as="textarea" rows={4} value={description} onChange={e => setDescription(e.target.value)}/>
-                    </Form.Group>
-
-                    <Form.Group controlId="files">
-                        <Form.Label>Files</Form.Label>
-                        <Form.File id="files" multiple={true} ref={files} accept="application/pdf,video/mp4,image/jpg,image/jpeg,image/png"/>
-                    </Form.Group>
+                    <InputFile
+                        name={"files-publication"}
+                        label={"Files"}
+                        accept={"application/pdf,video/mp4,image/jpg,image/jpeg,image/png"}
+                        files={files}
+                    />
 
                     <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
                         Submit

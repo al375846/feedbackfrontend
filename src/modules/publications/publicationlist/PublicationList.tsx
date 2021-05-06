@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { useHistory } from 'react-router'
+import { Button, Pagination, Spinner } from 'react-bootstrap'
 
 import { Publication } from '../../../entities/Publication'
 import PublicationCard from './PublicationCard'
 import './PublicationTotal.css'
 import CredentialsContext from '../../../contexts/CredentialsContext'
-import { Alert, Button, Pagination, Spinner } from 'react-bootstrap'
 import PublicationCreate from './PublicationCreate'
 import CategoryMenu from './CategoryMenu'
 import { PublicationRepository, PublicationResponseData } from '../repository/PublicationRepository'
@@ -20,10 +21,11 @@ const PublicationList = () => {
     const [itemSize, setItemsize] = useState<number>(0)
     const [page, setPage] = useState<number>(1)
     const [left, setLeft] = useState<number>(0)
-    const [alert, setAlert] = useState<boolean>(false)
     
     const [loading, setLoading] = useState<boolean>();
     const publicationRepository = new PublicationRepository();
+
+    const history = useHistory();
 
     const credentials = useContext(CredentialsContext)
 
@@ -36,69 +38,17 @@ const PublicationList = () => {
         }
     }
 
-    const searchPublications = async () => {
+    const navigateToPublication = (id: number) => history.push(`/publication/${id}`)
 
-        const getParams = {
+    const getParams = () => {
+        return {
             cursor: cursor,
             page: page,
             filter: finalSearchTerm
         }
-
-        setLoading(true);
-        if (selected === -1)
-            publicationRepository.findAllByExpert(getParams, credentials.token)
-            .then((res) => handleSearch(res.data))
-            .catch((err) => window.alert(err))
-            .finally(() => setLoading(false));
-        else if (selected >= 0)
-            publicationRepository.findAllByCategory(selected, getParams, credentials.token)
-            .then((res) => handleSearch(res.data))
-            .catch((err) => window.alert(err))
-            .finally(() => setLoading(false));
-        else
-            publicationRepository.findAll(getParams, credentials.token)
-            .then((res) => handleSearch(res.data))
-            .catch((err) => window.alert(err))
-            .finally(() => setLoading(false));            
     }
 
-    useEffect(() => {
-        const time = setTimeout( () => {
-            setFinalSearchTerm(searchTerm)
-        }, 500)
-
-        return () => {
-            clearTimeout(time)
-        }
-    }, [searchTerm])
-
-    useEffect(() => {
-
-        if (credentials.token)
-            searchPublications()
-
-    }, [finalSearchTerm, credentials.token, selected, page])
-
-    useEffect(() => {
-        setCursor(-1)
-        setPage(1)
-    }, [selected, finalSearchTerm])
-
-    const pubs = publications.map((publication) => {
-        return (
-            <div key={publication.id}>
-                <PublicationCard publication={publication} />
-            </div>
-        )
-    })
-
-    const postPublication = () => {
-        searchPublications()
-        setAlert(true)
-        setTimeout(() => {
-            setAlert(false)
-        }, 3000)
-    }
+    const postPublication = (publication: Publication) => navigateToPublication(publication.id)
 
     const renderPost = () => {
         if (credentials.usertype === 'apprentice')
@@ -131,6 +81,47 @@ const PublicationList = () => {
             setPage(1)
     }
 
+    useEffect(() => {
+        const time = setTimeout( () => {
+            setFinalSearchTerm(searchTerm)
+        }, 500)
+
+        return () => {
+            clearTimeout(time)
+        }
+    }, [searchTerm])
+
+    useEffect(() => {
+
+        const searchPublications = () => {
+            setLoading(true);
+            if (selected === -1)
+                publicationRepository.findAllByExpert(getParams(), credentials.token)
+                .then((res) => handleSearch(res.data))
+                .catch((err) => window.alert(err))
+                .finally(() => setLoading(false));
+            else if (selected >= 0)
+                publicationRepository.findAllByCategory(selected, getParams(), credentials.token)
+                .then((res) => handleSearch(res.data))
+                .catch((err) => window.alert(err))
+                .finally(() => setLoading(false));
+            else
+                publicationRepository.findAll(getParams(), credentials.token)
+                .then((res) => handleSearch(res.data))
+                .catch((err) => window.alert(err))
+                .finally(() => setLoading(false));            
+        }
+
+        if (credentials.token)
+            searchPublications()
+
+    }, [finalSearchTerm, credentials.token, selected, page])
+
+    useEffect(() => {
+        setCursor(-1)
+        setPage(1)
+    }, [selected, finalSearchTerm])
+
     if (loading) {
         return (
             <div className="loading">
@@ -138,6 +129,14 @@ const PublicationList = () => {
             </div>
         )
     }
+
+    const pubs = publications.map((publication) => {
+        return (
+            <div key={publication.id}>
+                <PublicationCard publication={publication} />
+            </div>
+        )
+    })
 
     return (
         <div>
@@ -163,11 +162,6 @@ const PublicationList = () => {
                 </Pagination>
             </div>
             <PublicationCreate visible={showCreate} setShowCreate={setShowCreate} postPublication={postPublication}/>
-            <div className="publication-created">
-                <Alert variant="success" show={alert} onClose={() => setAlert(false)} dismissible={true}>
-                    Publicación creada con exito
-                </Alert>
-            </div>
         </div>
     )
 }

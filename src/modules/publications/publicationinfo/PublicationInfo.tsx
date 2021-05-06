@@ -30,7 +30,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
         3 - Abstracción de un componente para la vista y otro para obtener los datos de la publicación
      */
     useEffect(() => {
-        const searchPublication = async () => {
+        const searchPublication = () => {
             setLoading(true);
             publicationRepository.findById(match.params.id, credentials.token)
                 // @ts-ignore

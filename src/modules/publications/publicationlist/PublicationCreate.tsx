@@ -3,15 +3,14 @@ import { Button, Col, Form, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { Category } from '../../../entities/Category'
-import api from '../../../api/Api'
 import './PublicationTotal.css'
-import { Publication } from '../../../entities/Publication'
 import { PublicationPostParams, PublicationRepository } from '../repository/PublicationRepository'
+import { Publication } from '../../../entities/Publication'
 
 export interface PublicationCreateProps {
     visible: boolean,
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
-    postPublication: () => void
+    postPublication: (publication: Publication) => void
 }
 
 const PublicationCreate = (props: PublicationCreateProps) => {
@@ -30,10 +29,10 @@ const PublicationCreate = (props: PublicationCreateProps) => {
     const [loading, setLoading] = useState<boolean>(false)
     const repository = new PublicationRepository();
 
-    const handlePost = () => {
-        props.postPublication();
-        props.setShowCreate(false)
+    const handlePost = (publication: Publication) => {
+        props.setShowCreate(false);
         setTitle(''); setCategory(0); setSubcategory(-1); setTags(''); setDescription('')
+        props.postPublication(publication);
     }
 
     useEffect(() => {
@@ -96,22 +95,22 @@ const PublicationCreate = (props: PublicationCreateProps) => {
             date: new Date()
         };
 
+        let publication: Publication
         publicationRepository.postPublication(publicationData, credentials.token)
         .then(res => {
-            const publication = res.data.publication;
+            publication = res.data.publication;
             if (files.current && files.current.files) {
                 const filesData = new FormData();
                 for (let i = 0; i < files.current.files.length; i++)
                     filesData.append(files.current.files[i].name, files.current.files[i], files.current.files[i].name)
                 publicationRepository.postFiles(publication.id, filesData, credentials.token)
-                .then(() => handlePost())
+                .then(() => {})
                 .catch(err => window.alert(err))
-                .finally(() => {})
+                .finally(() => {});
             }
-            else handlePost()
         })
         .catch(err => window.alert(err))
-        .finally(() => {});
+        .finally(() => handlePost(publication));
 
     }
 

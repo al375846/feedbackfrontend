@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Badge } from 'react-bootstrap'
 
 import { CategoryRaw } from '../../../entities/Category'
-import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import './PublicationTotal.css'
 import { PublicationRepository } from '../repository/PublicationRepository'
@@ -52,13 +51,17 @@ const CategoryMenu = (props: CategoryMenuProps) => {
             searchCategories()
     }, [credentials.token, credentials.usertype])
 
-    useEffect(() => {
-        divCategory.current!.addEventListener('wheel', e => {
-          e.preventDefault()
-          divCategory.current!.scrollTo({
-            left: divCategory.current!.scrollLeft + e.deltaY
-          })
+    const wheelListener = (e: WheelEvent) => {
+        e.preventDefault()
+        divCategory.current!.scrollTo({
+          left: divCategory.current!.scrollLeft + e.deltaY
         })
+    }
+
+    useEffect(() => {
+        divCategory.current!.addEventListener('wheel', wheelListener)
+
+        return () => divCategory.current?.removeEventListener('wheel', wheelListener)
       }, [])
 
     const setVariant = (id: number): string => {

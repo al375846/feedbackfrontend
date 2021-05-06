@@ -23,13 +23,13 @@ type PublicationCreateInput = {
     tags: string,
     description: string,
     category: string,
-    subcategory: string
+    subcategory: string,
+    files: FileList
 }
 
 const PublicationCreate = (props: PublicationCreateProps) => {
 
     const [categories, setCategories] = useState<Category[]>()
-    const files = useRef<HTMLInputElement>(null);
 
     const credentials = useContext(CredentialsContext);
 
@@ -76,7 +76,6 @@ const PublicationCreate = (props: PublicationCreateProps) => {
     })
 
     const onSubmit = (data: PublicationCreateInput) => {
-
         const categorypost = subcategory === "-1" ? category : subcategory
 
         const publicationData: PublicationPostParams = {
@@ -91,10 +90,10 @@ const PublicationCreate = (props: PublicationCreateProps) => {
         repository.postPublication(publicationData, credentials.token)
         .then(res => {
             publication = res.data.publication;
-            if (files.current && files.current.files) {
+            if (data.files) {
                 const filesData = new FormData();
-                for (let i = 0; i < files.current.files.length; i++)
-                    filesData.append(files.current.files[i].name, files.current.files[i], files.current.files[i].name)
+                for (let i = 0; i < data.files.length; i++)
+                    filesData.append(data.files[i].name, data.files[i], data.files[i].name)
                 repository.postFiles(publication.id, filesData, credentials.token)
                 .then(() => {})
                 .catch(err => window.alert(err))
@@ -163,7 +162,8 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                         name={"files-publication"}
                         label={"Files"}
                         accept={"application/pdf,video/mp4,image/jpg,image/jpeg,image/png"}
-                        files={files}
+                        register={register}
+                        input={'files'}
                     />
 
                     <Button variant="primary" type="submit" style={{marginRight: '1em'}}>

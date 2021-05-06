@@ -6,7 +6,8 @@ interface InputFileProps {
     name: string;
     label: string;
     accept: string;
-    files: React.RefObject<HTMLInputElement>;
+    input: string;
+    register: UseFormRegister<any>;
 }
 
 const InputFile: FunctionComponent<InputFileProps> = (
@@ -14,7 +15,8 @@ const InputFile: FunctionComponent<InputFileProps> = (
         name,
         label,
         accept,
-        files
+        input,
+        register
     }
 ) => {
     return (
@@ -23,7 +25,7 @@ const InputFile: FunctionComponent<InputFileProps> = (
         >
             <Form.Label>{label}</Form.Label>
             <Form.File 
-                ref={files}
+                {...register(input)}
                 id={name}
                 multiple={true}
                 accept={accept}

@@ -1,6 +1,13 @@
 export const PUBLICATION_INFO: string = "/api/publication/:id";
-export const PUBLICATION_LIST: string = "/api/publication";
-export const PUBLICATION_LIST_CATEGORY: string = "/api/publication/cateogy/:id";
+export const PUBLICATION: string = "/api/publication";
+export const PUBLICATION_LIST_CATEGORY: string = "/api/publication/category/:id";
 export const PUBLICATION_LIST_EXPERT: string = "/api/publication/expert";
 export const CATEGORY_LIST: string = "/api/category";
 export const CATEGORY_LIST_RAW: string = "/api/category/raw";
+export const PUBLICATION_FILE: string = "/api/file/publication/:id";
+export const FEEDBACK_RATE: string = "/api/rating/feedback/:id"
+export const PUBLICATION_FEEDBACK: string = "/api/publication/:id/feedback";
+export const FEEDBACK_POST: string = "/api/feedback/publication/:id";
+export const FEEDBACK_FILE: string = "/api/file/feedback/:id";
+export const INCIDENCE: string = "/api/incidence/publication/:id";
+export const FILE: string = "/api/file/:filename";

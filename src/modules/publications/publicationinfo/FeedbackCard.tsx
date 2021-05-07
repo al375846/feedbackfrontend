@@ -3,11 +3,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Card } from 'react-bootstrap'
 
 import { Feedback } from '../../../entities/Feedback'
-import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import './PublicationInfoTotal.css'
 import { Rate } from '../../../entities/Rate'
 import FilesInfo from './FilesInfo'
+import { PublicationRepository, RatePostParams, RatePutParams } from '../repository/PublicationRepository'
 
 export interface FeedbackCardProps {
     feedback: Feedback,
@@ -16,46 +16,38 @@ export interface FeedbackCardProps {
 
 const FeedbackCard = (props: FeedbackCardProps) => {
 
-    const credentials = useContext(CredentialsContext)
-    const [rating, setRating] = useState<Rate | null>(props.feedback.valoration)
+    const credentials = useContext(CredentialsContext);
+    const [rating, setRating] = useState<Rate | null>(props.feedback.valoration);
+    const repository = new PublicationRepository();
 
     useEffect(() => {}, [rating])
 
     const files = [...props.feedback.images, ...props.feedback.video, ...props.feedback.document]
 
-    const handleRatingClick = async(rate: number) => {
+    const handleRatingClick = (rate: number) => {
         if (!rating) {
-            const ratedata = {
+            const rateData: RatePostParams = {
                 grade: rate,
                 date: new Date()
-              }
-            const {data} = await api.post(`/api/rating/feedback/${props.feedback.id}`, ratedata, {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-            setRating(data.rating)
+            }
+            repository.rateFeedback(props.feedback.id, rateData, credentials.token)
+            .then(res => setRating(res.data.rating))
+            .catch(err => window.alert(err))
+            .finally(() => {})
         }
         else {
-            const ratedata = {
+            const rateData: RatePutParams = {
                 grade: rate,
-              }
-            const {data} = await api.put(`/api/rating/feedback/${rating.id}`, ratedata, {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-            setRating(data.rating)
+            }
+            repository.updateRateFeedback(rating.id, rateData, credentials.token)
+            .then(res => setRating(res.data.rating))
+            .catch(err => window.alert(err))
+            .finally(() => {})
         }
     }
 
     const getoutline = (pos: number) => {
-        if (!rating)
-            return 'outline'
-        else if (pos <= rating.grade)
-            return ''
-        else
-            return 'outline'
+        return (!rating || rating.grade < pos) ? 'outline' : ''
     }
 
     const renderstars = () => {
@@ -68,29 +60,29 @@ const FeedbackCard = (props: FeedbackCardProps) => {
 
     return (
         <div key={props.feedback.id}>
-        <Card className="feedback-card" >
-            <Card.Header>
-                <div className="ui secondary menu">
-                    <div className="item">
-                        <i className="user icon" />
-                        {props.feedback.expert.username}
-                    </div>
-                    <div className="right menu item">
-                        <div className="rating">
-                        {renderstars()}
+            <Card className="feedback-card" >
+                <Card.Header>
+                    <div className="ui secondary menu">
+                        <div className="item">
+                            <i className="user icon" />
+                            {props.feedback.expert.username}
+                        </div>
+                        <div className="right menu item">
+                            <div className="rating">
+                            {renderstars()}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </Card.Header>
-            <Card.Body>
-                <div className="content">
-                    <div className="comment">
-                        <div className="content">
-                            <div className="text">{props.feedback.description}</div>
+                </Card.Header>
+                <Card.Body>
+                    <div className="content">
+                        <div className="comment">
+                            <div className="content">
+                                <div className="text">{props.feedback.description}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </Card.Body>
+                </Card.Body>
                 <FilesInfo files={files}/>
                 <small className="text-muted">
                     <div className="ui secondary menu">
@@ -101,7 +93,7 @@ const FeedbackCard = (props: FeedbackCardProps) => {
                         </div>
                     </div>
                 </small>
-        </Card>
+            </Card>
         </div>
     )
 }

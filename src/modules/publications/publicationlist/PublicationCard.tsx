@@ -69,8 +69,7 @@ const PublicationCard = (props: PublicationCardProps) => {
                             <i className="image outline icon"></i>
                         </div>
                     </div>
-                </small>
-            
+                </small> 
         </Card>
     )
 }

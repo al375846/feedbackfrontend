@@ -1,5 +1,5 @@
 export interface Rate {
-    id: number | null,
+    id: number,
     grade: number,
     date: Date
 }

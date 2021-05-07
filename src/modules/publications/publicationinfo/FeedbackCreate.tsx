@@ -1,84 +1,87 @@
-import React, { useState, useContext, FormEvent, useRef } from 'react'
+import React, { useContext } from 'react'
 import { Button, Form } from 'react-bootstrap'
+import { useForm } from 'react-hook-form'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
-import api from '../../../api/Api'
 import './PublicationInfoTotal.css'
 import { Feedback } from '../../../entities/Feedback'
+import InputTextArea from '../../../components/form/textarea/InputTextArea'
+import InputFile from '../../../components/form/files/InputFile'
+import { PublicationRepository } from '../repository/PublicationRepository'
 
 export interface FeedbackCreateProps {
-    publication: number,
+    publicationId: number,
     visible: boolean,
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
-    postFeedback: () => void
+    postFeedback: (feedback: Feedback) => void
+}
+
+type FeedbackCreateInput = {
+    description: string,
+    files: FileList
 }
 
 const FeedbackCreate = (props: FeedbackCreateProps) => {
 
     const credentials = useContext(CredentialsContext)
-
-    const [description, setDescription] = useState<string>('')
-    const files = useRef<HTMLInputElement>(null)
+    const { register, handleSubmit } = useForm<FeedbackCreateInput>();
+    const repository = new PublicationRepository();
 
     if (!props.visible)
-        return (
-            <div style={{display: 'none'}}>
-            </div>
-        )
+        return <div style={{display: 'none'}}></div>
 
-    const handleSubmit = async(e: FormEvent) => {
-        e.preventDefault()
+    const handlePost = (feedback: Feedback) => {
+        props.postFeedback(feedback);
+        props.setShowCreate(false);
+    }
 
-        const feeddata = {
-            description: description,
+    const onSubmit = (data: FeedbackCreateInput) => {
+
+        const feedbackData = {
+            description: data.description,
             date: new Date()
         }
 
-        const postFeedbackNew = async() => { 
-            const {data} = await api.post(`/api/feedback/publication/${props.publication}`, feeddata, {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-
-            const feedback: Feedback = data.feedback
-
-            if (files.current && files.current.files) {
-                const f = new FormData()
-                
-                for (let i = 0; i < files.current.files.length; i++)
-                    f.append(files.current.files[i].name, files.current.files[i], files.current.files[i].name)
-
-                api.post(`/api/file/feedback/${feedback.id}`, f, {
-                    headers: {
-                        Authorization: `Bearer ${credentials.token}`
-                    }
-                }).then(() => {
-                    props.postFeedback()
-                })
+        let feedback: Feedback
+        repository.postPublicationFeedback(props.publicationId, feedbackData, credentials.token)
+        .then(res => {
+            feedback = res.data.feedback
+            if (data.files) {
+                const filesData = new FormData()
+                for (let i = 0; i < data.files.length; i++)
+                    filesData.append(data.files[i].name, data.files[i], data.files[i].name)
+                repository.postFeedbackFiles(feedback.id, filesData, credentials.token)
+                .then(() => {})
+                .catch(err => window.alert(err))
+                .finally(() => {})
             }
-        }
-
-        postFeedbackNew().then(() => {
-            props.setShowCreate(false)
-            setDescription('')
         })
+        .catch(err => window.alert(err))
+        .finally(() => {handlePost(feedback)})
     }
 
     return (
         <div className="feedback-form">
             <div className="create-form">
-                <Form onSubmit={(e) => handleSubmit(e)}>
+                <Form onSubmit={handleSubmit(onSubmit)}>
 
-                    <Form.Group controlId="description">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control as="textarea" rows={5} value={description} onChange={e => setDescription(e.target.value)}/>
-                    </Form.Group>
+                    <InputTextArea 
+                        name={"feedback-description"}
+                        label={"Description"}
+                        row={4}
+                        value={""}
+                        type={"text"}
+                        input={'description'}
+                        register={register}
+                    />
 
-                    <Form.Group controlId="files">
-                        <Form.Label>Files</Form.Label>
-                        <Form.File id="files" multiple={true} ref={files} accept="application/pdf,video/mp4,image/jpg,image/jpeg,image/png"/>
-                    </Form.Group>
+                    <InputFile
+                        name={"feedback-files"}
+                        label={"Files"}
+                        accept={"application/pdf,video/mp4,image/jpg,image/jpeg,image/png"}
+                        register={register}
+                        input={'files'}
+                    />
 
                     <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
                         Submit

@@ -16,13 +16,17 @@ const CategoryMenu = (props: CategoryMenuProps) => {
     const [categories, setCategories] = useState<CategoryRaw[]>([])
     const credentials = useContext(CredentialsContext)
     const divCategory = useRef<HTMLDivElement>(null)
-
-    const [loading, setLoading] = useState<boolean>();
     const repository = new PublicationRepository();
+
+    const wheelListener = (e: WheelEvent) => {
+        e.preventDefault()
+        divCategory.current!.scrollTo({
+          left: divCategory.current!.scrollLeft + e.deltaY
+        })
+    }
 
     useEffect(() => {
         const searchCategories = () => {
-            setLoading(true)
             repository.getCategoriesRaw(credentials.token)
             .then(res => {
                 res.data.categories.push({
@@ -44,19 +48,12 @@ const CategoryMenu = (props: CategoryMenuProps) => {
                 setCategories(res.data.categories)
             })
             .catch(err => window.alert(err))
-            .finally(() => setLoading(false))
+            .finally(() => {})
         }
 
         if (credentials.token)
             searchCategories()
     }, [credentials.token, credentials.usertype])
-
-    const wheelListener = (e: WheelEvent) => {
-        e.preventDefault()
-        divCategory.current!.scrollTo({
-          left: divCategory.current!.scrollLeft + e.deltaY
-        })
-    }
 
     useEffect(() => {
         divCategory.current!.addEventListener('wheel', wheelListener)

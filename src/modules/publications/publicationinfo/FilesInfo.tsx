@@ -3,8 +3,8 @@ import { Document, Page, pdfjs } from 'react-pdf'
 import { Button } from 'react-bootstrap'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
-import api from '../../../api/Api'
 import './PublicationInfoTotal.css'
+import { PublicationRepository } from '../repository/PublicationRepository'
 
 export interface FilesInfoProps {
     files: string[]
@@ -21,6 +21,8 @@ const mymes: { [extension: string]: string }  = {
 const FilesInfo = (props: FilesInfoProps) => {
 
     const credentials = useContext(CredentialsContext)
+    
+    const repository = new PublicationRepository();
 
     pdfjs.GlobalWorkerOptions.workerSrc = 
     `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
@@ -31,19 +33,17 @@ const FilesInfo = (props: FilesInfoProps) => {
         const type = extension[extension.length - 1]
         const filetype = mymes[type]
 
-        api.get(`/api/file/${filename}`, {
-            headers: {
-                Authorization: `Bearer ${credentials.token}`
-            },
-            responseType: 'blob'
-        }).then(response => {
-            let file = new File([response.data], filename, {type: filetype})
+        repository.getFile(filename, credentials.token)
+        .then(res => {
+            let file = new File([res.data], filename, {type: filetype})
             const link = document.createElement('a')
             link.href = window.URL.createObjectURL(file)
             link.setAttribute('download', filename)
             document.body.appendChild(link)
             link.click()
         })
+        .catch(err => window.alert(err))
+        .finally(() => {})
     }
 
     const getFilename = (filename: string) => {

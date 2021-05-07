@@ -1,66 +1,97 @@
 import React, { useContext, useState } from 'react'
 import { createPortal } from "react-dom"
 import { Button, Form, Modal } from 'react-bootstrap'
+import { useForm } from 'react-hook-form'
 
-import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
+import InputTextArea from '../../../components/form/textarea/InputTextArea'
+import InputRadio from '../../../components/form/radio/InputRadio'
+import { PublicationRepository } from '../repository/PublicationRepository'
+
 
 export interface IncidenceModalProps {
-    id: string
+    id: string,
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>
+    showAlert: (message: string) => void
+}
+
+type IncidenceInput = {
+    description: string,
+    type: string
 }
 
 const IncidenceModal = (props: IncidenceModalProps) => {
 
-    const [description, setDescription] = useState<string>('')
-    const [type, setType] = useState<string>('')
-    const credentials = useContext(CredentialsContext)
+    const { register, handleSubmit } = useForm<IncidenceInput>();
+    const credentials = useContext(CredentialsContext);
+
+    const repository = new PublicationRepository();
+
+    const handlePost = () => {
+        props.showAlert('Incidencia enviada')
+        props.setShow(false)
+    }
 
     if (!props.show) return null
 
-    const handleSubmit = async() => {
-        const incdata = {
-            type: type,
-            description: description
+    const onSubmit = (data: IncidenceInput) => {
+
+        const incidenceData = {
+            type: data.type,
+            description: data.description
         }
-
-        await api.post(`/api/incidence/publication/${props.id}`, incdata, {
-            headers: {
-                Authorization: `Bearer ${credentials.token}`
-            }
-        })
-
-        props.setShow(false)
-        setDescription('')
+        
+        repository.postIncidence(props.id, incidenceData, credentials.token)
+        .then(() => handlePost())
+        .catch(err => window.alert(err))
+        .finally(() => {})
     }
+
+    const radioValues = [
+        {
+            id: "spam",
+            label: "Es spam",
+            value: "Es spam",
+        },
+        {
+            id: "inapropiate",
+            label: "Es inapropiado",
+            value: "Es inapropiado",
+        }
+    ]
 
     const ModalDom = (
         <Modal show={props.show} onHide={() => props.setShow(false)} backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-            <Modal.Title>Indique el motivo de la incidencia</Modal.Title>
+                <Modal.Title>Indique el motivo de la incidencia</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <Form>
-                <Form.Group>
-                <Form.Check type='radio' id="spam" label="Es spam" name="types" value="Es spam" onChange={e => setType(e.target.value)}/>
-                <Form.Check type='radio' id="inapropiate" label="Es inapropiado" name="types" 
-                value="Es inapropiado" onChange={e => setType(e.target.value)}/>
-                </Form.Group>
-                <Form.Group controlId="description">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control as="textarea" rows={5} value={description} onChange={e => setDescription(e.target.value)}/>
-                </Form.Group>
-            </Form>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                    <InputRadio 
+                        options={radioValues}
+                        input={'type'}
+                        register={register}
+                    />
+
+                    <InputTextArea 
+                        name={"incidence-description"}
+                        label={"Description"}
+                        row={4}
+                        value={""}
+                        type={"text"}
+                        input={'description'}
+                        register={register}
+                    />
+
+                    <Button variant="primary" style={{marginRight: '1em'}} type="submit">
+                        Submit
+                    </Button>
+                    <Button variant="secondary" onClick={() => props.setShow(false)}>
+                        Close
+                    </Button>
+                </Form>
             </Modal.Body>
-            <Modal.Footer>
-            <Button variant="primary" onClick={() => handleSubmit()}>
-                Submit
-            </Button>
-            <Button variant="secondary" onClick={() => props.setShow(false)}>
-                Close
-            </Button>
-            </Modal.Footer>
         </Modal>
     )
     return createPortal(ModalDom, document.getElementById('modal') as HTMLElement)

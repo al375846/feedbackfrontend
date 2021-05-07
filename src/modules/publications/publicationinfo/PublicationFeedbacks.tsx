@@ -3,66 +3,68 @@ import { Spinner } from 'react-bootstrap'
 
 import { Feedback } from '../../../entities/Feedback'
 import CredentialsContext from '../../../contexts/CredentialsContext'
-import api from '../../../api/Api'
 import './PublicationInfoTotal.css'
 import FeedbackCreate from './FeedbackCreate'
 import FeedbackCard from './FeedbackCard'
 import { Publication } from '../../../entities/Publication'
+import { PublicationRepository } from '../repository/PublicationRepository'
 
 export interface PublicationFeedbacksProps {
     visible: boolean,
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
     publication: Publication,
-    setAlert: React.Dispatch<React.SetStateAction<boolean>>
+    showAlert: (message: string) => void
 }
 
 const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
     
-    const [feedbacks, setFeedbacks] = useState<Feedback[]>()
-    const credentials = useContext(CredentialsContext)
+    const [feedbacks, setFeedbacks] = useState<Feedback[]>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const credentials = useContext(CredentialsContext);
 
-    const searchFeedbacks = async () => {
-        const {data} = await api.get(`/api/publication/${props.publication.id}/feedback`, {
-            headers: {
-                Authorization: `Bearer ${credentials.token}`
-            }
-        })
-        setFeedbacks(data.feedbacks)
+    const repository = new PublicationRepository();
+
+    const postFeedback = (feedback: Feedback) => {
+        const newFeedbacks = [feedback, ...feedbacks || []]
+        setFeedbacks(newFeedbacks)
+        props.showAlert('Feedback creado con éxito')
     }
 
     useEffect(() => {
+
+        const searchFeedbacks = () => {
+            setLoading(true)
+            repository.getPublicationFeedbacks(props.publication.id, credentials.token)
+            .then(res => setFeedbacks(res.data.feedbacks))
+            .catch(err => window.alert(err))
+            .finally(() => setLoading(false))
+        }
 
         if (credentials.token && !feedbacks)
             searchFeedbacks()
 
     }, [feedbacks, credentials.token, props.publication.id])
 
-    if (!feedbacks)
-        return (
-            <div>
-                <Spinner animation="border" />
-            </div> 
-        )
-
-    const postFeedback = () => {
-        searchFeedbacks()
-        props.setAlert(true)
-        setTimeout(() => {
-            props.setAlert(false)
-        }, 3000)
-    }
+    if (loading || !feedbacks)
+        return <div><Spinner animation="border"/></div> 
 
     const renderfeedbacks = feedbacks.map((feedback) => {
-        return (
-            <FeedbackCard feedback={feedback} username={props.publication.apprentice.username}/>
-        )
+        return <FeedbackCard 
+                    key={feedback.id} 
+                    feedback={feedback} 
+                    username={props.publication.apprentice.username}
+                />
     })
 
     return (
         <div>
             {renderfeedbacks}
-            <FeedbackCreate visible={props.visible} publication={props.publication.id} 
-            setShowCreate={props.setShowCreate} postFeedback={postFeedback}/>
+            <FeedbackCreate 
+                visible={props.visible} 
+                publicationId={props.publication.id} 
+                setShowCreate={props.setShowCreate} 
+                postFeedback={postFeedback}
+            />
         </div>
     )
 }

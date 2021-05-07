@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 import { useForm } from "react-hook-form";
 
@@ -30,13 +30,10 @@ type PublicationCreateInput = {
 const PublicationCreate = (props: PublicationCreateProps) => {
 
     const [categories, setCategories] = useState<Category[]>()
-
     const credentials = useContext(CredentialsContext);
-
     const { register, handleSubmit, watch } = useForm<PublicationCreateInput>();
     const category = watch('category');
     const subcategory = watch('subcategory');
-
     const repository = new PublicationRepository();
 
     const handlePost = (publication: Publication) => {
@@ -94,7 +91,7 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                 const filesData = new FormData();
                 for (let i = 0; i < data.files.length; i++)
                     filesData.append(data.files[i].name, data.files[i], data.files[i].name)
-                repository.postFiles(publication.id, filesData, credentials.token)
+                repository.postPublicationFiles(publication.id, filesData, credentials.token)
                 .then(() => {})
                 .catch(err => window.alert(err))
                 .finally(() => handlePost(publication));

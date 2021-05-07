@@ -20,7 +20,7 @@ type LoginInput = {
 
 const LoginModal = (props: IncidenceModalProps) => {
 
-    const { register, handleSubmit } = useForm<LoginInput>();
+    const { register, handleSubmit, reset } = useForm<LoginInput>();
     const [alert, setAlert] = useState<boolean>(false)
     const credentials = useContext(CredentialsContext)
 
@@ -52,6 +52,10 @@ const LoginModal = (props: IncidenceModalProps) => {
                     onesignal: data
                 }
                 repository.onesignal(logdata, localStorage.getItem('token')!)
+            })
+            reset({
+                username: '',
+                password: ''
             })
         })
     }

@@ -1,3 +1,10 @@
 .register-form {
     margin-top: 2em;
 }
+
+.alert-password {
+    background-color: #dc3545;
+    text-align: center;
+    border-radius: 0.5em;
+    color: #dc3545;
+}

@@ -30,6 +30,7 @@ const InputRadio: FunctionComponent<InputRadioProps> = (
                     label={option.label}
                     {...register(input)}
                     value={option.value}
+                    required={true}
                 />
     })
     return (

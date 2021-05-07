@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 
 import api from "../../../api/Api";
-import { CHECK_USERNAME, LOGIN, LOGOUT, ONESIGNAL, USERTYPE } from "./AuthEndpoints";
+import { CHECK_USERNAME, LOGIN, LOGOUT, ONESIGNAL, REGISTER, USERTYPE } from "./AuthEndpoints";
 
 export interface RegisterParams {
     username: string,
@@ -62,8 +62,8 @@ export class AuthRepository {
         })
     }
 
-    public async register(registerData: RegisterParams): Promise<void> {
-        await api.post<void>(LOGOUT, registerData)
+    public async register(registerData: RegisterParams, type: string): Promise<void> {
+        await api.post<void>(REGISTER.replace(':type', type), registerData)
     }
 
     public async checkUsername(username: string): Promise<AxiosResponse<CheckUsernameResponseData>> {

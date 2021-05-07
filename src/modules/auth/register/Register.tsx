@@ -1,93 +1,200 @@
 import React, { FormEvent, useState } from 'react'
-import { Button, Col, Form } from 'react-bootstrap'
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap'
+import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router'
+import InputForm from '../../../components/form/input/InputForm'
+import InputRadio from '../../../components/form/radio/InputRadio'
+import { AuthRepository } from '../repository/AuthRepository'
 
 import './Register.css'
 
+type RegsiterInput = {
+    username: string,
+    password: string,
+    confirmpassword: string,
+    email: string,
+    name: string,
+    lastname: string,
+    address: string,
+    phone: string,
+    type: string  
+}
+
 const Register = () => {
 
-    const [name, setName] = useState<string>('')
-    const [lastname, setLastname] = useState<string>('')
-    const [username, setUsername] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [address, setAddress] = useState<string>('')
-    const [phone, setPhone] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [confirmpassword, setConfirmpassword] = useState<string>('')
-    const [type, setType] = useState<string>('')
+    const { register, handleSubmit, watch, reset } = useForm<RegsiterInput>();
+    const [ alert, setAlert ] = useState<boolean>(false)
+    const repository = new AuthRepository();
+    const history = useHistory();
+    const password = watch('password');
+    const confirmpassword = watch('confirmpassword');
 
-    const handleSubmit = async(e: FormEvent) => {
-        e.preventDefault()
+    const radioValues = [
+        {
+            id: "apprentice",
+            label: "Aprendiz",
+            value: "apprentice"
+        },
+        {
+            id: "expert",
+            label: "Experto",
+            value: "expert"
+        }
+    ]
 
-        const regdata = {
-            username: username,
-            password: password,
-            email: email,
-            name: name,
-            lastname: lastname,
-            address: address,
-            phone: phone
+    const showAlert = () => {
+        setAlert(true)
+        setTimeout(() => {
+            setAlert(false)
+        }, 3000)
+    }
+
+    const navigateToHome = () => history.push('/')
+
+    const onSubmit = (data: RegsiterInput) => {
+
+        const registerData = {
+            username: data.username,
+            password: data.password,
+            email: data.email,
+            name: data.name,
+            lastname: data.lastname,
+            address: data.address,
+            phone: data.phone
         }
 
-        /*await api.post(`/api/register/${type}`, regdata)
-        await doLogin(username, password)
-        await doUsertype()*/
-
-        const link = document.createElement('a')
-        link.href = '/'
-        document.body.appendChild(link)
-        link.click()
+        repository.checkUsername(data.username)
+        .then(res => {
+            if (!res.data.exists)
+                repository.register(registerData, data.type)
+                .then()
+                .catch()
+                .finally(() => navigateToHome())
+            else
+                showAlert()
+        })
+        .catch(err => window.alert(err))
+        
     }
     
     return(
         <div>
             <div className="register-form">
-            <Form onSubmit={(e) => handleSubmit(e)}>
-                <Form.Row>
-                <Form.Group as={Col} controlId="registerName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)}/>
-                </Form.Group>
-                <Form.Group as={Col} controlId="registerLastname">
-                <Form.Label>Lastname</Form.Label>
-                <Form.Control type="text" value={lastname} onChange={(e) => setLastname(e.target.value)}/>
-                </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                <Form.Group as={Col} controlId="registerUsername">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                </Form.Group>
-                <Form.Group as={Col} controlId="registerEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                <Form.Group as={Col} controlId="registerAddress">
-                <Form.Label>Address</Form.Label>
-                <Form.Control type="text" value={address} onChange={(e) => setAddress(e.target.value)}/>
-                </Form.Group>
-                <Form.Group as={Col} controlId="registerPhone">
-                <Form.Label>Phone</Form.Label>
-                <Form.Control type="text" value={phone} onChange={(e) => setPhone(e.target.value)}/>
-                </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                <Form.Group as={Col} controlId="registerPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                </Form.Group>
-                <Form.Group as={Col} controlId="registerConfirmpassword">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control type="password" value={confirmpassword} onChange={(e) => setConfirmpassword(e.target.value)}/>
-                </Form.Group>
-                </Form.Row>
-                <Form.Group>
-                <Form.Label>Tipo de usuario</Form.Label>
-                <Form.Check type='radio' id="apprentice" label="Aprendiz" name="types" value="apprentice" onChange={e => setType(e.target.value)}/>
-                <Form.Check type='radio' id="expert" label="Experto" name="types" value="expert" onChange={e => setType(e.target.value)}/>
-                </Form.Group>
-                <Button variant="primary" type="submit" className="profile-submit">
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <Row>
+                    <Col>
+                        <InputForm 
+                            name={"register-name"}
+                            label={"Name"}
+                            value={""}
+                            type={"text"}
+                            required={true}
+                            input={'name'}
+                            register={register}
+                        />
+                    </Col>
+                    <Col>
+                        <InputForm 
+                            name={"register-lastname"}
+                            label={"Lastame"}
+                            value={""}
+                            type={"text"}
+                            required={true}
+                            input={'lastname'}
+                            register={register}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <InputForm 
+                            name={"register-username"}
+                            label={"Username"}
+                            value={""}
+                            type={"text"}
+                            required={true}
+                            input={'username'}
+                            register={register}
+                        />
+                    </Col>
+                    <Col>
+                        <InputForm 
+                            name={"register-email"}
+                            label={"Email"}
+                            value={""}
+                            type={"email"}
+                            required={true}
+                            input={'email'}
+                            register={register}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <InputForm 
+                            name={"register-address"}
+                            label={"Address"}
+                            value={""}
+                            type={"text"}
+                            required={true}
+                            input={'address'}
+                            register={register}
+                        />
+                    </Col>
+                    <Col>
+                        <InputForm 
+                            name={"register-phone"}
+                            label={"Phone"}
+                            value={""}
+                            type={"text"}
+                            required={true}
+                            input={'phone'}
+                            register={register}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <InputForm 
+                            name={"register-password"}
+                            label={"Password"}
+                            value={""}
+                            type={"password"}
+                            required={true}
+                            input={'password'}
+                            register={register}
+                        />
+                    </Col>
+                    <Col>
+                    <InputForm 
+                        name={"register-confirm"}
+                        label={"Confirm password"}
+                        value={""}
+                        type={"password"}
+                        required={true}
+                        input={'confirmpassword'}
+                        register={register}
+                    />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <InputRadio 
+                            options={radioValues}
+                            input={'type'}
+                            register={register}
+                        />
+                    </Col>
+                    <Col>
+                        <Alert variant="danger" show={password !== confirmpassword} dismissible={false}>
+                            Password mismatches
+                        </Alert>
+                        <Alert variant="danger" show={alert} dismissible={true} onClose={() => setAlert(false)}>
+                            Username already taken
+                        </Alert>
+                    </Col>
+                </Row>
+                <Button variant="primary" type="submit" className="profile-submit" disabled={password !== confirmpassword}>
                 Submit
                 </Button>
             </Form>

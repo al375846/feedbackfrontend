@@ -1,8 +1,6 @@
 import React, { FormEvent, useState } from 'react'
 import { Button, Col, Form } from 'react-bootstrap'
 
-import api from '../../../api/Api'
-import { doLogin, doUsertype } from '../login/LoginModal'
 import './Register.css'
 
 const Register = () => {
@@ -30,9 +28,9 @@ const Register = () => {
             phone: phone
         }
 
-        await api.post(`/api/register/${type}`, regdata)
+        /*await api.post(`/api/register/${type}`, regdata)
         await doLogin(username, password)
-        await doUsertype()
+        await doUsertype()*/
 
         const link = document.createElement('a')
         link.href = '/'

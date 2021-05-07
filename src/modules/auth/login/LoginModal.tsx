@@ -4,94 +4,56 @@ import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
 import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
+import { AuthRepository } from '../repository/AuthRepository'
+import { useForm } from 'react-hook-form'
+import InputForm from '../../../components/form/input/InputForm'
 
 export interface IncidenceModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const doLogin = async (username: string, password: string) => {
-    const {data} = await api.post('/api/login_check', {
-        username: username,
-        password: password
-    })
-    localStorage.setItem('token', data.token)
-    localStorage.setItem('username', username)
-}
-
-export const doUsertype = async () => {
-    const {data} = await api.get('/api/usertype', {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-    })
-    localStorage.setItem('usertype', data.usertype)
-}
-
-export const doLogout = () => {
-    const logdata = {
-        onesignal: localStorage.getItem('onesignal')
-    }
-    api.post('/api/logout', logdata, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-    }).then(() => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('username')
-        localStorage.removeItem('usertype')
-        localStorage.removeItem('onesignal')
-        const link = document.createElement('a')
-        link.href = '/'
-        document.body.appendChild(link)
-        link.click()
-    })
-   
-}
-
-export const doOneSignalLogin = async () => {
-
-    //@ts-ignore
-    await OneSignal.push(async function() {
-        //@ts-ignore
-        await OneSignal.getUserId(async function(userId: string) {
-            localStorage.setItem('onesignal', userId)
-            const logdata = {
-                onesignal: userId
-            }
-        
-            await api.post('api/notification', logdata, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-        })
-    })
+type LoginInput = {
+    username: string,
+    password: string
 }
 
 const LoginModal = (props: IncidenceModalProps) => {
 
-    const [username, setUsername] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
+    const { register, handleSubmit } = useForm<LoginInput>();
     const [alert, setAlert] = useState<boolean>(false)
     const credentials = useContext(CredentialsContext)
 
-    if (!props.show) return null
+    const repository = new AuthRepository();
 
-    const handleLogin = () => {
-        doLogin(username, password)
-        .then(() => {
-            credentials.onTokenChange(localStorage.getItem('token')!)
-            credentials.onUsernameChange(username)
-            doUsertype().then(() => {
-                credentials.onUsertypeChange(localStorage.getItem('usertype')!)
+    const onSubmit = async (data: LoginInput) => {
+        
+        repository.login(data.username, data.password)
+        .then(res => {
+            localStorage.setItem('token', res.data.token)
+            localStorage.setItem('username', data.password)
+            credentials.onTokenChange(res.data.token)
+            credentials.onUsernameChange(data.password)
+            repository.usertype(res.data.token)
+            .then(res => {
+                localStorage.setItem('usertype', res.data.usertype)
+                credentials.onUsertypeChange(res.data.usertype)
                 props.setShow(false)
-                setUsername('')
-                setPassword('')
             })
-            doOneSignalLogin()
+            .catch(err => window.alert(err))
         })
         .catch(() => handleVisible())
+        .finally(() => {
+            //@ts-ignore
+            OneSignal.getUserId()
+            .then((data:any) => {
+                localStorage.setItem('onesignal', data)
+                const logdata = {
+                    onesignal: data
+                }
+                repository.onesignal(logdata, localStorage.getItem('token')!)
+            })
+        })
     }
 
     const handleVisible = () => {
@@ -99,7 +61,9 @@ const LoginModal = (props: IncidenceModalProps) => {
         setTimeout(() => {
             setAlert(false)
         }, 3000)
-    } 
+    }
+
+    if (!props.show) return null
 
     const ModalDom = (
         <Modal show={props.show} onHide={() => props.setShow(false)}>
@@ -107,30 +71,39 @@ const LoginModal = (props: IncidenceModalProps) => {
                 <Modal.Title>Login</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
-                    <Form.Group controlId="username">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)}/>
-                    </Form.Group>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                    <InputForm 
+                        name={"login-username"}
+                        label={"Username"}
+                        value={""}
+                        type={"text"}
+                        required={true}
+                        input={'username'}
+                        register={register}
+                    />
 
-                    <Form.Group controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)}/>
-                    </Form.Group>
+                    <InputForm 
+                        name={"login-password"}
+                        label={"Password"}
+                        value={""}
+                        type={"password"}
+                        required={true}
+                        input={'password'}
+                        register={register}
+                    />
+
+                    <Alert variant="danger" show={alert} onClose={() => setAlert(false)} dismissible={true}>
+                        Usuario o contraseña incorrectos
+                    </Alert>
+                    ¿Aun no esta registrado? Hagalo <a href="/register" className="item" onClick={() => props.setShow(false)}>aqui</a>
+                    <Button variant="secondary" onClick={() => props.setShow(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" type="submit">
+                        Login
+                    </Button>
                 </Form>
-                <Alert variant="danger" show={alert} onClose={() => setAlert(false)} dismissible={true}>
-                    Usuario o contraseña incorrectos
-                </Alert>
             </Modal.Body>
-            <Modal.Footer>
-                ¿Aun no esta registrado? Hagalo <a href="/register" className="item" onClick={() => props.setShow(false)}>aqui</a>
-                <Button variant="secondary" onClick={() => props.setShow(false)}>
-                    Close
-                </Button>
-                <Button variant="primary" onClick={handleLogin}>
-                    Login
-                </Button>
-            </Modal.Footer>
         </Modal>
     )
     return createPortal(ModalDom, document.getElementById('modal') as HTMLElement)

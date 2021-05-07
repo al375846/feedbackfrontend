@@ -71,10 +71,6 @@ interface PostFeedbackResponseData {
     feedback: Feedback
 }
 
-interface FileResponseData {
-    file: File
-}
-
 export class PublicationRepository {
 
     public async findById(id: string, token: string): Promise<AxiosResponse<PublicationInfoResponseData>> {

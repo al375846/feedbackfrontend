@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import api from '../../api/Api'
-import { doLogin } from '../auth/login/LoginModal'
+//import { doLogin } from '../auth/login/LoginModal'
 
 export interface ChangePasswordModalProps {
     show: boolean,
@@ -35,13 +35,13 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
                     Authorization: `Bearer ${credentials.token}`
                 }
             }).then(() => {
-                doLogin(credentials.username, newpassword)
+                /*doLogin(credentials.username, newpassword)
                 .then(() => {
                     credentials.onTokenChange(localStorage.getItem('token')!)
                 })
                 props.setShow(false)
                 setPassword('')
-                setNewpassword('')
+                setNewpassword('')*/
             }).catch(() => {
                 setAlert(true)
                 setTimeout(() => {

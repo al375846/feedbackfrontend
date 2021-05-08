@@ -1,28 +1,29 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, Card, Spinner } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { Suggestion } from '../../../entities/Suggestion'
-import api from '../../../api/Api'
 import CategoryAdminContext from '../../../contexts/CategoryAdminContext'
-import { CategoryRaw } from '../../../entities/Category'
+import { Category } from '../../../entities/Category'
+import { ProfileRepository } from '../repository/ProfileRepository'
+import SuggestionCard from './SuggestionCard'
 
 const SuggestionList = () => {
 
-    const credentials = useContext(CredentialsContext)
-    const categoryadmin = useContext(CategoryAdminContext)
-    const [suggestions, setSuggestions] = useState<Suggestion[]>()
+    const credentials = useContext(CredentialsContext);
+    const categoryadmin = useContext(CategoryAdminContext);
+    const [ suggestions, setSuggestions ] = useState<Suggestion[]>();
+    const repository = new ProfileRepository();
+    const [ loading, setLoading ] = useState<boolean>(false)
 
     useEffect(() => {
 
         const searchSuggestions = async() => {
-            const {data} = await api.get('/api/suggestion', {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-
-            setSuggestions(data.suggestions)
+            setLoading(true)
+            repository.getSuggestions(credentials.token)
+            .then(res => setSuggestions(res.data.suggestions))
+            .catch(err => window.alert(err))
+            .finally(() => setLoading(false))
         }
 
         if (credentials.token && !suggestions)
@@ -30,104 +31,54 @@ const SuggestionList = () => {
 
     }, [credentials.token, suggestions])
 
-    if (!suggestions)
-        return (
-            <div className="loading">
-                <Spinner animation="border" />
-            </div> 
-        )
+    if ( loading || !suggestions )
+        return <div className="loading"><Spinner animation="border" /></div> 
 
-    const handleAccept = async(suggestion: Suggestion) => {
+    const handleAccept = (suggestion: Suggestion) => {
         const parent = suggestion.parent ? {name: suggestion.parent.name} : null
-        const catdata = {
+        const categoryData = {
             name: suggestion.name,
             description: suggestion.description,
             parent: parent
         }
 
-        const {data} = await api.post('/api/category', catdata, {
-            headers: {
-                Authorization: `Bearer ${credentials.token}`
+        repository.postCategory(categoryData, credentials.token)
+        .then(res => {
+            if (!parent) {
+                const category: Category = {
+                    id: res.data.category.id,
+                    name: res.data.category.name, 
+                    description: res.data.category.description,
+                    children: []
+                }
+                const newCategories = [...categoryadmin.categories || [], category]
+                categoryadmin.onCategoriesChange(newCategories)
             }
+            else
+                categoryadmin.categories
+                    ?.find(cat => cat.name === parent.name)?.children
+                    ?.push(res.data.category)
         })
-
-        const newcat: CategoryRaw = data.category
-        if (!parent) {
-            const newcategories = [...categoryadmin.categories!]
-            newcategories.push({
-                id: newcat.id, description: newcat.description, name: newcat.name, children: []
-            })
-            categoryadmin.onCategoriesChange(newcategories)
-        }
-        else {
-            const cat = categoryadmin.categories!.find(category =>
-                category.name === parent.name
-            )
-            cat?.children.push({
-                id: newcat.id, description: newcat.description, name: newcat.name,
-            })
-        }
-
-
-        await handleRemove(suggestion)
+        .catch(err => window.alert(err))
+        .finally(() => handleRemove(suggestion))
     }
 
-    const handleRemove = async(suggestion: Suggestion) => {
-        api.delete(`/api/suggestion/${suggestion.id}`)
-        const newsuggestions = [...suggestions]
-        const pos = newsuggestions.indexOf(suggestion)
-        newsuggestions.splice(pos, 1)
-        setSuggestions([...newsuggestions])
-    }
-
-    const renderbuttons = (suggestion: Suggestion) => {
-        if (suggestion.type === 'category')
-            return (
-                <Card.Footer>
-                    <div className="suggestion-left">
-                        <Button onClick={() => handleAccept(suggestion)}>
-                            Accept
-                        </Button>
-                    </div>
-                    <div className="suggestion-right">
-                        <Button onClick={() => handleRemove(suggestion)}>
-                            Decline
-                        </Button>
-                    </div>
-                </Card.Footer>
-            )
-    }
-
-    const rendertype = (suggestion: Suggestion) => {
-        if (suggestion.type === 'category')
-            return suggestion.parent ? `Subcategoria: ${suggestion.parent.name}` : 'Categoría principal'
-        else
-            return 'Mejora'
+    const handleRemove = (suggestion: Suggestion) => {
+        repository.deleteSuggestion(suggestion.id, credentials.token)
+        .then(() => {
+            const newsuggestions = [...suggestions]
+            const pos = newsuggestions.indexOf(suggestion)
+            newsuggestions.splice(pos, 1)
+            setSuggestions([...newsuggestions])
+        })  
     }
 
     const rendersuggestions = suggestions.map((suggestion) => {
-        return (
-            <Card key={suggestion.id}>
-                <Card.Header>
-                <div className="suggestion-left">
-                    {suggestion.name}
-                </div>
-                <div className="suggestion-right">
-                    {rendertype(suggestion)}
-                </div>
-                </Card.Header>
-                <Card.Body>
-                <div className="content">
-                    <div className="comment">
-                        <div className="content">
-                            <div className="text">{suggestion.description}</div>
-                        </div>
-                    </div>
-                </div>
-                </Card.Body>
-                {renderbuttons(suggestion)}
-            </Card>
-        )
+        return <SuggestionCard key={suggestion.id}
+                    suggestion={suggestion}
+                    handleAccept={handleAccept} 
+                    handleRemove={handleRemove}
+                />
     })
 
     return (

@@ -1,60 +1,92 @@
-import React, { FormEvent, useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Button, Form } from 'react-bootstrap'
 
 import '../ProfileTotal.css'
-import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
+import { useForm } from 'react-hook-form'
+import InputForm from '../../../components/form/input/InputForm'
+import InputTextArea from '../../../components/form/textarea/InputTextArea'
+import CategoryAdminContext from '../../../contexts/CategoryAdminContext'
+import { ProfileRepository } from '../repository/ProfileRepository'
+import { Category } from '../../../entities/Category'
 
 export interface CategoryCreateProps {
     visible: boolean,
     setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
     parent: string,
-    add: string,
-    postCategory: () => void
+    add: string
+}
+
+type CategoryCreateInput = {
+    name: string,
+    description: string
 }
 
 const CategoryCreate = (props: CategoryCreateProps) => {
 
-    const [name, setName] = useState<string>('')
-    const [description, setDescription] = useState<string>('')
-    const credentials = useContext(CredentialsContext)
+    const credentials = useContext(CredentialsContext);
+    const { register, handleSubmit, reset } = useForm<CategoryCreateInput>();
+    const categoryadmin = useContext(CategoryAdminContext);
+    const repository = new ProfileRepository();
 
-    if (!props.visible)
-        return ( <div style={{display: 'none'}}> </div> )
+    const handleCreate = () => {
+        props.setShowCreate(false)
+        reset({ name: '', description: '' })
+    }
 
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault()
+    const onSubmit = (data: CategoryCreateInput) => {
 
-        const catdata = {
-            name: name,
-            description: description,
+        const categoryData = {
+            name: data.name,
+            description: data.description,
             parent: props.add === 'category' ? null : {name: props.parent}
         }
 
-        api.post('/api/category', catdata, {
-            headers: {
-                Authorization: `Bearer ${credentials.token}`
+        repository.postCategory(categoryData, credentials.token)
+        .then(res => {
+            if (props.add === 'category') {
+                const category: Category = {
+                    id: res.data.category.id,
+                    name: res.data.category.name, 
+                    description: res.data.category.description,
+                    children: []
+                }
+                const newCategories = [...categoryadmin.categories || [], category]
+                categoryadmin.onCategoriesChange(newCategories)
             }
-        }).then(() => {
-            props.postCategory()
-            props.setShowCreate(false)
-            setName('')
-            setDescription('')
+            else
+                categoryadmin.categories
+                    ?.find(cat => cat.name === props.parent)?.children
+                    ?.push(res.data.category)
         })
+        .catch(err => window.alert(err))
+        .finally(() => handleCreate())
     }
+
+    if (!props.visible)
+    return ( <div style={{display: 'none'}}> </div> )
     
     return (
         <div className="category-form">
             <div className="create-form">
-                <Form onSubmit={(e) => handleSubmit(e)}>
-                    <Form.Group controlId="category-name">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter name" value={name} onChange={e => setName(e.target.value)}/>
-                    </Form.Group>
-                    <Form.Group controlId="description">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control as="textarea" rows={4} value={description} onChange={e => setDescription(e.target.value)}/>
-                    </Form.Group>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                    <InputForm 
+                        name={"category-name"}
+                        label={"Name"}
+                        value={""}
+                        type={"text"}
+                        required={true}
+                        input={'name'}
+                        register={register}
+                    />
+                    <InputTextArea 
+                        name={"category-description"}
+                        label={"Description"}
+                        row={4}
+                        value={""}
+                        input={'description'}
+                        register={register}
+                    />
 
                     <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
                         Submit

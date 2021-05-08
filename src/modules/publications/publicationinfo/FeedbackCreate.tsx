@@ -70,7 +70,6 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
                         label={"Description"}
                         row={4}
                         value={""}
-                        type={"text"}
                         input={'description'}
                         register={register}
                     />

@@ -29,7 +29,7 @@ type PublicationCreateInput = {
 
 const PublicationCreate = (props: PublicationCreateProps) => {
 
-    const [categories, setCategories] = useState<Category[]>()
+    const [categories, setCategories] = useState<Category[]>();
     const credentials = useContext(CredentialsContext);
     const { register, handleSubmit, watch } = useForm<PublicationCreateInput>();
     const category = watch('category');
@@ -150,7 +150,6 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                         label={"Description"}
                         row={4}
                         value={""}
-                        type={"text"}
                         input={'description'}
                         register={register}
                     />

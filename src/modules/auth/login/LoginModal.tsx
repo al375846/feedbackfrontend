@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react'
 import { createPortal } from "react-dom"
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
-import api from '../../../api/Api'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { AuthRepository } from '../repository/AuthRepository'
 import { useForm } from 'react-hook-form'

@@ -7,7 +7,6 @@ interface InputTextAreaProps {
     label: string;
     row: number
     value: string;
-    type: string;
     input: string;
     register: UseFormRegister<any>;
 }
@@ -18,7 +17,6 @@ const InputTextArea: FunctionComponent<InputTextAreaProps> = (
         label,
         row,
         value,
-        type,
         input,
         register
     }
@@ -31,7 +29,6 @@ const InputTextArea: FunctionComponent<InputTextAreaProps> = (
             <Form.Control
                 as="textarea"
                 rows={row}
-                type={type}
                 defaultValue={value}
                 {...register(input)}
                 required={true}

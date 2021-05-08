@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router'
@@ -22,7 +22,7 @@ type RegsiterInput = {
 
 const Register = () => {
 
-    const { register, handleSubmit, watch, reset } = useForm<RegsiterInput>();
+    const { register, handleSubmit, watch } = useForm<RegsiterInput>();
     const [ alert, setAlert ] = useState<boolean>(false)
     const repository = new AuthRepository();
     const history = useHistory();

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { createPortal } from "react-dom"
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
@@ -79,7 +79,6 @@ const IncidenceModal = (props: IncidenceModalProps) => {
                         label={"Description"}
                         row={4}
                         value={""}
-                        type={"text"}
                         input={'description'}
                         register={register}
                     />

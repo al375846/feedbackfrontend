@@ -31,11 +31,7 @@ const HistoryInfo = () => {
     }, [credentials.token, credentials.usertype, history])
 
     if (!history)
-        return (
-            <div>
-                <Spinner animation="border" />
-            </div> 
-        )
+        return <div><Spinner animation="border" /></div>
 
     const renderHistory = history.map((history, index) => {
         let contenido: string = ''
@@ -47,17 +43,17 @@ const HistoryInfo = () => {
         return (
             <div key={index}>
                 <Card>
-                <Card.Header>
-                    <div className="history-type">
-                        {history.type}
-                    </div>
-                    <div className="history-date">
-                        {(moment(history.date)).startOf('hour').fromNow()}
-                    </div>
-                </Card.Header>
-                <Card.Body>
-                <div dangerouslySetInnerHTML={{__html: contenido}}></div>
-                </Card.Body>
+                    <Card.Header>
+                        <div className="history-type">
+                            {history.type}
+                        </div>
+                        <div className="history-date">
+                            {(moment(history.date)).startOf('hour').fromNow()}
+                        </div>
+                    </Card.Header>
+                    <Card.Body>
+                        <div dangerouslySetInnerHTML={{__html: contenido}}></div>
+                    </Card.Body>
                 </Card>
             </div>
         )

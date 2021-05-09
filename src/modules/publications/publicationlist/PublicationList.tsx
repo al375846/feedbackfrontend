@@ -54,10 +54,8 @@ const PublicationList = () => {
     }
 
     const searchNext = () => {
-        console.log("Antes" + page)
         if (page !== Math.ceil((left + itemSize) / itemSize))
             setPage(page + 1)
-            console.log("Despues" + page)
     }
     const searchLast = () => {
         if (page !== Math.ceil((left + itemSize) / itemSize))
@@ -121,13 +119,11 @@ const PublicationList = () => {
         setPage(1)
     }, [selected, finalSearchTerm])
 
-    if (loading) {
-        return (
-            <div className="loading">
-                <Spinner animation="border"/>
-            </div>
-        )
-    }
+    if (!credentials.token)
+        return <div style={{textAlign: 'center'}}><h1>Please Login or register</h1></div>
+
+    if (loading)
+        return <div className="loading"><Spinner animation="border"/></div>
 
     const pubs = publications.map((publication) => {
         return (
@@ -138,7 +134,7 @@ const PublicationList = () => {
     })
 
     return (
-        <div>
+        <div className="parent-div">
             <div className="ui form">
                 <div className={`ui fluid icon input ${credentials.usertype === 'apprentice' ? 'posting' : ''}`}>
                     <input value={searchTerm} placeholder="Search publications" 

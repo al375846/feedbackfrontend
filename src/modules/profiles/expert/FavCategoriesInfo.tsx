@@ -3,35 +3,25 @@ import { Card, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { SubCategory, CategoryRaw } from '../../../entities/Category'
-import api from '../../../api/Api'
 import '../ProfileTotal.css'
+import { ProfileRepository } from '../repository/ProfileRepository'
 
 const FavCategoriesInfo = () => {
 
-    const credentials = useContext(CredentialsContext)
-    const [categories, setCategories] = useState<CategoryRaw[]>()
-    const [favcategories, setFavcategories] = useState<SubCategory[]>()
+    const credentials = useContext(CredentialsContext);
+    const [ categories, setCategories ] = useState<CategoryRaw[]>();
+    const [ favcategories, setFavcategories ] = useState<SubCategory[]>();
+    const repository = new ProfileRepository();
 
     useEffect(() => {
-        const searchCategories = async () => {
-            const {data} = await api.get('/api/category/raw', {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-
-            setCategories(data.categories)
-            
+        const searchCategories = () => {
+            repository.getCategoriesRaw(credentials.token)
+            .then(res => setCategories(res.data.categories))    
         }
 
-        const searchCategoriesExpert = async () => {
-            const {data} = await api.get('/api/expert/category', {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-
-            setFavcategories(data.favCategories)
+        const searchCategoriesExpert = () => {
+            repository.getCategoriesExpert(credentials.token)
+            .then(res => setFavcategories(res.data.favCategories))
         }
 
         if (credentials.token && !categories)
@@ -43,36 +33,29 @@ const FavCategoriesInfo = () => {
     }, [credentials.token, categories, favcategories])
 
     if (!categories || !favcategories)
-        return (
-            <div>
-                <Spinner animation="border" />
-            </div> 
-        )
+        return <div><Spinner animation="border" /></div> 
 
-    const postFavCategory = async(id: number) => {
-        const {data} = await api.post(`/api/expert/category/${id}`, {}, {
-            headers: {
-                Authorization: `Bearer ${credentials.token}`
-            }
+    const postFavCategory = (id: number) => {
+        repository.postCategoryFavourite(id, credentials.token)
+        .then(res => {
+            setFavcategories([...favcategories, res.data.favCategory])
+            const icon = document.getElementById(`star${id}`) as HTMLElement
+            icon.className = 'star icon'
         })
-        const sub: SubCategory = data.favCategory
-        setFavcategories([...favcategories, sub])
-        const icon = document.getElementById(`star${id}`) as HTMLElement
-        icon.className = 'star icon'
+        .catch(err => window.alert(err))
     }
 
-    const deleteFavCategory = async(id:number, category: SubCategory) => {
-        api.delete(`/api/expert/category/${id}`, {
-            headers: {
-                Authorization: `Bearer ${credentials.token}`
-            }
+    const deleteFavCategory = (id:number, category: SubCategory) => {
+        repository.deleteCategoryFavourite(id, credentials.token)
+        .then(() => {
+            const i = favcategories.indexOf(category)
+            const newfavs = [...favcategories]
+            newfavs.splice(i, 1)
+            setFavcategories(newfavs)
+            const icon = document.getElementById(`star${id}`) as HTMLElement
+            icon.className = 'star outline icon'
         })
-        const i = favcategories.indexOf(category)
-        const newfavs = [...favcategories]
-        newfavs.splice(i, 1)
-        setFavcategories(newfavs)
-        const icon = document.getElementById(`star${id}`) as HTMLElement
-        icon.className = 'star outline icon'
+        .catch(err => window.alert(err))  
     }
 
     const handleFav = (id: number) => {
@@ -97,14 +80,14 @@ const FavCategoriesInfo = () => {
         return (
             <div key={category.id}>
                 <Card>
-                <Card.Body>
-                <div className="category-fav">
-                    {category.name}
-                </div>
-                <div className="icon-fav">
-                    {renderFavIcon(category.id)}
-                </div>
-                </Card.Body>
+                    <Card.Body>
+                        <div className="category-fav">
+                            {category.name}
+                        </div>
+                        <div className="icon-fav">
+                            {renderFavIcon(category.id)}
+                        </div>
+                    </Card.Body>
                 </Card>
             </div>
         )

@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 
-import { Category, CategoryRaw } from "../../../entities/Category";
-import { CATEGORY, SUGGESTION, SUGGESTION_DELETE } from "./ProfileEndpoint";
+import { Category, CategoryRaw, SubCategory } from "../../../entities/Category";
+import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, SUGGESTION, SUGGESTION_DELETE } from "./ProfileEndpoint";
 import api from "../../../api/Api";
 import { Suggestion } from "../../../entities/Suggestion";
 
@@ -21,6 +21,18 @@ interface CategoryResponseData {
 
 interface SuggestionsResponseData {
     suggestions: Suggestion[]
+}
+
+interface CategoriesRawResponseData {
+    categories: CategoryRaw[]
+}
+
+interface CategoriesExpertResponseData {
+    favCategories: SubCategory[]
+}
+
+interface CategoriesFavouriteResponseData {
+    favCategory: SubCategory
 }
 
 export class ProfileRepository {
@@ -50,6 +62,38 @@ export class ProfileRepository {
 
     public async deleteSuggestion(id: number, token: string): Promise<AxiosResponse<void>> {
         return await api.delete<void>(SUGGESTION_DELETE.replace(':id', id.toString()), {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async getCategoriesRaw(token: string): Promise<AxiosResponse<CategoriesRawResponseData>> {
+        return await api.get<CategoriesRawResponseData>(CATEGORY_LIST_RAW, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async getCategoriesExpert(token: string): Promise<AxiosResponse<CategoriesExpertResponseData>> {
+        return await api.get<CategoriesExpertResponseData>(CATEGORY_LIST_EXPERT, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async postCategoryFavourite(id:number, token: string): Promise<AxiosResponse<CategoriesFavouriteResponseData>> {
+        return await api.post<CategoriesFavouriteResponseData>(CATEGORY_EXPERT.replace(':id', id.toString()), {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async deleteCategoryFavourite(id:number, token: string): Promise<AxiosResponse<void>> {
+        return await api.delete<void>(CATEGORY_EXPERT.replace(':id', id.toString()), {
             headers: {
                 Authorization: `Bearer ${token}`
             }

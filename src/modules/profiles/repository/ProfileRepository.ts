@@ -1,9 +1,10 @@
 import { AxiosResponse } from "axios";
 
 import { Category, CategoryRaw, SubCategory } from "../../../entities/Category";
-import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, SUGGESTION, SUGGESTION_DELETE } from "./ProfileEndpoint";
+import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, HISTORY, SUGGESTION, SUGGESTION_DELETE } from "./ProfileEndpoint";
 import api from "../../../api/Api";
 import { Suggestion } from "../../../entities/Suggestion";
+import { History } from "../../../entities/History";
 
 export interface CategoryPostParams {
     name: string,
@@ -33,6 +34,10 @@ interface CategoriesExpertResponseData {
 
 interface CategoriesFavouriteResponseData {
     favCategory: SubCategory
+}
+
+interface HistoryResponseData {
+    history: History[]
 }
 
 export class ProfileRepository {
@@ -94,6 +99,14 @@ export class ProfileRepository {
 
     public async deleteCategoryFavourite(id:number, token: string): Promise<AxiosResponse<void>> {
         return await api.delete<void>(CATEGORY_EXPERT.replace(':id', id.toString()), {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async getHistory(type: string, token: string): Promise<AxiosResponse<HistoryResponseData>> {
+        return await api.get<HistoryResponseData>(HISTORY.replace(':type', type), {
             headers: {
                 Authorization: `Bearer ${token}`
             }

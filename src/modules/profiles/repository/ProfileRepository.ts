@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 
 import { Category, CategoryRaw, SubCategory } from "../../../entities/Category";
-import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, CHECK_PASSWORD, HISTORY, SUGGESTION, SUGGESTION_DELETE, USER } from "./ProfileEndpoint";
+import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, CHANGE_PASSWORD, CHECK_PASSWORD, HISTORY, SUGGESTION, SUGGESTION_DELETE, USER } from "./ProfileEndpoint";
 import api from "../../../api/Api";
 import { Suggestion } from "../../../entities/Suggestion";
 import { History } from "../../../entities/History";
@@ -24,6 +24,11 @@ export interface CategoryPostParams {
 
 export interface CheckPasswordParams {
     password: string
+}
+
+export interface ChangePasswordParams {
+    oldPassword: string,
+    newPassword: string
 }
 
 interface CategoriesResponseData {
@@ -160,7 +165,15 @@ export class ProfileRepository {
     }
 
     public async checkPassword(passwordData: CheckPasswordParams, token: string): Promise<AxiosResponse<CheckPasswordResponseData>> {
-        return await api.post<CheckPasswordResponseData>(CHECK_PASSWORD, passwordData,{
+        return await api.post<CheckPasswordResponseData>(CHECK_PASSWORD, passwordData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async changePassword(changeData: ChangePasswordParams, token: string): Promise<AxiosResponse<void>> {
+        return await api.post<void>(CHANGE_PASSWORD, changeData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

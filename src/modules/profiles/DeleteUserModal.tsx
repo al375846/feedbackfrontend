@@ -86,7 +86,7 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
                 <Alert variant="danger" show={alert} dismissible={true}>
                     Incorrect Password
                 </Alert>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
                     Submit
                 </Button>
                 <Button variant="secondary" onClick={() => props.setShow(false)}>

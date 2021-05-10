@@ -34,12 +34,15 @@ const CategoriesInfo = () => {
         if (credentials.token && !categoryadmin.categories)
             searchCategories()
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [credentials.token, categoryadmin.categories])
 
     const handleCategory = (cat: Category) => setCategoryParent(cat.name)
 
     const handleCreate = (type: string) => {
-        type === 'category' ? setAdd('category') : setAdd('subcategory')
+        type === 'category' 
+            ? setAdd('category') 
+            : setAdd('subcategory')
         setShowCreate(true)
     }
 

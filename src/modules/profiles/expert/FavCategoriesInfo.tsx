@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Card, Spinner } from 'react-bootstrap'
+import FavouriteCategoryCard from '../../../components/cards/FavouriteCategoryCard'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { SubCategory, CategoryRaw } from '../../../entities/Category'
@@ -30,6 +31,7 @@ const FavCategoriesInfo = () => {
         if (credentials.token && !favcategories)
             searchCategoriesExpert()
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [credentials.token, categories, favcategories])
 
     if (!categories || !favcategories)
@@ -66,31 +68,12 @@ const FavCategoriesInfo = () => {
             deleteFavCategory(id, category)
     }
 
-    const renderFavIcon = (id: number) => {
-        const favIds = favcategories.map((fav) => {
-            return fav.id
-        })
-        if (favIds.indexOf(id) === -1)
-            return <i id={`star${id}`} onClick={() => handleFav(id)} className="star outline icon"></i>
-        else
-            return <i id={`star${id}`} onClick={() => handleFav(id)} className="star icon"></i>
-    }
-
     const renderCategories = categories.map((category) => {
-        return (
-            <div key={category.id}>
-                <Card>
-                    <Card.Body>
-                        <div className="category-fav">
-                            {category.name}
-                        </div>
-                        <div className="icon-fav">
-                            {renderFavIcon(category.id)}
-                        </div>
-                    </Card.Body>
-                </Card>
-            </div>
-        )
+        return <FavouriteCategoryCard
+                    key={category.id}
+                    category={category}
+                    favcategories={favcategories}
+                    handleFav={handleFav}/>
     })
 
     return (

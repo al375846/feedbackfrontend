@@ -14,14 +14,14 @@ type PublicationInfoParams = { id: string }
 
 const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) => {
 
-    const [publication, setPublication] = useState<Publication>()
+    const [ publication, setPublication ] = useState<Publication>()
     const credentials = useContext(CredentialsContext)
-    const [showCreate, setShowCreate] = useState<boolean>(false)
-    const [showIncidence, setShowIncidence] = useState<boolean>(false)
-    const [alert, setAlert] = useState<boolean>(false)
-    const [message, setMessage] = useState<string>('Feedback creado con exito')
+    const [ showCreate, setShowCreate ] = useState<boolean>(false)
+    const [ showIncidence, setShowIncidence ] = useState<boolean>(false)
+    const [ alert, setAlert ] = useState<boolean>(false)
+    const [ message, setMessage ] = useState<string>('Feedback creado con exito')
 
-    const [loading, setLoading] = useState<boolean>();
+    const [ loading, setLoading ] = useState<boolean>();
     const publicationRepository = new PublicationRepository();
 
     const showAlert = (message: string) => {
@@ -44,6 +44,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
         if (credentials.token && !publication)
             searchPublication()
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [publication, credentials.token, match.params.id])
 
     const renderPostFeedback = () => {
@@ -58,11 +59,7 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
     };
 
     if (loading || !publication) {
-        return (
-            <div className="loading">
-                <Spinner animation="border"/>
-            </div>
-        )
+        return <div className="loading"><Spinner animation="border"/></div>
     };
 
     return (

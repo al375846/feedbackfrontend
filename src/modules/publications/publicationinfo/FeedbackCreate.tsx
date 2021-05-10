@@ -27,9 +27,6 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
     const { register, handleSubmit } = useForm<FeedbackCreateInput>();
     const repository = new PublicationRepository();
 
-    if (!props.visible)
-        return <div style={{display: 'none'}}></div>
-
     const handlePost = (feedback: Feedback) => {
         props.postFeedback(feedback);
         props.setShowCreate(false);
@@ -59,6 +56,9 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
         .catch(err => window.alert(err))
         .finally(() => {handlePost(feedback)})
     }
+
+    if (!props.visible)
+    return <div style={{display: 'none'}}></div>
 
     return (
         <div className="feedback-form">

@@ -5,7 +5,7 @@ import { Feedback } from '../../../entities/Feedback'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import './PublicationInfoTotal.css'
 import FeedbackCreate from './FeedbackCreate'
-import FeedbackCard from './FeedbackCard'
+import FeedbackDetails from './FeedbackDetails'
 import { Publication } from '../../../entities/Publication'
 import { PublicationRepository } from '../repository/PublicationRepository'
 
@@ -18,8 +18,8 @@ export interface PublicationFeedbacksProps {
 
 const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
     
-    const [feedbacks, setFeedbacks] = useState<Feedback[]>();
-    const [loading, setLoading] = useState<boolean>(false);
+    const [ feedbacks, setFeedbacks ] = useState<Feedback[]>();
+    const [ loading, setLoading ] = useState<boolean>(false);
     const credentials = useContext(CredentialsContext);
 
     const repository = new PublicationRepository();
@@ -43,13 +43,14 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
         if (credentials.token && !feedbacks)
             searchFeedbacks()
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [feedbacks, credentials.token, props.publication.id])
 
     if (loading || !feedbacks)
         return <div><Spinner animation="border"/></div> 
 
     const renderfeedbacks = feedbacks.map((feedback) => {
-        return <FeedbackCard 
+        return <FeedbackDetails 
                     key={feedback.id} 
                     feedback={feedback} 
                     username={props.publication.apprentice.username}

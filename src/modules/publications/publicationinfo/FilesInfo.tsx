@@ -21,7 +21,6 @@ const mymes: { [extension: string]: string }  = {
 const FilesInfo = (props: FilesInfoProps) => {
 
     const credentials = useContext(CredentialsContext)
-    
     const repository = new PublicationRepository();
 
     pdfjs.GlobalWorkerOptions.workerSrc = 

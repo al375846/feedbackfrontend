@@ -33,8 +33,6 @@ const IncidenceModal = (props: IncidenceModalProps) => {
         props.setShow(false)
     }
 
-    if (!props.show) return null
-
     const onSubmit = (data: IncidenceInput) => {
 
         const incidenceData = {
@@ -60,6 +58,8 @@ const IncidenceModal = (props: IncidenceModalProps) => {
             value: "Es inapropiado",
         }
     ]
+
+    if (!props.show) return null
 
     const ModalDom = (
         <Modal show={props.show} onHide={() => props.setShow(false)} backdrop="static" keyboard={false}>

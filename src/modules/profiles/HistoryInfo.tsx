@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
-import { Card, Spinner } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 import {History} from '../../entities/History'
 import './ProfileTotal.css'
-import moment from 'moment'
 import { ProfileRepository } from './repository/ProfileRepository'
 import HistoryCard from '../../components/cards/HistoryCard'
 

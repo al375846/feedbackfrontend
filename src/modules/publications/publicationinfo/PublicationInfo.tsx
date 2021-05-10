@@ -8,7 +8,7 @@ import './PublicationInfoTotal.css'
 import PublicationFeedbacks from './PublicationFeedbacks'
 import IncidenceModal from './IncidenceModal'
 import {PublicationRepository} from "../repository/PublicationRepository";
-import PublicationDetails from './PublicationDetails'
+import PublicationDetails from '../../../components/cards/PublicationDetails'
 
 type PublicationInfoParams = { id: string }
 

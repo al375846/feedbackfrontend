@@ -1,21 +1,25 @@
 import moment from 'moment'
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { Badge } from 'react-bootstrap'
 
-import { Publication } from '../../../entities/Publication'
-import FilesInfo from './FilesInfo'
-import './PublicationInfoTotal.css'
+import { Publication } from '../../entities/Publication'
+import FilesInfo from '../../modules/publications/publicationinfo/FilesInfo'
 
 interface PublicationDetailsProps {
     publication: Publication,
     showModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PublicationDetails = (props: PublicationDetailsProps) => {
+const PublicationDetails: FunctionComponent<PublicationDetailsProps> = (
+    {
+        publication,
+        showModal
+    }
+) => {
 
-    const files = [...props.publication.images, ...props.publication.video, ...props.publication.document];
+    const files = [...publication.images, ...publication.video, ...publication.document];
 
-    const renderedTags = props.publication.tags.map(tag => {
+    const renderedTags = publication.tags.map(tag => {
         return (
             <span className="render-tags" key={tag}>
                 <Badge variant="secondary">{tag}</Badge>
@@ -26,16 +30,16 @@ const PublicationDetails = (props: PublicationDetailsProps) => {
     return (
         <>
         <div className="publication-report">
-                <i className="big exclamation circle icon" onClick={() => props.showModal(true)}></i>
+                <i className="big exclamation circle icon" onClick={() => showModal(true)}></i>
             </div>
             <div className="ui header">
-                <h1>{props.publication.title}</h1>
+                <h1>{publication.title}</h1>
             </div>
             <hr/>
             <div className="content">
                 <div className="comment">
                     <div className="content">
-                        <div className="text">{props.publication.description}</div>
+                        <div className="text">{publication.description}</div>
                     </div>
                 </div>
             </div>
@@ -54,12 +58,12 @@ const PublicationDetails = (props: PublicationDetailsProps) => {
                     <Badge variant="info">
                         <div>
                             <p style={{fontSize: '0.6em'}}>
-                                {moment(props.publication.date).format('D MMM YYYY HH:mm:ss')}
+                                {moment(publication.date).format('D MMM YYYY HH:mm:ss')}
                             </p>
                         </div>
                         <div>
                             <p style={{fontSize: '0.8em'}}>
-                                {props.publication.apprentice.username}
+                                {publication.apprentice.username}
                             </p>
                         </div>
                     </Badge>

@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Spinner } from 'react-bootstrap'
-import RankingCard from '../../components/cards/RankingCard'
+import React, { useContext, useEffect, useState } from 'react';
+import { Spinner } from 'react-bootstrap';
+import RankingCard from '../../components/cards/RankingCard';
 
-import CredentialsContext from '../../contexts/CredentialsContext'
-import { Ranking } from '../../entities/Ranking'
-import './RankingDetails.css'
-import { RankingRepository } from './repository/RankingRepository'
+import CredentialsContext from '../../contexts/CredentialsContext';
+import { Ranking } from '../../entities/Ranking';
+import './RankingDetails.css';
+import { RankingRepository } from './repository/RankingRepository';
 
 export interface RankingDetailsProps {
     type: string
-}
+};
 
 const RankingDetails = (props: RankingDetailsProps) => {
 
@@ -25,19 +25,19 @@ const RankingDetails = (props: RankingDetailsProps) => {
             .then(res => setRanking(res.data.ranking))
             .catch(err => window.alert(err))
             .finally(() => setLoading(false))
-        }
+        };
 
         if (credentials.token && !ranking)
-            searchRanking()
+            searchRanking();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ranking, credentials.token, props.type])
+    }, [ranking, credentials.token, props.type]);
 
     if ( loading || !ranking )
-        return <div><Spinner animation="border"/></div>
+        return <div><Spinner animation="border"/></div>;
 
-    const first = ranking.slice(0, 3)
-    const orderfirst = [first[1], first[0], first[2]]
-    const rest = ranking.slice(3)
+    const first = ranking.slice(0, 3);
+    const orderfirst = [first[1], first[0], first[2]];
+    const rest = ranking.slice(3);
 
     const renderfirst = orderfirst.map((rank, index) => {
         return <RankingCard 
@@ -47,7 +47,7 @@ const RankingDetails = (props: RankingDetailsProps) => {
                     type={props.type}
                     top={true}
                 />
-    })
+    });
 
     const renderrest = rest.map((rank, index) => {
         return <RankingCard 
@@ -57,7 +57,7 @@ const RankingDetails = (props: RankingDetailsProps) => {
                     type={props.type}
                     top={false}
                 />
-    })
+    });
 
     return (
         <div>
@@ -69,7 +69,7 @@ const RankingDetails = (props: RankingDetailsProps) => {
             </div>
         </div>
         
-    )
+    );
 }
 
 export default RankingDetails

@@ -1,31 +1,31 @@
-import React, { useContext, useState } from 'react'
-import { createPortal } from "react-dom"
-import { Alert, Button, Form, Modal } from 'react-bootstrap'
+import React, { useContext, useState } from 'react';
+import { createPortal } from "react-dom";
+import { Alert, Button, Form, Modal } from 'react-bootstrap';
 
-import CredentialsContext from '../../../contexts/CredentialsContext'
-import { AuthRepository } from '../repository/AuthRepository'
-import { useForm } from 'react-hook-form'
-import InputForm from '../../../components/form/input/InputForm'
+import CredentialsContext from '../../../contexts/CredentialsContext';
+import { AuthRepository } from '../repository/AuthRepository';
+import { useForm } from 'react-hook-form';
+import InputForm from '../../../components/form/input/InputForm';
 
 export interface IncidenceModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>
-}
+};
 
 type LoginInput = {
     username: string,
     password: string
-}
+};
 
 const LoginModal = (props: IncidenceModalProps) => {
 
     const { register, handleSubmit, reset } = useForm<LoginInput>();
-    const [alert, setAlert] = useState<boolean>(false)
-    const credentials = useContext(CredentialsContext)
+    const [ alert, setAlert ] = useState<boolean>(false);
+    const credentials = useContext(CredentialsContext);
 
     const repository = new AuthRepository();
 
-    const onSubmit = async (data: LoginInput) => {
+    const onSubmit = (data: LoginInput) => {
         
         repository.login(data.username, data.password)
         .then(res => {

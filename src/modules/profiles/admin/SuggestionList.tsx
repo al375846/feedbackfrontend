@@ -6,7 +6,7 @@ import { Suggestion } from '../../../entities/Suggestion'
 import CategoryAdminContext from '../../../contexts/CategoryAdminContext'
 import { Category } from '../../../entities/Category'
 import { ProfileRepository } from '../repository/ProfileRepository'
-import SuggestionCard from './SuggestionCard'
+import SuggestionCard from '../../../components/cards/SuggestionCard'
 
 const SuggestionList = () => {
 
@@ -28,7 +28,8 @@ const SuggestionList = () => {
 
         if (credentials.token && !suggestions)
             searchSuggestions()
-
+            
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [credentials.token, suggestions])
 
     if ( loading || !suggestions )
@@ -74,11 +75,11 @@ const SuggestionList = () => {
     }
 
     const rendersuggestions = suggestions.map((suggestion) => {
-        return <SuggestionCard key={suggestion.id}
+        return <SuggestionCard 
+                    key={suggestion.id}
                     suggestion={suggestion}
                     handleAccept={handleAccept} 
-                    handleRemove={handleRemove}
-                />
+                    handleRemove={handleRemove}/>
     })
 
     return (

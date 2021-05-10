@@ -126,11 +126,9 @@ const PublicationList = () => {
         return <div className="loading"><Spinner animation="border"/></div>
 
     const pubs = publications.map((publication) => {
-        return (
-            <div key={publication.id}>
-                <PublicationCard publication={publication} />
-            </div>
-        )
+        return <PublicationCard 
+                    key={publication.id}
+                    publication={publication} />
     })
 
     return (

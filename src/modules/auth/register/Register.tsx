@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { Alert, Button, Col, Form, Row } from 'react-bootstrap'
-import { useForm } from 'react-hook-form'
-import { useHistory } from 'react-router'
-import InputForm from '../../../components/form/input/InputForm'
-import InputRadio from '../../../components/form/radio/InputRadio'
-import { AuthRepository } from '../repository/AuthRepository'
+import React, { useState } from 'react';
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router';
 
-import './Register.css'
+import InputForm from '../../../components/form/input/InputForm';
+import InputRadio from '../../../components/form/radio/InputRadio';
+import { AuthRepository } from '../repository/AuthRepository';
+import './Register.css';
 
 type RegsiterInput = {
     username: string,
@@ -18,12 +18,12 @@ type RegsiterInput = {
     address: string,
     phone: string,
     type: string  
-}
+};
 
 const Register = () => {
 
     const { register, handleSubmit, watch } = useForm<RegsiterInput>();
-    const [ alert, setAlert ] = useState<boolean>(false)
+    const [ alert, setAlert ] = useState<boolean>(false);
     const repository = new AuthRepository();
     const history = useHistory();
     const password = watch('password');
@@ -40,16 +40,16 @@ const Register = () => {
             label: "Experto",
             value: "expert"
         }
-    ]
+    ];
 
     const showAlert = () => {
         setAlert(true)
         setTimeout(() => {
             setAlert(false)
         }, 3000)
-    }
+    };
 
-    const navigateToHome = () => history.push('/')
+    const navigateToHome = () => history.push('/');
 
     const onSubmit = (data: RegsiterInput) => {
 
@@ -61,7 +61,7 @@ const Register = () => {
             lastname: data.lastname,
             address: data.address,
             phone: data.phone
-        }
+        };
 
         repository.checkUsername(data.username)
         .then(res => {
@@ -73,9 +73,9 @@ const Register = () => {
             else
                 showAlert()
         })
-        .catch(err => window.alert(err))
+        .catch(err => window.alert(err));
         
-    }
+    };
     
     return(
         <div>
@@ -200,7 +200,7 @@ const Register = () => {
             </Form>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Register

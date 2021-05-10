@@ -1,7 +1,7 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import { Button, Card } from "react-bootstrap"
 
-import { Suggestion } from "../../../entities/Suggestion"
+import { Suggestion } from "../../entities/Suggestion"
 
 interface SuggestionCardProps {
     suggestion: Suggestion,
@@ -9,19 +9,25 @@ interface SuggestionCardProps {
     handleRemove: (suggestion: Suggestion) => void
 }
 
-const SuggestionCard = (props: SuggestionCardProps) => {
+const SuggestionCard: FunctionComponent<SuggestionCardProps> = (
+    {
+        suggestion,
+        handleAccept,
+        handleRemove
+    }
+) => {
 
-    const renderbuttons = (suggestion: Suggestion) => {
+    const renderbuttons = () => {
         if (suggestion.type === 'category')
             return (
                 <Card.Footer>
                     <div className="suggestion-left">
-                        <Button onClick={() => props.handleAccept(suggestion)}>
+                        <Button onClick={() => handleAccept(suggestion)}>
                             Accept
                         </Button>
                     </div>
                     <div className="suggestion-right">
-                        <Button onClick={() => props.handleRemove(suggestion)}>
+                        <Button onClick={() => handleRemove(suggestion)}>
                             Decline
                         </Button>
                     </div>
@@ -29,9 +35,11 @@ const SuggestionCard = (props: SuggestionCardProps) => {
             )
     }
 
-    const rendertype = (suggestion: Suggestion) => {
+    const rendertype = () => {
         if (suggestion.type === 'category')
-            return suggestion.parent ? `Subcategoria: ${suggestion.parent.name}` : 'Categoría principal'
+            return suggestion.parent 
+                ? suggestion.parent.name
+                : 'Categoría principal'
         else
             return 'Mejora'
     }
@@ -40,22 +48,22 @@ const SuggestionCard = (props: SuggestionCardProps) => {
         <Card>
             <Card.Header>
             <div className="suggestion-left">
-                {props.suggestion.name}
+                {suggestion.name}
             </div>
             <div className="suggestion-right">
-                {rendertype(props.suggestion)}
+                {rendertype()}
             </div>
             </Card.Header>
             <Card.Body>
                 <div className="content">
                     <div className="comment">
                         <div className="content">
-                            <div className="text">{props.suggestion.description}</div>
+                            <div className="text">{suggestion.description}</div>
                         </div>
                     </div>
                 </div>
             </Card.Body>
-            {renderbuttons(props.suggestion)}
+            {renderbuttons()}
         </Card>
     )
 

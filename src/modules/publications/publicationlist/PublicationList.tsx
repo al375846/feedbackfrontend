@@ -3,7 +3,7 @@ import { useHistory } from 'react-router'
 import { Button, Pagination, Spinner } from 'react-bootstrap'
 
 import { Publication } from '../../../entities/Publication'
-import PublicationCard from './PublicationCard'
+import PublicationCard from '../../../components/cards/PublicationCard'
 import './PublicationTotal.css'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import PublicationCreate from './PublicationCreate'

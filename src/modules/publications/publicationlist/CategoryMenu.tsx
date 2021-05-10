@@ -13,7 +13,7 @@ export interface CategoryMenuProps {
 
 const CategoryMenu = (props: CategoryMenuProps) => {
 
-    const [categories, setCategories] = useState<CategoryRaw[]>([])
+    const [categories, setCategories] = useState<CategoryRaw[]>()
     const credentials = useContext(CredentialsContext)
     const divCategory = useRef<HTMLDivElement>(null)
     const repository = new PublicationRepository();
@@ -53,29 +53,21 @@ const CategoryMenu = (props: CategoryMenuProps) => {
 
         if (credentials.token)
             searchCategories()
+        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [credentials.token, credentials.usertype])
 
     useEffect(() => {
-        divCategory.current!.addEventListener('wheel', wheelListener)
+        const refValue = divCategory.current
 
-        return () => divCategory.current?.removeEventListener('wheel', wheelListener)
+        refValue!.addEventListener('wheel', wheelListener)
+
+        return () => refValue?.removeEventListener('wheel', wheelListener)
       }, [])
 
     const setVariant = (id: number): string => {
         return id === props.selected ? 'primary' : 'light'
     }
-
-    const renderCategories = categories.map((category) => {
-        return (
-            <div className="category" key={category.id}>
-                <h4>
-                <Badge variant={setVariant(category.id)} onClick={() => props.setSelected(category.id)}>
-                    {category.name}
-                </Badge>
-                </h4>
-            </div>
-        )
-    })
 
     const scrollLeft = () => {
         let actual = divCategory.current!.scrollLeft
@@ -86,6 +78,18 @@ const CategoryMenu = (props: CategoryMenuProps) => {
         let actual = divCategory.current!.scrollLeft
         divCategory.current?.scrollTo({left: actual + 200})
     }
+
+    const renderCategories = categories?.map((category) => {
+        return (
+            <div className="category" key={category.id}>
+                <h4>
+                <Badge variant={setVariant(category.id)} onClick={() => props.setSelected(category.id)}>
+                    {category.name}
+                </Badge>
+                </h4>
+            </div>
+        )
+    })
 
     return (
         <div className="horizontal-menu">

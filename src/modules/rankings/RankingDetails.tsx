@@ -3,8 +3,8 @@ import { Card, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Ranking } from '../../entities/Ranking'
-import api from '../../api/Api'
 import './RankingDetails.css'
+import { RankingRepository } from './repository/RankingRepository'
 
 export interface RankingDetailsProps {
     type: string
@@ -21,17 +21,18 @@ const rankinginfo: { [type: string]: string }  = {
 
 const RankingDetails = (props: RankingDetailsProps) => {
 
-    const [ranking, setRanking] = useState<Ranking[]>()
-    const credentials = useContext(CredentialsContext)
+    const [ ranking, setRanking ] = useState<Ranking[]>();
+    const credentials = useContext(CredentialsContext);
+    const repository = new RankingRepository();
+    const [ loading, setLoading ] = useState<boolean>(false);
 
     useEffect(() => {
-        const searchRanking = async () => {
-            const {data} = await api.get(`/api/ranking/${props.type}`, {
-                headers: {
-                    Authorization: `Bearer ${credentials.token}`
-                }
-            })
-            setRanking(data.ranking)
+        const searchRanking = () => {
+            setLoading(true)
+            repository.getRanking(props.type, credentials.token)
+            .then(res => setRanking(res.data.ranking))
+            .catch(err => window.alert(err))
+            .finally(() => setLoading(false))
         }
 
         if (credentials.token && !ranking)
@@ -39,12 +40,8 @@ const RankingDetails = (props: RankingDetailsProps) => {
 
     }, [ranking, credentials.token, props.type])
 
-    if (!ranking)
-        return (
-            <div>
-                <Spinner animation="border" />
-            </div> 
-        )
+    if ( loading || !ranking )
+        return <div><Spinner animation="border"/></div>
 
     const first = ranking.slice(0, 3)
     const orderfirst = [first[1], first[0], first[2]]

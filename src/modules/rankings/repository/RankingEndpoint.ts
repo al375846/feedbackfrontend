@@ -1,0 +1,1 @@
+export const RANKING: string = "/api/ranking/:type";

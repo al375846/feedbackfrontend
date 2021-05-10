@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 
 import { Category, CategoryRaw, SubCategory } from "../../../entities/Category";
-import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, CHANGE_PASSWORD, CHECK_PASSWORD, HISTORY, SUGGESTION, SUGGESTION_DELETE, USER } from "./ProfileEndpoint";
+import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, CHANGE_PASSWORD, CHECK_PASSWORD, HISTORY, SUGGESTION, SUGGESTION_DELETE, USER } from "./ProfileEndpoint";
 import api from "../../../api/Api";
 import { Suggestion } from "../../../entities/Suggestion";
 import { History } from "../../../entities/History";

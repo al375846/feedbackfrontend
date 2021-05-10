@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Card, Spinner } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
+import RankingCard from '../../components/cards/RankingCard'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Ranking } from '../../entities/Ranking'
@@ -8,15 +9,6 @@ import { RankingRepository } from './repository/RankingRepository'
 
 export interface RankingDetailsProps {
     type: string
-}
-
-const rankinginfo: { [type: string]: string }  = {
-    ratedexperts: 'Rate: ',
-    activeexperts: 'Feedbacks given: ',
-    activecategories: 'Publications: ',
-    1: 'gold-medal.png',
-    0: 'silver-medal.png',
-    2: 'bronze-medal.png'
 }
 
 const RankingDetails = (props: RankingDetailsProps) => {
@@ -37,7 +29,7 @@ const RankingDetails = (props: RankingDetailsProps) => {
 
         if (credentials.token && !ranking)
             searchRanking()
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ranking, credentials.token, props.type])
 
     if ( loading || !ranking )
@@ -48,34 +40,23 @@ const RankingDetails = (props: RankingDetailsProps) => {
     const rest = ranking.slice(3)
 
     const renderfirst = orderfirst.map((rank, index) => {
-        return (
-            <div className="top-ranking" key={rank.id}>
-            <Card>
-                <Card.Img variant="top" src={`/images/${rankinginfo[index.toString()]}`} />
-                <Card.Body>
-                    <Card.Title>{rank.name}</Card.Title>
-                    <Card.Text>
-                    {rankinginfo[props.type.replace('/', '')] + rank.rate}
-                    </Card.Text>
-                </Card.Body>
-            </Card>
-            </div>
-        )
+        return <RankingCard 
+                    key={index}
+                    rank={rank}
+                    index={index}
+                    type={props.type}
+                    top={true}
+                />
     })
 
     const renderrest = rest.map((rank, index) => {
-        return (
-            <div key={rank.id}>
-            <Card>
-                <Card.Body>
-                    <Card.Title>{(index + 4) + '. ' + rank.name}</Card.Title>
-                    <Card.Text>
-                    {rankinginfo[props.type.replace('/', '')] + rank.rate}
-                    </Card.Text>
-                </Card.Body>
-            </Card>
-            </div>
-        )
+        return <RankingCard 
+                    key={index}
+                    rank={rank}
+                    index={index}
+                    type={props.type}
+                    top={false}
+                />
     })
 
     return (

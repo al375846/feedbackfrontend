@@ -1,11 +1,20 @@
 import { AxiosResponse } from "axios";
 
 import { Category, CategoryRaw, SubCategory } from "../../../entities/Category";
-import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, HISTORY, SUGGESTION, SUGGESTION_DELETE } from "./ProfileEndpoint";
+import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, HISTORY, SUGGESTION, SUGGESTION_DELETE, USER } from "./ProfileEndpoint";
 import api from "../../../api/Api";
 import { Suggestion } from "../../../entities/Suggestion";
 import { History } from "../../../entities/History";
+import { User } from "../../../entities/User";
 
+export interface UserParams {
+    username: string,
+    email: string,
+    name: string,
+    lastname: string,
+    address: string,
+    phone: string
+}
 export interface CategoryPostParams {
     name: string,
     description: string,
@@ -38,6 +47,10 @@ interface CategoriesFavouriteResponseData {
 
 interface HistoryResponseData {
     history: History[]
+}
+
+interface UserResponseData {
+    user: User
 }
 
 export class ProfileRepository {
@@ -107,6 +120,22 @@ export class ProfileRepository {
 
     public async getHistory(type: string, token: string): Promise<AxiosResponse<HistoryResponseData>> {
         return await api.get<HistoryResponseData>(HISTORY.replace(':type', type), {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async getUser(token: string): Promise<AxiosResponse<UserResponseData>> {
+        return await api.get<UserResponseData>(USER, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async putUser(userData: UserParams, token: string): Promise<AxiosResponse<UserResponseData>> {
+        return await api.put<UserResponseData>(USER, userData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

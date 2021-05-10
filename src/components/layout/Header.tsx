@@ -9,12 +9,12 @@ import { AuthRepository } from '../../modules/auth/repository/AuthRepository'
 const Header = () => {
 
     const credentials = useContext(CredentialsContext);
-    const [show, setShow] = useState<boolean>(false);
+    const [ show, setShow ] = useState<boolean>(false);
     const repository = new AuthRepository();
 
     const history = useHistory();
 
-    const onHandleLogout = async () => {
+    const onHandleLogout = () => {
 
         const logData = {
             onesignal: localStorage.getItem('onesignal')!

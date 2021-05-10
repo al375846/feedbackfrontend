@@ -6,3 +6,4 @@ export const CATEGORY_LIST_EXPERT: string = "/api/expert/category";
 export const CATEGORY_EXPERT: string = "/api/expert/category/:id";
 export const HISTORY: string = "/api/:type/history";
 export const USER: string = "/api/user";
+export const CHECK_PASSWORD: string = "/api/user/check_password";

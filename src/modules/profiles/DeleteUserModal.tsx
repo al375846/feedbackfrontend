@@ -1,46 +1,70 @@
 import React, { useContext, useState } from 'react'
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Alert, Button, Form, Modal } from 'react-bootstrap'
 import { createPortal } from 'react-dom'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
-import api from '../../api/Api'
+import { ProfileRepository } from './repository/ProfileRepository'
+import { useHistory } from 'react-router'
+import { useForm } from 'react-hook-form'
+import InputForm from '../../components/form/input/InputForm'
 
 export interface DeleteUserModalProps {
     show: boolean,
     setShow: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+type PasswordInput = {
+    password: string
+}
+
+
 const DeleteUserModal = (props: DeleteUserModalProps) => {
 
-    const [password, setPassword] = useState<string>('')
-    const credentials = useContext(CredentialsContext)
+    const { register, handleSubmit, reset } = useForm<PasswordInput>();
+    const credentials = useContext(CredentialsContext);
+    const repository = new ProfileRepository();
+    const history = useHistory();
+    const [ alert, setAlert ] = useState<boolean>(false);
 
     if (!props.show) return null
 
-    const onHandleLogout = async () => {
-        /*doLogout()*/
+    const showAlert = () => {
+        setAlert(true)
+        setTimeout(() => {
+            setAlert(false)
+        }, 3000)
+    }
+
+    const handleRemove = () => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        localStorage.removeItem('usertype')
+        localStorage.removeItem('onesignal')
         credentials.onTokenChange('')
         credentials.onUsertypeChange('')
         credentials.onUsernameChange('')
+        history.push('/')
+        props.setShow(false)
     }
 
-    const handleSubmit = async() => {
+    const onSubmit = (data: PasswordInput) => {
 
-        await api.delete(`/api/user/${password}`, {
-            headers: {
-                Authorization: `Bearer ${credentials.token}`
+        const passwordData = {
+            password: data.password
+        }
+
+        repository.checkPassword(passwordData, credentials.token)
+        .then(res => {
+            if (res.data.correct)
+                repository.deleteUser(credentials.token)
+                .then(() => handleRemove())
+                .catch(err => window.alert(err))
+            else {
+                showAlert()
+                reset({password: ''})
             }
         })
-
-        await onHandleLogout()
-
-        props.setShow(false)
-        setPassword('')
-
-        const link = document.createElement('a')
-        link.href = '/'
-        document.body.appendChild(link)
-        link.click()
+        .catch(err => window.alert(err))
     }
 
     const ModalDom = (
@@ -49,21 +73,27 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
             <Modal.Title>Para comfirmar el borrado de su cuenta indique su contraseña</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <Form>
-                <Form.Group controlId="delete-password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)}/>
-                </Form.Group>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <InputForm 
+                    name={"delete-password"}
+                    label={"Password"}
+                    value={""}
+                    type={"password"}
+                    required={true}
+                    input={'password'}
+                    register={register}
+                />
+                <Alert variant="danger" show={alert} dismissible={true}>
+                    Incorrect Password
+                </Alert>
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+                <Button variant="secondary" onClick={() => props.setShow(false)}>
+                    Close
+                </Button>
             </Form>
             </Modal.Body>
-            <Modal.Footer>
-            <Button variant="primary" onClick={() => handleSubmit()}>
-                Submit
-            </Button>
-            <Button variant="secondary" onClick={() => props.setShow(false)}>
-                Close
-            </Button>
-            </Modal.Footer>
         </Modal>
     )
     return createPortal(ModalDom, document.getElementById('modal') as HTMLElement)

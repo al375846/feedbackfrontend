@@ -1,9 +1,8 @@
-import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { User } from '../../entities/User'
-import api from '../../api/Api'
 import './ProfileTotal.css'
 import SuggestionCreate from './SuggestionCreate'
 import DeleteUserModal from './DeleteUserModal'

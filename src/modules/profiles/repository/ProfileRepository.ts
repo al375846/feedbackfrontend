@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 
 import { Category, CategoryRaw, SubCategory } from "../../../entities/Category";
-import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, HISTORY, SUGGESTION, SUGGESTION_DELETE, USER } from "./ProfileEndpoint";
+import { CATEGORY, CATEGORY_EXPERT, CATEGORY_LIST_EXPERT, CATEGORY_LIST_RAW, CHECK_PASSWORD, HISTORY, SUGGESTION, SUGGESTION_DELETE, USER } from "./ProfileEndpoint";
 import api from "../../../api/Api";
 import { Suggestion } from "../../../entities/Suggestion";
 import { History } from "../../../entities/History";
@@ -15,10 +15,15 @@ export interface UserParams {
     address: string,
     phone: string
 }
+
 export interface CategoryPostParams {
     name: string,
     description: string,
     parent: null | { name: string }
+}
+
+export interface CheckPasswordParams {
+    password: string
 }
 
 interface CategoriesResponseData {
@@ -51,6 +56,10 @@ interface HistoryResponseData {
 
 interface UserResponseData {
     user: User
+}
+
+interface CheckPasswordResponseData {
+    correct: boolean
 }
 
 export class ProfileRepository {
@@ -136,6 +145,22 @@ export class ProfileRepository {
 
     public async putUser(userData: UserParams, token: string): Promise<AxiosResponse<UserResponseData>> {
         return await api.put<UserResponseData>(USER, userData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async deleteUser(token: string): Promise<AxiosResponse<void>> {
+        return await api.delete<void>(USER, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public async checkPassword(passwordData: CheckPasswordParams, token: string): Promise<AxiosResponse<CheckPasswordResponseData>> {
+        return await api.post<CheckPasswordResponseData>(CHECK_PASSWORD, passwordData,{
             headers: {
                 Authorization: `Bearer ${token}`
             }

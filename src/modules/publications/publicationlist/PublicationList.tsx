@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router'
-import { Button, Pagination, Spinner } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 
 import { Publication } from '../../../entities/Publication'
 import PublicationCard from '../../../components/cards/PublicationCard'
@@ -9,6 +9,7 @@ import CredentialsContext from '../../../contexts/CredentialsContext'
 import PublicationCreate from './PublicationCreate'
 import CategoryMenu from './CategoryMenu'
 import { PublicationRepository, PublicationResponseData } from '../repository/PublicationRepository'
+import PaginationContainer from '../../../components/pagination/PaginationContainer'
 
 const PublicationList = () => {
 
@@ -53,24 +54,6 @@ const PublicationList = () => {
             )
     }
 
-    const searchNext = () => {
-        if (page !== Math.ceil((left + itemSize) / itemSize))
-            setPage(page + 1)
-    }
-    const searchLast = () => {
-        if (page !== Math.ceil((left + itemSize) / itemSize))
-            setPage(Math.ceil((left + itemSize) / itemSize))
-    }
-
-    const searchPrev = () => {
-        if (page !== 1)
-            setPage(page - 1)
-    }
-    const searchFirst = () => {
-        if (page !== 1)
-            setPage(1)
-    }
-
     useEffect(() => {
         const time = setTimeout( () => {
             setFinalSearchTerm(searchTerm)
@@ -112,7 +95,8 @@ const PublicationList = () => {
         if (credentials.token)
             searchPublications()
 
-    }, [finalSearchTerm, credentials.token, selected, page])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finalSearchTerm, credentials.token, selected, page, cursor])
 
     useEffect(() => {
         setCursor(-1)
@@ -145,14 +129,12 @@ const PublicationList = () => {
             <div className="publication-list">
                 {pubs}
             </div>
-            <div className="paginator">
-                <Pagination>
-                <Pagination.First onClick={searchFirst}/>
-                <Pagination.Prev onClick={searchPrev}/>
-                {/*pagination*/}
-                <Pagination.Next onClick={searchNext}/>
-                <Pagination.Last  onClick={searchLast}/>
-                </Pagination>
+            <div className="pagination">
+                <PaginationContainer 
+                setPage={setPage}
+                page={page}
+                totalPages={Math.ceil((left+itemSize) / itemSize)}
+                />
             </div>
             <PublicationCreate visible={showCreate} setShowCreate={setShowCreate} postPublication={postPublication}/>
         </div>

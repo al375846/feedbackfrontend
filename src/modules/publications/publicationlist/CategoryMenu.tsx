@@ -63,7 +63,7 @@ const CategoryMenu = (props: CategoryMenuProps) => {
         refValue!.addEventListener('wheel', wheelListener)
 
         return () => refValue?.removeEventListener('wheel', wheelListener)
-      }, [])
+    }, [])
 
     const setVariant = (id: number): string => {
         return id === props.selected ? 'primary' : 'light'

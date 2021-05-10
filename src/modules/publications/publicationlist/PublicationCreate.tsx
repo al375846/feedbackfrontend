@@ -29,7 +29,7 @@ type PublicationCreateInput = {
 
 const PublicationCreate = (props: PublicationCreateProps) => {
 
-    const [categories, setCategories] = useState<Category[]>();
+    const [ categories, setCategories ] = useState<Category[]>();
     const credentials = useContext(CredentialsContext);
     const { register, handleSubmit, watch } = useForm<PublicationCreateInput>();
     const category = watch('category');
@@ -52,6 +52,7 @@ const PublicationCreate = (props: PublicationCreateProps) => {
         if (credentials.token && !categories)
             searchCategories()
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categories, credentials.token])
 
     if (!props.visible)

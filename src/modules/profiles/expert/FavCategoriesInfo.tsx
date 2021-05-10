@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Card, Spinner } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 import FavouriteCategoryCard from '../../../components/cards/FavouriteCategoryCard'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'

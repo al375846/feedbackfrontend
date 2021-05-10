@@ -1,9 +1,8 @@
-import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Alert, Button, Form, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Category } from '../../entities/Category'
-import api from '../../api/Api'
 import { useForm } from 'react-hook-form'
 import InputForm from '../../components/form/input/InputForm'
 import InputTextArea from '../../components/form/textarea/InputTextArea'
@@ -24,10 +23,10 @@ const SuggestionCreate = () => {
     const { register, handleSubmit, reset, watch } = useForm<SuggestionCreateInput>();
     const category = watch('category');
     const type = watch('type');
-    const [categories, setCategories] = useState<Category[]>();
-    const [alert, setAlert] = useState<boolean>(false);
-    const [variant, setVariant] = useState<string>('');
-    const [message, setMessage] = useState<string>('');
+    const [ categories, setCategories ] = useState<Category[]>();
+    const [ alert, setAlert ] = useState<boolean>(false);
+    const [ variant, setVariant ] = useState<string>('');
+    const [ message, setMessage ] = useState<string>('');
     const repository = new ProfileRepository();
 
     const radioValues = [
@@ -53,6 +52,7 @@ const SuggestionCreate = () => {
         if (credentials.token && !categories)
             searchCategories()
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categories, credentials.token])
 
     const getCategories = () => {

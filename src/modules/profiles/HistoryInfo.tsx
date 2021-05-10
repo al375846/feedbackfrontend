@@ -6,6 +6,7 @@ import {History} from '../../entities/History'
 import './ProfileTotal.css'
 import moment from 'moment'
 import { ProfileRepository } from './repository/ProfileRepository'
+import HistoryCard from '../../components/cards/HistoryCard'
 
 const HistoryInfo = () => {
 
@@ -27,33 +28,16 @@ const HistoryInfo = () => {
         if (credentials.token && !history)
             searchHistory()
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [credentials.token, credentials.usertype, history])
 
     if (loading || !history)
         return <div><Spinner animation="border" /></div>
 
     const renderHistory = history.map((history, index) => {
-        const contenido = history.content.charAt(0) === '*'
-        ? history.content.replace('*', '<i>').replace('*', '</i>')
-        : history.content.replace('*', '<i>').slice(0, history.content.length + 1)
-            
-        return (
-            <div key={index}>
-                <Card>
-                    <Card.Header>
-                        <div className="history-type">
-                            {history.type}
-                        </div>
-                        <div className="history-date">
-                            {(moment(history.date)).startOf('hour').fromNow()}
-                        </div>
-                    </Card.Header>
-                    <Card.Body>
-                        <div dangerouslySetInnerHTML={{__html: contenido}}></div>
-                    </Card.Body>
-                </Card>
-            </div>
-        )
+        return <HistoryCard 
+                key={index}
+                history={history}/>
     })
 
     return (

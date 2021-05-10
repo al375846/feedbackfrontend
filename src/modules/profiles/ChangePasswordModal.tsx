@@ -27,8 +27,6 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
     const confirmpassword = watch('confirmPassword');
     const repository = new ProfileRepository();
 
-    if (!props.show) return null
-
     const showAlert = () => {
         setAlert(true)
         setTimeout(() => {
@@ -43,9 +41,12 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
         }
 
         repository.changePassword(changeData, credentials.token)
+        .then(() => reset({oldPassword:'', newPassword:'', confirmPassword:''}))
         .catch(() => showAlert())
         
     }
+
+    if (!props.show) return null
 
     const ModalDom = (
         <Modal show={props.show} onHide={() => props.setShow(false)} backdrop="static" keyboard={false}>

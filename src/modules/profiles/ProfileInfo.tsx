@@ -22,16 +22,10 @@ type UserParams = {
 const ProfileInfo = () => {
 
     const credentials = useContext(CredentialsContext);
-    const [user, setUser] = useState<User>();
-    const [edit, setEdit] = useState<boolean>(false);
-    const [name, setName] = useState<string>('')
-    const [lastname, setLastname] = useState<string>('')
-    const [username, setUsername] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [address, setAddress] = useState<string>('')
-    const [phone, setPhone] = useState<string>('')
-    const [deletemodal, setDeletemodal] = useState<boolean>(false);
-    const [passwordmodal, setPasswordmodal] = useState<boolean>(false);
+    const [ user, setUser ] = useState<User>();
+    const [ edit, setEdit ] = useState<boolean>(false);
+    const [ deletemodal, setDeletemodal ] = useState<boolean>(false);
+    const [ passwordmodal, setPasswordmodal ] = useState<boolean>(false);
     const repository = new ProfileRepository();
     const [ loading, setLoading ] = useState<boolean>(false);
     const { register, handleSubmit } = useForm<UserParams>();
@@ -48,10 +42,8 @@ const ProfileInfo = () => {
         if (credentials.token && !user)
             searchUser()
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [credentials.token, user])
-
-    if ( loading || !user )
-        return <div><Spinner animation="border"/></div> 
 
     const onSubmit = (data: UserParams) => {
        
@@ -69,6 +61,9 @@ const ProfileInfo = () => {
         .catch(err => window.alert(err))
             
     }
+
+    if ( loading || !user )
+        return <div><Spinner animation="border"/></div> 
 
     return (
         <div>

@@ -26,8 +26,6 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
     const history = useHistory();
     const [ alert, setAlert ] = useState<boolean>(false);
 
-    if (!props.show) return null
-
     const showAlert = () => {
         setAlert(true)
         setTimeout(() => {
@@ -66,6 +64,8 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
         })
         .catch(err => window.alert(err))
     }
+
+    if (!props.show) return null
 
     const ModalDom = (
         <Modal show={props.show} onHide={() => props.setShow(false)} backdrop="static" keyboard={false}>

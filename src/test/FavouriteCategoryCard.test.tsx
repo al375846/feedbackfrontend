@@ -71,7 +71,7 @@ it("HandleFav is called when icon click", () => {
       render(card, container);
     });
 
-    const icon = document.getElementById('star1')!
+    const icon = document.getElementById('star1') as HTMLElement
 
     act(() => {
       icon.dispatchEvent(new MouseEvent("click", { bubbles: true }));

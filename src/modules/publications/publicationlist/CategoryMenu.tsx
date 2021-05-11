@@ -27,7 +27,7 @@ const expert = {
 
 const CategoryMenu = (props: CategoryMenuProps) => {
 
-    const [categories, setCategories] = useState<CategoryRaw[]>([badgeAll])
+    const [ categories, setCategories ] = useState<CategoryRaw[]>([badgeAll])
     const credentials = useContext(CredentialsContext)
     const divCategory = useRef<HTMLDivElement>(null)
     const repository = new PublicationRepository();

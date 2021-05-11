@@ -18,7 +18,7 @@ afterEach(() => {
 
 it("Categories div is loading", () => {
 
-    const menu = <CategoryMenu setSelected={() => {}} selected={1}/>
+    const menu = <CategoryMenu onSelectedChange={() => {}} selected={1}/>
 
     act(() => {
       render(menu, container);
@@ -35,4 +35,23 @@ it("Categories div is loading", () => {
 
     const scrollLeft = document.getElementById('scroll-left') as HTMLDivElement;
     expect(scrollLeft).toBeDefined();
+});
+
+it("Change the category of category menu", () => {
+
+    const onSelectedChange = jest.fn();
+
+    const menu = <CategoryMenu onSelectedChange={onSelectedChange} selected={1}/>
+
+    act(() => {
+      render(menu, container);
+    });
+
+    const catAll = document.getElementById('cat-2') as HTMLElement
+
+    act(() => {
+        catAll.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(onSelectedChange).toHaveBeenCalledTimes(1);
 });

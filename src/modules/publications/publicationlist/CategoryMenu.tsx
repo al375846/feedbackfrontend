@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useRef, useState } from 'react'
 import { Badge } from 'react-bootstrap'
 
 import { CategoryRaw } from '../../../entities/Category'
@@ -7,7 +7,7 @@ import './PublicationTotal.css'
 import { PublicationRepository } from '../repository/PublicationRepository'
 
 export interface CategoryMenuProps {
-    setSelected: React.Dispatch<React.SetStateAction<number>>
+    onSelectedChange: (selected: number) => void
     selected: number
 }
 
@@ -25,7 +25,12 @@ const expert = {
     parent: null
 }
 
-const CategoryMenu = (props: CategoryMenuProps) => {
+const CategoryMenu: FunctionComponent<CategoryMenuProps> = (
+    {
+        selected,
+        onSelectedChange
+    }
+) => {
 
     const [ categories, setCategories ] = useState<CategoryRaw[]>([badgeAll])
     const credentials = useContext(CredentialsContext)
@@ -69,7 +74,7 @@ const CategoryMenu = (props: CategoryMenuProps) => {
     }, [])
 
     const setVariant = (id: number): string => {
-        return id === props.selected ? 'primary' : 'light'
+        return id === selected ? 'primary' : 'light'
     }
 
     const scrollLeft = () => {
@@ -86,7 +91,7 @@ const CategoryMenu = (props: CategoryMenuProps) => {
         return (
             <div className="category" key={category.id} id={'cat'+category.id}>
                 <h4>
-                <Badge variant={setVariant(category.id)} onClick={() => props.setSelected(category.id)}>
+                <Badge variant={setVariant(category.id)} onClick={() => onSelectedChange(category.id)}>
                     {category.name}
                 </Badge>
                 </h4>

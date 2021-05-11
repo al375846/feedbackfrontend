@@ -1,45 +1,28 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 import { Publication } from '../../../entities/Publication'
-import PublicationCard from '../../../components/cards/PublicationCard'
 import './PublicationTotal.css'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import PublicationCreate from './PublicationCreate'
 import CategoryMenu from './CategoryMenu'
-import { PublicationRepository, PublicationResponseData } from '../repository/PublicationRepository'
-import PaginationContainer from '../../../components/pagination/PaginationContainer'
+import PublicationListDetails from './PublicationListDetails'
 
 const PublicationList = () => {
 
-    const [publications, setPublications] = useState<Array<Publication>>([])
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [finalSearchTerm, setFinalSearchTerm] = useState<string>('')
-    const [cursor, setCursor] = useState<number>(-1)
     const [showCreate, setShowCreate] = useState<boolean>(false)
     const [selected, setSelected] = useState(-2)
-    const [itemSize, setItemsize] = useState<number>(0)
-    const [page, setPage] = useState<number>(1)
-    const [left, setLeft] = useState<number>(0)
-    
-    const [loading, setLoading] = useState<boolean>();
-    const publicationRepository = new PublicationRepository();
 
     const history = useHistory();
 
     const credentials = useContext(CredentialsContext)
 
-    const handleSearch = (data: PublicationResponseData) => {
-        setPublications(data.publications)
-        if (cursor === -1) {
-            setItemsize(data.itemSize)
-            setLeft(data.leftSize)
-            setCursor(data.publications[0].id + 1) 
-        }
-    }
-
     const navigateToPublication = (id: number) => history.push(`/publication/${id}`)
+
+    const onSelectedChange = (selected: number) => setSelected(selected)
 
     const postPublication = (publication: Publication) => navigateToPublication(publication.id)
 
@@ -64,56 +47,8 @@ const PublicationList = () => {
         }
     }, [searchTerm])
 
-    useEffect(() => {
-
-        const searchPublications = () => {
-
-            const getParams =  {
-                cursor: cursor,
-                page: page,
-                filter: finalSearchTerm
-            }
-
-            setLoading(true);
-            if (selected === -1)
-                publicationRepository.findAllByExpert(getParams, credentials.token)
-                .then((res) => handleSearch(res.data))
-                .catch((err) => window.alert(err))
-                .finally(() => setLoading(false));
-            else if (selected >= 0)
-                publicationRepository.findAllByCategory(selected, getParams, credentials.token)
-                .then((res) => handleSearch(res.data))
-                .catch((err) => window.alert(err))
-                .finally(() => setLoading(false));
-            else
-                publicationRepository.findAll(getParams, credentials.token)
-                .then((res) => handleSearch(res.data))
-                .catch((err) => window.alert(err))
-                .finally(() => setLoading(false));            
-        }
-
-        if (credentials.token)
-            searchPublications()
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [finalSearchTerm, credentials.token, selected, page, cursor])
-
-    useEffect(() => {
-        setCursor(-1)
-        setPage(1)
-    }, [selected, finalSearchTerm])
-
     if (!credentials.token)
-        return <div style={{textAlign: 'center'}}><h1>Please Login or register</h1></div>
-
-    if (loading)
-        return <div className="loading"><Spinner animation="border"/></div>
-
-    const pubs = publications.map((publication) => {
-        return <PublicationCard 
-                    key={publication.id}
-                    publication={publication} />
-    })
+        return <div style={{textAlign: 'center'}}><h1>Please Login or register</h1></div> 
 
     return (
         <div className="parent-div">
@@ -125,17 +60,14 @@ const PublicationList = () => {
                 </div>
                 {renderPost()}
             </div>
-            <CategoryMenu setSelected={setSelected} selected={selected}/>
-            <div className="publication-list">
-                {pubs}
-            </div>
-            <div className="pagination">
-                <PaginationContainer 
-                setPage={setPage}
-                page={page}
-                totalPages={Math.ceil((left+itemSize) / itemSize)}
-                />
-            </div>
+            <CategoryMenu 
+                onSelectedChange={onSelectedChange}
+                selected={selected}/>
+
+            <PublicationListDetails 
+                finalSearchTerm={finalSearchTerm}
+                selected={selected}/>
+           
             <PublicationCreate visible={showCreate} setShowCreate={setShowCreate} postPublication={postPublication}/>
         </div>
     )

@@ -11,9 +11,23 @@ export interface CategoryMenuProps {
     selected: number
 }
 
+const badgeAll = {
+    id: -2,
+    name: 'Todas',
+    description:'',
+    parent: null
+}
+
+const expert = {
+    id: -1,
+    name: 'Favoritas',
+    description:'',
+    parent: null
+}
+
 const CategoryMenu = (props: CategoryMenuProps) => {
 
-    const [categories, setCategories] = useState<CategoryRaw[]>()
+    const [categories, setCategories] = useState<CategoryRaw[]>([badgeAll])
     const credentials = useContext(CredentialsContext)
     const divCategory = useRef<HTMLDivElement>(null)
     const repository = new PublicationRepository();
@@ -29,23 +43,12 @@ const CategoryMenu = (props: CategoryMenuProps) => {
         const searchCategories = () => {
             repository.getCategoriesRaw(credentials.token)
             .then(res => {
-                res.data.categories.push({
-                    id: -2,
-                    name: 'Todas',
-                    description:'',
-                    parent: null
-                })
+                let newCategories
                 if (credentials.usertype === 'expert')
-                    res.data.categories.push({
-                        id: -1,
-                        name: 'Favoritas',
-                        description:'',
-                        parent: null
-                    })
-                res.data.categories.sort((a, b) => {
-                    return a.id < b.id ? -1 : 1
-                })
-                setCategories(res.data.categories)
+                    newCategories = [badgeAll, expert, ...res.data.categories]
+                else
+                    newCategories = [badgeAll, ...res.data.categories]
+                setCategories(newCategories)
             })
             .catch(err => window.alert(err))
             .finally(() => {})
@@ -81,7 +84,7 @@ const CategoryMenu = (props: CategoryMenuProps) => {
 
     const renderCategories = categories?.map((category) => {
         return (
-            <div className="category" key={category.id}>
+            <div className="category" key={category.id} id={'cat'+category.id}>
                 <h4>
                 <Badge variant={setVariant(category.id)} onClick={() => props.setSelected(category.id)}>
                     {category.name}
@@ -93,15 +96,15 @@ const CategoryMenu = (props: CategoryMenuProps) => {
 
     return (
         <div className="horizontal-menu">
-            <div className="arrow-prev" onClick={scrollLeft}>
+            <div className="arrow-prev" onClick={scrollLeft} id="scroll-left">
                 <h4>
                     <Badge variant="secondary">
                     <i className="angle left icon"></i>
                     </Badge>
                 </h4>
             </div>
-            <div className="categories" ref={divCategory}>{renderCategories}</div>
-            <div className="arrow-next" onClick={scrollRight}>
+            <div className="categories" ref={divCategory} id="categories-scroll">{renderCategories}</div>
+            <div className="arrow-next" onClick={scrollRight} id="scroll-right">
                 <h4>
                     <Badge variant="secondary">
                     <i className="angle right icon"></i>

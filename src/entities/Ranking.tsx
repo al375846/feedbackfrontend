@@ -1,5 +1,5 @@
 export interface Ranking {
-    id: 0,
+    id: number,
     rate: string,
     name: string
 }

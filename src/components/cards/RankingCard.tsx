@@ -33,6 +33,7 @@ const RankingCard: FunctionComponent<RankingCardProps> = (
             ? <Card.Img 
                     variant="top" 
                     src={`/images/${rankinginfo[index.toString()]}`} 
+                    id={'img' + rank.id.toString()}
                 />
             : null
 
@@ -45,7 +46,7 @@ const RankingCard: FunctionComponent<RankingCardProps> = (
     }
 
     return(
-        <Card className={top ? "top-ranking" : ''}>
+        <Card className={top ? "top-ranking" : ''} id={'rank' + rank.id.toString()}>
             {renderTop()}
             <Card.Body>
                 <Card.Title>{renderTitle()}</Card.Title>

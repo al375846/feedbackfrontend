@@ -8,7 +8,7 @@ import { AuthRepository } from '../repository/AuthRepository';
 import LoginModal from './LoginModal'
 
 interface LoginButtonProps {
-
+    
 }
 
 const LoginButton: FunctionComponent<LoginButtonProps> = () => {
@@ -16,7 +16,6 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
     const credentials = useContext(CredentialsContext);
     const [ show, setShow ] = useState<boolean>(false)
     const repository = new AuthRepository();
-
     const history = useHistory();
 
     const navigateToHome = () => history.push('/');
@@ -51,6 +50,7 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
                 <Button variant="primary" onClick={() => setShow(true)}>
                     Log in
                 </Button>
+
                 <LoginModal show={show} onShowChange={onShowChange}/>
             </div>
         )
@@ -61,6 +61,7 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
                     <i className="user icon"></i>
                     {credentials.username}
                 </Link>
+
                 <Button variant="secondary" onClick={() => onHandleLogout()}>
                     Log out
                 </Button>

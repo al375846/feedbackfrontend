@@ -6,6 +6,7 @@ import CredentialsContext from '../../../contexts/CredentialsContext';
 import { AuthRepository } from '../repository/AuthRepository';
 import { useForm } from 'react-hook-form';
 import InputForm from '../../../components/form/input/InputForm';
+import './Login.css'
 
 export interface IncidenceModalProps {
     show: boolean,
@@ -27,7 +28,6 @@ const LoginModal: FunctionComponent<IncidenceModalProps> = (
     const { register, handleSubmit, reset } = useForm<LoginInput>();
     const [ alert, setAlert ] = useState<boolean>(false);
     const credentials = useContext(CredentialsContext);
-
     const repository = new AuthRepository();
 
     const onSubmit = (data: LoginInput) => {
@@ -57,10 +57,7 @@ const LoginModal: FunctionComponent<IncidenceModalProps> = (
                 }
                 repository.onesignal(logdata, localStorage.getItem('token')!)
             })
-            reset({
-                username: '',
-                password: ''
-            })
+            reset({ username: '', password: ''})
         })
     }
 
@@ -100,20 +97,29 @@ const LoginModal: FunctionComponent<IncidenceModalProps> = (
                         register={register}
                     />
 
-                    <Alert variant="danger" show={alert} onClose={() => setAlert(false)} dismissible={true}>
+                    <Alert variant="danger" show={alert} 
+                        onClose={() => setAlert(false)} 
+                        dismissible={true}>
                         Usuario o contraseña incorrectos
                     </Alert>
-                    ¿Aun no esta registrado? Hagalo <a href="/register" className="item" onClick={() => onShowChange(false)}>aqui</a>
-                    <Button variant="secondary" onClick={() => onShowChange(false)}>
+
+                    Not registered? Do it 
+                    <a href="/register" className="item" 
+                        onClick={() => onShowChange(false)}> here</a>
+
+                    <Button variant="secondary" 
+                        onClick={() => onShowChange(false)} className="close-button">
                         Close
                     </Button>
-                    <Button variant="primary" type="submit">
+                    
+                    <Button variant="primary" type="submit" className="login-button">
                         Login
                     </Button>
                 </Form>
             </Modal.Body>
         </Modal>
     )
+
     return createPortal(ModalDom, document.getElementById('modal') as HTMLElement)
 }
 

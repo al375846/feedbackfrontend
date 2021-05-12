@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, FunctionComponent } from 'react'
 import { useHistory } from 'react-router'
 
 import { Publication } from '../../../entities/Publication'
@@ -9,7 +9,11 @@ import CategoryMenu from './CategoryMenu'
 import PublicationListDetails from './PublicationListDetails'
 import SearchBar from '../../../components/search/SearchBar'
 
-const PublicationList = () => {
+interface PublicationListProps {
+
+}
+
+const PublicationList: FunctionComponent<PublicationListProps> = () => {
 
     const [ finalSearchTerm, setFinalSearchTerm ] = useState<string>('')
     const [ showCreate, setShowCreate ] = useState<boolean>(false)
@@ -32,7 +36,6 @@ const PublicationList = () => {
 
     return (
         <div className="parent-div">
-            
             <SearchBar 
                 handleSearchTerm={handleSearchTerm}
                 handleShow={handleShow}
@@ -46,7 +49,10 @@ const PublicationList = () => {
                 finalSearchTerm={finalSearchTerm}
                 selected={selected}/>
            
-            <PublicationCreate visible={showCreate} handleShow={handleShow} postPublication={postPublication}/>
+            <PublicationCreate 
+                visible={showCreate}
+                handleShow={handleShow}
+                postPublication={postPublication}/>
         </div>
     )
 }

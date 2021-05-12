@@ -33,6 +33,15 @@ const PaginationContainer: FunctionComponent<PaginationProps> = (
             setPage(1)
     }
 
+    if (totalPages === 1)
+        return (
+            <Pagination>
+                <Pagination.Prev />
+                <Pagination.Item active={true}>{1}</Pagination.Item>
+                <Pagination.Next />
+            </Pagination>
+        )
+
     return (
         <Pagination>
             <Pagination.Prev onClick={searchPrev}/>

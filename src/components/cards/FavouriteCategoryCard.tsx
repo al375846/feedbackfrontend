@@ -22,9 +22,11 @@ const FavouriteCategoryCard: FunctionComponent<FavouriteCategoryCardProps> = (
             return fav.id
         })
         if (favIds.indexOf(id) === -1)
-            return <i id={`star${id}`} onClick={() => handleFav(id)} className="star outline icon"></i>
+            return <i id={`star${id}`} 
+                onClick={() => handleFav(id)} className="star outline icon"></i>
         else
-            return <i id={`star${id}`} onClick={() => handleFav(id)} className="star icon"></i>
+            return <i id={`star${id}`} 
+                onClick={() => handleFav(id)} className="star icon"></i>
     }
 
     return(

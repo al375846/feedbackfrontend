@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import FavouriteCategoryCard from '../../../components/cards/FavouriteCategoryCard'
 
@@ -7,7 +7,11 @@ import { SubCategory, CategoryRaw } from '../../../entities/Category'
 import '../ProfileTotal.css'
 import { ProfileRepository } from '../repository/ProfileRepository'
 
-const FavCategoriesInfo = () => {
+interface FavCategoriesInfoProps {
+
+}
+
+const FavCategoriesInfo: FunctionComponent<FavCategoriesInfoProps> = () => {
 
     const credentials = useContext(CredentialsContext);
     const [ categories, setCategories ] = useState<CategoryRaw[]>();
@@ -35,7 +39,7 @@ const FavCategoriesInfo = () => {
     }, [credentials.token, categories, favcategories])
 
     if (!categories || !favcategories)
-        return <div><Spinner animation="border" /></div> 
+        return <div><Spinner animation="border"/></div> 
 
     const postFavCategory = (id: number) => {
         repository.postCategoryFavourite(id, credentials.token)

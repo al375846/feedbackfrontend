@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { FunctionComponent, useContext } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
+
 import FavCategoriesInfo from './FavCategoriesInfo'
 import HistoryInfo from '../HistoryInfo'
 import ProfileInfo from '../ProfileInfo'
+import CredentialsContext from '../../../contexts/CredentialsContext'
 
-const ExpertProfile = () => {
+interface ExpertProfileProps {
+
+}
+
+const ExpertProfile: FunctionComponent<ExpertProfileProps> = () => {
+
+    const credentials = useContext(CredentialsContext);
+
+    if (!credentials.token)
+        return ( 
+            <div style={{textAlign: 'center'}}>
+                <h1>
+                    Please Login or Register
+                </h1>
+            </div> 
+        )
 
     return (
         <div>

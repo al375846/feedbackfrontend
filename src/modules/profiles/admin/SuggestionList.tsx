@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
@@ -8,13 +8,17 @@ import { Category } from '../../../entities/Category'
 import { ProfileRepository } from '../repository/ProfileRepository'
 import SuggestionCard from '../../../components/cards/SuggestionCard'
 
-const SuggestionList = () => {
+interface SuggestionListProps {
+
+}
+
+const SuggestionList: FunctionComponent<SuggestionListProps> = () => {
 
     const credentials = useContext(CredentialsContext);
     const categoryadmin = useContext(CategoryAdminContext);
     const [ suggestions, setSuggestions ] = useState<Suggestion[]>();
     const repository = new ProfileRepository();
-    const [ loading, setLoading ] = useState<boolean>(false)
+    const [ loading, setLoading ] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -33,7 +37,7 @@ const SuggestionList = () => {
     }, [credentials.token, suggestions])
 
     if ( loading || !suggestions )
-        return <div className="loading"><Spinner animation="border" /></div> 
+        return <div className="loading"><Spinner animation="border"/></div> 
 
     const handleAccept = (suggestion: Suggestion) => {
         const parent = suggestion.parent ? {name: suggestion.parent.name} : null

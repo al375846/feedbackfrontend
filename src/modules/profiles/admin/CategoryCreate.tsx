@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { FunctionComponent, useContext } from 'react'
 import { Button, Form } from 'react-bootstrap'
 
 import '../ProfileTotal.css'
@@ -12,7 +12,7 @@ import { Category } from '../../../entities/Category'
 
 export interface CategoryCreateProps {
     visible: boolean,
-    setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
+    onShowChange: (show: boolean) => void,
     parent: string,
     add: string
 }
@@ -22,7 +22,14 @@ type CategoryCreateInput = {
     description: string
 }
 
-const CategoryCreate = (props: CategoryCreateProps) => {
+const CategoryCreate: FunctionComponent<CategoryCreateProps> = (
+    {
+        visible,
+        onShowChange,
+        parent,
+        add
+    }
+) => {
 
     const credentials = useContext(CredentialsContext);
     const { register, handleSubmit, reset } = useForm<CategoryCreateInput>();
@@ -30,7 +37,7 @@ const CategoryCreate = (props: CategoryCreateProps) => {
     const repository = new ProfileRepository();
 
     const handleCreate = () => {
-        props.setShowCreate(false)
+        onShowChange(false)
         reset({ name: '', description: '' })
     }
 
@@ -39,12 +46,12 @@ const CategoryCreate = (props: CategoryCreateProps) => {
         const categoryData = {
             name: data.name,
             description: data.description,
-            parent: props.add === 'category' ? null : {name: props.parent}
+            parent: add === 'category' ? null : {name: parent}
         }
 
         repository.postCategory(categoryData, credentials.token)
         .then(res => {
-            if (props.add === 'category') {
+            if (add === 'category') {
                 const category: Category = {
                     id: res.data.category.id,
                     name: res.data.category.name, 
@@ -56,15 +63,15 @@ const CategoryCreate = (props: CategoryCreateProps) => {
             }
             else
                 categoryadmin.categories
-                    ?.find(cat => cat.name === props.parent)?.children
+                    ?.find(cat => cat.name === parent)?.children
                     ?.push(res.data.category)
         })
         .catch(err => window.alert(err))
         .finally(() => handleCreate())
     }
 
-    if (!props.visible)
-    return ( <div style={{display: 'none'}}> </div> )
+    if (!visible)
+        return null
     
     return (
         <div className="category-form">
@@ -77,21 +84,21 @@ const CategoryCreate = (props: CategoryCreateProps) => {
                         type={"text"}
                         required={true}
                         input={'name'}
-                        register={register}
-                    />
+                        register={register}/>
+
                     <InputTextArea 
                         name={"category-description"}
                         label={"Description"}
                         row={4}
                         value={""}
                         input={'description'}
-                        register={register}
-                    />
+                        register={register}/>
 
-                    <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
+                    <Button variant="primary" type="submit" className="submit-category">
                         Submit
                     </Button>
-                    <Button variant="primary" type="button" onClick={() => props.setShowCreate(false)}>
+                    <Button variant="primary" type="button" 
+                        onClick={() => onShowChange(false)}>
                         Cancel
                     </Button>
                 </Form>

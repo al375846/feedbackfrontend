@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { Category } from '../../../entities/Category'
@@ -8,7 +8,11 @@ import CategoryCreate from './CategoryCreate'
 import CategoryAdminContext from '../../../contexts/CategoryAdminContext'
 import { ProfileRepository } from '../repository/ProfileRepository'
 
-const CategoriesInfo = () => {
+interface CategoriesInfoProps {
+
+}
+
+const CategoriesInfo: FunctionComponent<CategoriesInfoProps> = () => {
 
     const categoryadmin = useContext(CategoryAdminContext);
     const [ categoryparent, setCategoryParent ] = useState<string>('');
@@ -45,6 +49,8 @@ const CategoriesInfo = () => {
             : setAdd('subcategory')
         setShowCreate(true)
     }
+
+    const onShowChange = (show: boolean) => setShowCreate(show)
 
     if (loading || !categoryadmin.categories)
         return <div className="loading"><Spinner animation="border" /></div> 
@@ -98,7 +104,7 @@ const CategoriesInfo = () => {
             <CategoryCreate 
                 parent={categoryparent} 
                 visible={showCreate} 
-                setShowCreate={setShowCreate} 
+                onShowChange={onShowChange} 
                 add={add}
             />
         </div>

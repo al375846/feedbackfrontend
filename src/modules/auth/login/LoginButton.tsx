@@ -19,6 +19,10 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
 
     const history = useHistory();
 
+    const navigateToHome = () => history.push('/');
+
+    const onShowChange = (show: boolean) => setShow(show);
+
     const onHandleLogout = () => {
 
         const logData = {
@@ -37,7 +41,7 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
             credentials.onTokenChange('')
             credentials.onUsertypeChange('')
             credentials.onUsernameChange('')
-            history.push('/')
+            navigateToHome()
         })
     }
 
@@ -45,20 +49,20 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
         return (
             <div className="item">
                 <Button variant="primary" onClick={() => setShow(true)}>
-                Log in
+                    Log in
                 </Button>
-                <LoginModal show={show} setShow={setShow}/>
+                <LoginModal show={show} onShowChange={onShowChange}/>
             </div>
         )
     else 
         return (
             <div className="item">
                 <Link to={`/profile/${credentials.usertype}`} className="item">
-                <i className="user icon"></i>
-                {credentials.username}
+                    <i className="user icon"></i>
+                    {credentials.username}
                 </Link>
                 <Button variant="secondary" onClick={() => onHandleLogout()}>
-                Log out
+                    Log out
                 </Button>
             </div>  
         )

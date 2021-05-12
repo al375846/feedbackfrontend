@@ -9,7 +9,7 @@ import InputForm from '../../../components/form/input/InputForm';
 
 export interface IncidenceModalProps {
     show: boolean,
-    setShow: React.Dispatch<React.SetStateAction<boolean>>
+    onShowChange: (show: boolean) => void
 };
 
 type LoginInput = {
@@ -20,7 +20,7 @@ type LoginInput = {
 const LoginModal: FunctionComponent<IncidenceModalProps> = (
     {
         show,
-        setShow
+        onShowChange
     }
 ) => {
 
@@ -42,7 +42,7 @@ const LoginModal: FunctionComponent<IncidenceModalProps> = (
             .then(res => {
                 localStorage.setItem('usertype', res.data.usertype)
                 credentials.onUsertypeChange(res.data.usertype)
-                setShow(false)
+                onShowChange(false)
             })
             .catch(err => window.alert(err))
         })
@@ -74,7 +74,7 @@ const LoginModal: FunctionComponent<IncidenceModalProps> = (
     if (!show) return null
 
     const ModalDom = (
-        <Modal show={show} onHide={() => setShow(false)}>
+        <Modal show={show} onHide={() => onShowChange(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>Login</Modal.Title>
             </Modal.Header>
@@ -103,8 +103,8 @@ const LoginModal: FunctionComponent<IncidenceModalProps> = (
                     <Alert variant="danger" show={alert} onClose={() => setAlert(false)} dismissible={true}>
                         Usuario o contraseña incorrectos
                     </Alert>
-                    ¿Aun no esta registrado? Hagalo <a href="/register" className="item" onClick={() => setShow(false)}>aqui</a>
-                    <Button variant="secondary" onClick={() => setShow(false)}>
+                    ¿Aun no esta registrado? Hagalo <a href="/register" className="item" onClick={() => onShowChange(false)}>aqui</a>
+                    <Button variant="secondary" onClick={() => onShowChange(false)}>
                         Close
                     </Button>
                     <Button variant="primary" type="submit">

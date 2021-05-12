@@ -61,6 +61,15 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             )
     };
 
+    if (!credentials.token)
+        return (
+            <div style={{textAlign: 'center'}}>
+                <h1>
+                    Please Login or Register
+                </h1>
+            </div> 
+        )
+
     if (loading || !publication)
         return <div className="loading"><Spinner animation="border"/></div>
 

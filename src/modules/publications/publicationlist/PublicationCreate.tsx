@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, FunctionComponent } from 'react'
 import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 import { useForm } from "react-hook-form";
 
@@ -14,7 +14,7 @@ import InputTextArea from '../../../components/form/textarea/InputTextArea';
 
 export interface PublicationCreateProps {
     visible: boolean,
-    setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
+    handleShow: (show: boolean) => void,
     postPublication: (publication: Publication) => void
 }
 
@@ -27,7 +27,13 @@ type PublicationCreateInput = {
     files: FileList
 }
 
-const PublicationCreate = (props: PublicationCreateProps) => {
+const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
+    {
+        visible,
+        handleShow,
+        postPublication
+    }
+) => {
 
     const [ categories, setCategories ] = useState<Category[]>();
     const credentials = useContext(CredentialsContext);
@@ -37,11 +43,13 @@ const PublicationCreate = (props: PublicationCreateProps) => {
     const repository = new PublicationRepository();
 
     const handlePost = (publication: Publication) => {
-        props.setShowCreate(false);
-        props.postPublication(publication);
+        handleShow(false);
+        console.log(publication)
+        postPublication(publication);
     }
 
     useEffect(() => {
+
         const searchCategories = () => {
             repository.getCategories(credentials.token)
             .then(res => setCategories(res.data.categories))
@@ -55,8 +63,7 @@ const PublicationCreate = (props: PublicationCreateProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categories, credentials.token])
 
-    if (!props.visible)
-        return <div style={{display: 'none'}}></div>
+    if (!visible) return null
 
     if (!categories)
         return <div className="loading"><Spinner animation="border"/></div>
@@ -72,6 +79,14 @@ const PublicationCreate = (props: PublicationCreateProps) => {
     const renderCategories = categories.map((category, index) => {
         return <option value={category.name} key={category.name+index}>{category.name}</option>
     })
+
+    const addFileToPublication = (publication: Publication, filename: string) => {
+        const extension = filename.split('.')
+        const type = extension[extension.length - 1]
+        if (type === 'pdf') publication.document.push(filename)
+        else if (type === 'mp4') publication.video.push(filename)
+        else publication.images.push(filename)
+    }
 
     const onSubmit = (data: PublicationCreateInput) => {
         const categorypost = subcategory === "-1" ? category : subcategory
@@ -93,10 +108,11 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                 for (let i = 0; i < data.files.length; i++)
                     filesData.append(data.files[i].name, data.files[i], data.files[i].name)
                 repository.postPublicationFiles(publication.id, filesData, credentials.token)
-                .then(() => {})
+                .then(() => console.log(publication))
                 .catch(err => window.alert(err))
-                .finally(() => handlePost(publication));
             }
+            for (let i = 0; i < data.files.length; i++)
+                addFileToPublication(publication, data.files[i].name)
         })
         .catch(err => window.alert(err))
         .finally(() => handlePost(publication));
@@ -113,8 +129,7 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                         type={"text"}
                         required={true}
                         input={'title'}
-                        register={register}
-                    />
+                        register={register}/>
                     <Row>
                         <Col>
                         <InputSelect 
@@ -122,8 +137,7 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                             label={"Category"}
                             options={renderCategories}
                             input={'category'}
-                            register={register}
-                        />
+                            register={register}/>
                         </Col>
                         <Col>
                         <InputSelect 
@@ -131,8 +145,7 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                             label={"Subcategory"}
                             options={getSubCategories()}
                             input={'subcategory'}
-                            register={register}
-                        />
+                            register={register}/>
                         </Col>
                     </Row>
 
@@ -143,8 +156,7 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                         type={"text"}
                         required={false}
                         input={'tags'}
-                        register={register}
-                    />
+                        register={register}/>
 
                     <InputTextArea 
                         name={"publication-description"}
@@ -152,21 +164,19 @@ const PublicationCreate = (props: PublicationCreateProps) => {
                         row={4}
                         value={""}
                         input={'description'}
-                        register={register}
-                    />
+                        register={register}/>
 
                     <InputFile
                         name={"files-publication"}
                         label={"Files"}
                         accept={"application/pdf,video/mp4,image/jpg,image/jpeg,image/png"}
                         register={register}
-                        input={'files'}
-                    />
+                        input={'files'}/>
 
                     <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
                         Submit
                     </Button>
-                    <Button variant="primary" type="button" onClick={() => props.setShowCreate(false)}>
+                    <Button variant="primary" type="button" onClick={() => handleShow(false)}>
                         Cancel
                     </Button>
                 </Form>

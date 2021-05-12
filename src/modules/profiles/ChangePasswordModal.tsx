@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { FunctionComponent, useContext, useState } from 'react'
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
 import { createPortal } from 'react-dom'
 
@@ -9,7 +9,7 @@ import { ProfileRepository } from './repository/ProfileRepository'
 
 export interface ChangePasswordModalProps {
     show: boolean,
-    setShow: React.Dispatch<React.SetStateAction<boolean>>
+    handlePassword: (bool: boolean) => void
 }
 
 type ChangePasswordInput = {
@@ -18,7 +18,12 @@ type ChangePasswordInput = {
     confirmPassword: string,
 }
 
-const ChangePasswordModal = (props: ChangePasswordModalProps) => {
+const ChangePasswordModal: FunctionComponent<ChangePasswordModalProps> = (
+    {
+        show,
+        handlePassword
+    }
+) => {
 
     const credentials = useContext(CredentialsContext);
     const [ alert, setAlert ] = useState<boolean>(false);
@@ -46,12 +51,13 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
         
     }
 
-    if (!props.show) return null
+    if (!show) return null
 
     const ModalDom = (
-        <Modal show={props.show} onHide={() => props.setShow(false)} backdrop="static" keyboard={false}>
+        <Modal show={show} onHide={() => handlePassword(false)} 
+            backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-            <Modal.Title>Cambiar contraseña</Modal.Title>
+                <Modal.Title>Cambiar contraseña</Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <Form onSubmit={handleSubmit(onSubmit)}>
@@ -85,13 +91,16 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
                 <Alert variant="danger" show={password !== confirmpassword} dismissible={false}>
                     Password mismatches
                 </Alert>
-                <Alert variant="danger" show={alert} onClose={() => setAlert(false)} dismissible={true}>
+                <Alert variant="danger" show={alert} 
+                    onClose={() => setAlert(false)} dismissible={true}>
                     IncorrectPassword
                 </Alert>
-                <Button variant="primary" type="submit" style={{marginRight: '1em'}} disabled={password !== confirmpassword}>
+                <Button variant="primary" type="submit" 
+                    className="profile-submit" disabled={password !== confirmpassword}>
                     Submit
                 </Button>
-                <Button variant="secondary" type="button" onClick={() => props.setShow(false)}>
+                <Button variant="secondary" type="button" 
+                    onClick={() => handlePassword(false)}>
                     Close
                 </Button>
             </Form>

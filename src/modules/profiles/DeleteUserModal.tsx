@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { FunctionComponent, useContext, useState } from 'react'
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
 import { createPortal } from 'react-dom'
 
@@ -10,15 +10,19 @@ import InputForm from '../../components/form/input/InputForm'
 
 export interface DeleteUserModalProps {
     show: boolean,
-    setShow: React.Dispatch<React.SetStateAction<boolean>>
+    handleDelete: (bool: boolean) => void
 }
 
 type PasswordInput = {
     password: string
 }
 
-
-const DeleteUserModal = (props: DeleteUserModalProps) => {
+const DeleteUserModal: FunctionComponent<DeleteUserModalProps> = (
+    {
+        show,
+        handleDelete
+    }
+) => {
 
     const { register, handleSubmit, reset } = useForm<PasswordInput>();
     const credentials = useContext(CredentialsContext);
@@ -42,7 +46,7 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
         credentials.onUsertypeChange('')
         credentials.onUsernameChange('')
         history.push('/')
-        props.setShow(false)
+        handleDelete(false)
     }
 
     const onSubmit = (data: PasswordInput) => {
@@ -65,12 +69,15 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
         .catch(err => window.alert(err))
     }
 
-    if (!props.show) return null
+    if (!show) return null
 
     const ModalDom = (
-        <Modal show={props.show} onHide={() => props.setShow(false)} backdrop="static" keyboard={false}>
+        <Modal show={show} onHide={() => handleDelete(false)} 
+            backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-            <Modal.Title>Para comfirmar el borrado de su cuenta indique su contraseña</Modal.Title>
+                <Modal.Title>
+                    Para comfirmar el borrado de su cuenta indique su contraseña
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <Form onSubmit={handleSubmit(onSubmit)}>
@@ -86,18 +93,18 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
                 <Alert variant="danger" show={alert} dismissible={true}>
                     Incorrect Password
                 </Alert>
-                <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
+                <Button variant="primary" type="submit" className="profile-submit">
                     Submit
                 </Button>
-                <Button variant="secondary" onClick={() => props.setShow(false)}>
+                <Button variant="secondary" onClick={() => handleDelete(false)}>
                     Close
                 </Button>
             </Form>
             </Modal.Body>
         </Modal>
     )
-    return createPortal(ModalDom, document.getElementById('modal') as HTMLElement)
 
+    return createPortal(ModalDom, document.getElementById('modal') as HTMLElement)
 }
 
 export default DeleteUserModal

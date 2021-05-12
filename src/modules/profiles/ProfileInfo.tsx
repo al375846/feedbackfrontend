@@ -10,6 +10,7 @@ import ChangePasswordModal from './ChangePasswordModal'
 import { ProfileRepository } from './repository/ProfileRepository'
 import { useForm } from 'react-hook-form'
 import InputForm from '../../components/form/input/InputForm'
+import ProfileInfoCard from '../../components/cards/ProfileInfoCard'
 
 type UserParams = {
     email: string,
@@ -62,30 +63,23 @@ const ProfileInfo = () => {
             
     }
 
+    const handleEdit = (bool: boolean) => setEdit(bool);
+
+    const handleDelete = (bool: boolean) => setDeletemodal(bool);
+
+    const handlePassword = (bool: boolean) => setPasswordmodal(bool);
+
     if ( loading || !user )
         return <div><Spinner animation="border"/></div> 
 
     return (
         <div>
-            <div className="profile-icon">
-                <img className="ui medium bordered image" alt="Profile" src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Elliot_Grieveson.png" />
-                <div className="profile-buttons">
-                    <Button onClick={() => setEdit(!edit)} className="profile-edit">
-                        <i className="edit outline icon"></i>
-                        Editar
-                    </Button>
-                    <Button variant="danger" onClick={() => setDeletemodal(true)}>
-                        <i className="trash icon"></i>
-                        Eliminar
-                    </Button>
-                </div>
-                <div className="change-password">
-                    <Button variant="secondary" onClick={() => setPasswordmodal(true)}>
-                        <i className="key icon"></i>
-                        Change password
-                    </Button>
-                </div>
-            </div>
+            <ProfileInfoCard 
+                edit={edit}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                handlePassword={handlePassword}/>
+            
             <div className="profile-info">
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <Row>
@@ -149,16 +143,17 @@ const ProfileInfo = () => {
                             />
                         </Col>
                     </Row>
+
                     <Button variant="primary" type="submit" className="profile-submit" disabled={!edit}>
-                    Submit
+                        Submit
                     </Button>
                     <Button variant="secondary" onClick={() => setEdit(!edit)} disabled={!edit}>
                         Cancel
                     </Button>
                 </Form>
                 <SuggestionCreate />
-                <DeleteUserModal show={deletemodal} setShow={setDeletemodal}/>
-                <ChangePasswordModal show={passwordmodal} setShow={setPasswordmodal}/>
+                <DeleteUserModal show={deletemodal} handleDelete={handleDelete}/>
+                <ChangePasswordModal show={passwordmodal} handlePassword={handlePassword}/>
             </div>
         </div>
     )

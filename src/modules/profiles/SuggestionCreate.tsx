@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 import { Alert, Button, Form, Spinner } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
@@ -17,7 +17,11 @@ type SuggestionCreateInput = {
     category: string
 }
 
-const SuggestionCreate = () => {
+interface SuggestionCreateProps {
+
+}
+
+const SuggestionCreate: FunctionComponent<SuggestionCreateProps> = () => {
 
     const credentials = useContext(CredentialsContext);
     const { register, handleSubmit, reset, watch } = useForm<SuggestionCreateInput>();
@@ -107,45 +111,45 @@ const SuggestionCreate = () => {
         .finally(() => ShowAlert())  
     }
 
-
     if (!categories)
         return <div><Spinner animation="border" /></div>
 
     return(
         <div className="suggestion-create">
-        <Form onSubmit={handleSubmit(onSubmit)}>
-            <InputForm 
-                name={"suggestion-name"}
-                label={"Name"}
-                value={""}
-                type={"text"}
-                required={true}
-                input={'name'}
-                register={register}
-            />
-            <InputRadio 
-                options={radioValues}
-                input={'type'}
-                register={register}
-            />
-            {renderparent()}
-            <InputTextArea 
-                name={"suggestion-description"}
-                label={"Description"}
-                row={4}
-                value={""}
-                input={'description'}
-                register={register}
-            />
-            <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
-                Submit
-            </Button>
-        </Form>
-        <Alert variant={variant} show={alert} onClose={() => setAlert(false)} dismissible={true}>
-            {message}
-        </Alert>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <InputForm 
+                    name={"suggestion-name"}
+                    label={"Name"}
+                    value={""}
+                    type={"text"}
+                    required={true}
+                    input={'name'}
+                    register={register}/>
+                    
+                <InputRadio 
+                    options={radioValues}
+                    input={'type'}
+                    register={register}/>
+
+                {renderparent()}
+
+                <InputTextArea 
+                    name={"suggestion-description"}
+                    label={"Description"}
+                    row={4}
+                    value={""}
+                    input={'description'}
+                    register={register}/>
+                    
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+            </Form>
+            <Alert variant={variant} show={alert} 
+                onClose={() => setAlert(false)} dismissible={true}>
+                {message}
+            </Alert>
         </div>
-        
     )
 }
 

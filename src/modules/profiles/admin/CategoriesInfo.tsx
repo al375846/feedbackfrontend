@@ -2,11 +2,12 @@ import React, { FunctionComponent, useContext, useEffect, useState } from 'react
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { Category } from '../../../entities/Category'
-import { Button, Card, Spinner } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 import '../ProfileTotal.css'
 import CategoryCreate from './CategoryCreate'
 import CategoryAdminContext from '../../../contexts/CategoryAdminContext'
 import { ProfileRepository } from '../repository/ProfileRepository'
+import CategoryInfoCard from '../../../components/cards/CategoryInfoCard'
 
 interface CategoriesInfoProps {
 
@@ -58,34 +59,27 @@ const CategoriesInfo: FunctionComponent<CategoriesInfoProps> = () => {
     const renderedSubcategories = categoryadmin.categories
     .find(cat => cat.name === categoryparent)?.children
     ?.map((category) => {
-        return (
-            <div key={category.id} className="category-admin">
-                <Card>
-                    <Card.Body>
-                        {category.name}
-                    </Card.Body>
-                </Card>
-            </div>
-        )
+        return <CategoryInfoCard
+                key={category.id} 
+                category={null}
+                subCategory={category}
+                handleCategory={() => {}}/>
     })
 
     const renderCategories = categoryadmin.categories
     .map((category) => {
-        return (
-            <div key={category.id} className="category-admin" onClick={() => handleCategory(category)}>
-                <Card>
-                    <Card.Body>
-                        {category.name}
-                    </Card.Body>
-                </Card>
-            </div>
-        )
+        return <CategoryInfoCard
+                key={category.id} 
+                category={category}
+                subCategory={null}
+                handleCategory={handleCategory}/>
     })
     
     return (
         <div>
             <div className="parent-categories">
-                <Button className="add-category" onClick={() => handleCreate('category')}>
+                <Button className="add-category" 
+                    onClick={() => handleCreate('category')}>
                     Add category
                 </Button>
                 <div className="categories-names">
@@ -94,7 +88,8 @@ const CategoriesInfo: FunctionComponent<CategoriesInfoProps> = () => {
                 
             </div>
             <div className="parent-subcategories">
-                <Button className="add-category" onClick={() => handleCreate('subcategory')}>
+                <Button className="add-category" 
+                    onClick={() => handleCreate('subcategory')}>
                     Add Subcategory
                 </Button>
                 <div className="subcategories-names">

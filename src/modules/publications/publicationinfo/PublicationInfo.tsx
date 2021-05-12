@@ -14,15 +14,18 @@ type PublicationInfoParams = { id: string }
 
 const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) => {
 
-    const [ publication, setPublication ] = useState<Publication>()
-    const credentials = useContext(CredentialsContext)
-    const [ showCreate, setShowCreate ] = useState<boolean>(false)
-    const [ showIncidence, setShowIncidence ] = useState<boolean>(false)
-    const [ alert, setAlert ] = useState<boolean>(false)
-    const [ message, setMessage ] = useState<string>('Feedback creado con exito')
-
+    const [ publication, setPublication ] = useState<Publication>();
+    const credentials = useContext(CredentialsContext);
+    const [ showCreate, setShowCreate ] = useState<boolean>(false);
+    const [ showIncidence, setShowIncidence ] = useState<boolean>(false);
+    const [ alert, setAlert ] = useState<boolean>(false);
+    const [ message, setMessage ] = useState<string>('Feedback creado con exito');
     const [ loading, setLoading ] = useState<boolean>();
     const publicationRepository = new PublicationRepository();
+
+    const handleCreate = (bool: boolean) => setShowCreate(bool)
+
+    const handleIncidence = (bool: boolean) => setShowIncidence(bool)
 
     const showAlert = (message: string) => {
         setMessage(message);
@@ -58,16 +61,15 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             )
     };
 
-    if (loading || !publication) {
+    if (loading || !publication)
         return <div className="loading"><Spinner animation="border"/></div>
-    };
 
     return (
         <div>
             <PublicationDetails 
                 publication={publication}
-                showModal={setShowIncidence}
-            />
+                handleIncidence={handleIncidence}/>
+
             <div className="ui secondary pointing menu">
                 <div className="item">
                     <h1>Respuestas</h1>
@@ -78,18 +80,19 @@ const PublicationInfo = ({match}: RouteComponentProps<PublicationInfoParams>) =>
             </div>
             <PublicationFeedbacks
                 visible={showCreate}
-                setShowCreate={setShowCreate}
+                handleCreate={handleCreate}
                 publication={publication}
-                showAlert={showAlert}
-            />
+                showAlert={showAlert}/>
+
             <IncidenceModal 
                 show={showIncidence} 
-                setShow={setShowIncidence} 
+                handleIncidence={handleIncidence} 
                 showAlert={showAlert} 
-                id={match.params.id}
-            />
+                id={match.params.id}/>
+
             <div className="feedback-created">
-                <Alert variant="success" show={alert} onClose={() => setAlert(false)} dismissible={true}>
+                <Alert variant="success" show={alert} 
+                    onClose={() => setAlert(false)} dismissible={true}>
                     {message}
                 </Alert>
             </div>

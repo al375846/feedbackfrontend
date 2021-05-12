@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 
 import { Feedback } from '../../../entities/Feedback'
 import CredentialsContext from '../../../contexts/CredentialsContext'
@@ -12,10 +12,15 @@ export interface FeedbackCardProps {
     username: string
 }
 
-const FeedbackDetails = (props: FeedbackCardProps) => {
+const FeedbackDetails: FunctionComponent<FeedbackCardProps> = (
+    {
+        feedback,
+        username
+    }
+) => {
 
     const credentials = useContext(CredentialsContext);
-    const [ rating, setRating ] = useState<Rate | null>(props.feedback.valoration);
+    const [ rating, setRating ] = useState<Rate | null>(feedback.valoration);
     const repository = new PublicationRepository();
 
     useEffect(() => {}, [rating])
@@ -26,7 +31,7 @@ const FeedbackDetails = (props: FeedbackCardProps) => {
                 grade: rate,
                 date: new Date()
             }
-            repository.rateFeedback(props.feedback.id, rateData, credentials.token)
+            repository.rateFeedback(feedback.id, rateData, credentials.token)
             .then(res => setRating(res.data.rating))
             .catch(err => window.alert(err))
             .finally(() => {})
@@ -43,10 +48,10 @@ const FeedbackDetails = (props: FeedbackCardProps) => {
     }
 
     return <FeedbackCard 
-            feedback={props.feedback}
+            feedback={feedback}
             rating={rating}
             handleRatingClick={handleRatingClick}
-            username={props.username}/>
+            username={username}/>
 }
 
 export default FeedbackDetails

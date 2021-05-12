@@ -82,3 +82,7 @@
     align-items: center;
     width: 60%;
 }
+
+.submit-button {
+    margin-right: 1em;
+}

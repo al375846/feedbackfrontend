@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { FunctionComponent, useContext } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 
@@ -12,7 +12,7 @@ import { PublicationRepository } from '../repository/PublicationRepository'
 export interface FeedbackCreateProps {
     publicationId: number,
     visible: boolean,
-    setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
+    handleCreate: (bool: boolean) => void,
     postFeedback: (feedback: Feedback) => void
 }
 
@@ -21,15 +21,22 @@ type FeedbackCreateInput = {
     files: FileList
 }
 
-const FeedbackCreate = (props: FeedbackCreateProps) => {
+const FeedbackCreate: FunctionComponent<FeedbackCreateProps> = (
+    {
+        publicationId,
+        visible,
+        handleCreate,
+        postFeedback
+    }
+) => {
 
     const credentials = useContext(CredentialsContext)
     const { register, handleSubmit } = useForm<FeedbackCreateInput>();
     const repository = new PublicationRepository();
 
     const handlePost = (feedback: Feedback) => {
-        props.postFeedback(feedback);
-        props.setShowCreate(false);
+        postFeedback(feedback);
+        handleCreate(false);
     }
 
     const onSubmit = (data: FeedbackCreateInput) => {
@@ -40,7 +47,7 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
         }
 
         let feedback: Feedback
-        repository.postPublicationFeedback(props.publicationId, feedbackData, credentials.token)
+        repository.postPublicationFeedback(publicationId, feedbackData, credentials.token)
         .then(res => {
             feedback = res.data.feedback
             if (data.files) {
@@ -57,8 +64,7 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
         .finally(() => {handlePost(feedback)})
     }
 
-    if (!props.visible)
-    return <div style={{display: 'none'}}></div>
+    if (!visible) return null
 
     return (
         <div className="feedback-form">
@@ -82,10 +88,10 @@ const FeedbackCreate = (props: FeedbackCreateProps) => {
                         input={'files'}
                     />
 
-                    <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
+                    <Button variant="primary" type="submit" className="submit-button">
                         Submit
                     </Button>
-                    <Button variant="primary" type="button" onClick={() => props.setShowCreate(false)}>
+                    <Button variant="secondary" type="button" onClick={() => handleCreate(false)}>
                         Cancel
                     </Button>
                 </Form>

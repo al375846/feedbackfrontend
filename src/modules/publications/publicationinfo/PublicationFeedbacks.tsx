@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 
 import { Feedback } from '../../../entities/Feedback'
@@ -11,12 +11,19 @@ import { PublicationRepository } from '../repository/PublicationRepository'
 
 export interface PublicationFeedbacksProps {
     visible: boolean,
-    setShowCreate: React.Dispatch<React.SetStateAction<boolean>>,
+    handleCreate: (bool: boolean) => void,
     publication: Publication,
     showAlert: (message: string) => void
 }
 
-const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
+const PublicationFeedbacks: FunctionComponent<PublicationFeedbacksProps> = (
+    {
+        visible,
+        handleCreate,
+        publication,
+        showAlert
+    }
+) => {
     
     const [ feedbacks, setFeedbacks ] = useState<Feedback[]>();
     const [ loading, setLoading ] = useState<boolean>(false);
@@ -27,14 +34,14 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
     const postFeedback = (feedback: Feedback) => {
         const newFeedbacks = [feedback, ...feedbacks || []]
         setFeedbacks(newFeedbacks)
-        props.showAlert('Feedback creado con éxito')
+        showAlert('Feedback creado con éxito')
     }
 
     useEffect(() => {
 
         const searchFeedbacks = () => {
             setLoading(true)
-            repository.getPublicationFeedbacks(props.publication.id, credentials.token)
+            repository.getPublicationFeedbacks(publication.id, credentials.token)
             .then(res => setFeedbacks(res.data.feedbacks))
             .catch(err => window.alert(err))
             .finally(() => setLoading(false))
@@ -44,7 +51,7 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
             searchFeedbacks()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [feedbacks, credentials.token, props.publication.id])
+    }, [feedbacks, credentials.token, publication.id])
 
     if (loading || !feedbacks)
         return <div><Spinner animation="border"/></div> 
@@ -53,19 +60,17 @@ const PublicationFeedbacks = (props: PublicationFeedbacksProps) => {
         return <FeedbackDetails 
                     key={feedback.id} 
                     feedback={feedback} 
-                    username={props.publication.apprentice.username}
-                />
+                    username={publication.apprentice.username}/>
     })
 
     return (
         <div>
             {renderfeedbacks}
             <FeedbackCreate 
-                visible={props.visible} 
-                publicationId={props.publication.id} 
-                setShowCreate={props.setShowCreate} 
-                postFeedback={postFeedback}
-            />
+                visible={visible} 
+                publicationId={publication.id} 
+                handleCreate={handleCreate} 
+                postFeedback={postFeedback}/>
         </div>
     )
 }

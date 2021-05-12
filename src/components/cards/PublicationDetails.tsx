@@ -1,21 +1,31 @@
 import moment from 'moment'
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useContext } from 'react'
 import { Badge } from 'react-bootstrap'
 
+import CredentialsContext from '../../contexts/CredentialsContext'
 import { Publication } from '../../entities/Publication'
 import FilesInfo from '../../modules/publications/publicationinfo/FilesInfo'
 
 interface PublicationDetailsProps {
     publication: Publication,
-    showModal: React.Dispatch<React.SetStateAction<boolean>>
+    handleIncidence: (bool: boolean) => void
 }
 
 const PublicationDetails: FunctionComponent<PublicationDetailsProps> = (
     {
         publication,
-        showModal
+        handleIncidence
     }
 ) => {
+
+    const credentials = useContext(CredentialsContext)
+
+    const renderIncidence = () => {
+        if (credentials.username !== publication.apprentice.username)
+            return <i className="big exclamation circle icon" 
+                    onClick={() => handleIncidence(true)}></i>
+        return null
+    }
 
     const files = [...publication.images, ...publication.video, ...publication.document];
 
@@ -30,7 +40,7 @@ const PublicationDetails: FunctionComponent<PublicationDetailsProps> = (
     return (
         <>
         <div className="publication-report">
-                <i className="big exclamation circle icon" onClick={() => showModal(true)}></i>
+            {renderIncidence()}
             </div>
             <div className="ui header">
                 <h1>{publication.title}</h1>

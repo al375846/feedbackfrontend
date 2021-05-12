@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { FunctionComponent, useContext } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import { Button } from 'react-bootstrap'
 
@@ -18,7 +18,11 @@ const mymes: { [extension: string]: string }  = {
     mp4: 'video/mp4'
 }
 
-const FilesInfo = (props: FilesInfoProps) => {
+const FilesInfo: FunctionComponent<FilesInfoProps> = (
+    {
+        files
+    }
+) => {
 
     const credentials = useContext(CredentialsContext)
     const repository = new PublicationRepository();
@@ -64,7 +68,8 @@ const FilesInfo = (props: FilesInfoProps) => {
     const renderimage = (image: string) => {
         return (
             <div className="file-info">
-                <img src={`https://feedback-heroku.herokuapp.com/api/public/file/${image}`} alt={image} id={image} width="100%" height="100%"/>
+                <img src={`https://feedback-heroku.herokuapp.com/api/public/file/${image}`} 
+                    alt={image} id={image} width="100%" height="100%"/>
             </div>
         )
     }
@@ -72,7 +77,8 @@ const FilesInfo = (props: FilesInfoProps) => {
     const rendervideo = (video: string) => {
         return (
             <div className="file-info">
-                <video src={`https://feedback-heroku.herokuapp.com/api/public/file/${video}`} id={video} width="100%" height="100%"/>
+                <video src={`https://feedback-heroku.herokuapp.com/api/public/file/${video}`} 
+                    id={video} width="100%" height="100%"/>
             </div>
         )
     }
@@ -80,14 +86,15 @@ const FilesInfo = (props: FilesInfoProps) => {
     const renderdocument = (document: string) => {
         return (
             <div style={{height: "9em", overflow: 'hidden'}}>
-                <Document file={`https://feedback-heroku.herokuapp.com/api/public/file/${document}`} onLoadSuccess={() => {}}>
+                <Document file={`https://feedback-heroku.herokuapp.com/api/public/file/${document}`} 
+                    onLoadSuccess={() => {}}>
                 <Page pageNumber={1} width={250} className="file-pdf"/>
                 </Document>
             </div>
         )
     }
 
-    const renderallfiles = props.files.map((file) => {
+    const renderallfiles = files.map((file) => {
         const split = file.split('.')
         let renderdownload
         if (split[split.length - 1] === 'pdf')

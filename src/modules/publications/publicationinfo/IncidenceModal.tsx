@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { FunctionComponent, useContext } from 'react'
 import { createPortal } from "react-dom"
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
@@ -12,7 +12,7 @@ import { PublicationRepository } from '../repository/PublicationRepository'
 export interface IncidenceModalProps {
     id: string,
     show: boolean,
-    setShow: React.Dispatch<React.SetStateAction<boolean>>
+    handleIncidence: (bool: boolean) => void
     showAlert: (message: string) => void
 }
 
@@ -21,16 +21,22 @@ type IncidenceInput = {
     type: string
 }
 
-const IncidenceModal = (props: IncidenceModalProps) => {
+const IncidenceModal: FunctionComponent<IncidenceModalProps> = (
+    {
+        id,
+        show,
+        handleIncidence,
+        showAlert
+    }
+) => {
 
     const { register, handleSubmit } = useForm<IncidenceInput>();
     const credentials = useContext(CredentialsContext);
-
     const repository = new PublicationRepository();
 
     const handlePost = () => {
-        props.showAlert('Incidencia enviada')
-        props.setShow(false)
+        showAlert('Incidencia enviada')
+        handleIncidence(false)
     }
 
     const onSubmit = (data: IncidenceInput) => {
@@ -40,7 +46,7 @@ const IncidenceModal = (props: IncidenceModalProps) => {
             description: data.description
         }
         
-        repository.postIncidence(props.id, incidenceData, credentials.token)
+        repository.postIncidence(id, incidenceData, credentials.token)
         .then(() => handlePost())
         .catch(err => window.alert(err))
         .finally(() => {})
@@ -59,20 +65,22 @@ const IncidenceModal = (props: IncidenceModalProps) => {
         }
     ]
 
-    if (!props.show) return null
+    if (!show) return null
 
     const ModalDom = (
-        <Modal show={props.show} onHide={() => props.setShow(false)} backdrop="static" keyboard={false}>
+        <Modal show={show} onHide={() => handleIncidence(false)}
+            backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-                <Modal.Title>Indique el motivo de la incidencia</Modal.Title>
+                <Modal.Title>
+                    Indique el motivo de la incidencia
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <InputRadio 
                         options={radioValues}
                         input={'type'}
-                        register={register}
-                    />
+                        register={register}/>
 
                     <InputTextArea 
                         name={"incidence-description"}
@@ -80,13 +88,12 @@ const IncidenceModal = (props: IncidenceModalProps) => {
                         row={4}
                         value={""}
                         input={'description'}
-                        register={register}
-                    />
+                        register={register}/>
 
-                    <Button variant="primary" style={{marginRight: '1em'}} type="submit">
+                    <Button variant="primary"className="submit-button" type="submit">
                         Submit
                     </Button>
-                    <Button variant="secondary" onClick={() => props.setShow(false)}>
+                    <Button variant="secondary" onClick={() => handleIncidence(false)}>
                         Close
                     </Button>
                 </Form>

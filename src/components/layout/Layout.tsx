@@ -1,7 +1,7 @@
-import {Fragment, FunctionComponent} from "react";
+import { Fragment, FunctionComponent } from "react";
 import Header from "./Header";
-import {ROUTE_REGISTER} from "../../routing/Routes";
-import {useLocation} from "react-router";
+import { ROUTE_REGISTER } from "../../routing/Routes";
+import { useLocation } from "react-router";
 
 interface LayoutProps {
 

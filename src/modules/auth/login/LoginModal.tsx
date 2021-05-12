@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import { createPortal } from "react-dom";
 import { Alert, Button, Form, Modal } from 'react-bootstrap';
 
@@ -17,7 +17,12 @@ type LoginInput = {
     password: string
 };
 
-const LoginModal = (props: IncidenceModalProps) => {
+const LoginModal: FunctionComponent<IncidenceModalProps> = (
+    {
+        show,
+        setShow
+    }
+) => {
 
     const { register, handleSubmit, reset } = useForm<LoginInput>();
     const [ alert, setAlert ] = useState<boolean>(false);
@@ -37,7 +42,7 @@ const LoginModal = (props: IncidenceModalProps) => {
             .then(res => {
                 localStorage.setItem('usertype', res.data.usertype)
                 credentials.onUsertypeChange(res.data.usertype)
-                props.setShow(false)
+                setShow(false)
             })
             .catch(err => window.alert(err))
         })
@@ -66,10 +71,10 @@ const LoginModal = (props: IncidenceModalProps) => {
         }, 3000)
     }
 
-    if (!props.show) return null
+    if (!show) return null
 
     const ModalDom = (
-        <Modal show={props.show} onHide={() => props.setShow(false)}>
+        <Modal show={show} onHide={() => setShow(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>Login</Modal.Title>
             </Modal.Header>
@@ -98,8 +103,8 @@ const LoginModal = (props: IncidenceModalProps) => {
                     <Alert variant="danger" show={alert} onClose={() => setAlert(false)} dismissible={true}>
                         Usuario o contraseña incorrectos
                     </Alert>
-                    ¿Aun no esta registrado? Hagalo <a href="/register" className="item" onClick={() => props.setShow(false)}>aqui</a>
-                    <Button variant="secondary" onClick={() => props.setShow(false)}>
+                    ¿Aun no esta registrado? Hagalo <a href="/register" className="item" onClick={() => setShow(false)}>aqui</a>
+                    <Button variant="secondary" onClick={() => setShow(false)}>
                         Close
                     </Button>
                     <Button variant="primary" type="submit">

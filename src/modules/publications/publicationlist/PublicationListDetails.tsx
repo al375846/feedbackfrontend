@@ -81,7 +81,7 @@ const PublicationListDetails: FunctionComponent<PublicationListDetailsProps> = (
     })
 
     if (loading)
-    return <div className="loading"><Spinner animation="border"/></div>
+        return <div className="loading"><Spinner animation="border"/></div>
 
     return (
         <>

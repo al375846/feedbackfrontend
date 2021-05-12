@@ -48,7 +48,7 @@ const PublicationList = () => {
     }, [searchTerm])
 
     if (!credentials.token)
-        return <div style={{textAlign: 'center'}}><h1>Please Login or register</h1></div> 
+        return <div style={{textAlign: 'center'}}><h1>Please Login or Register</h1></div> 
 
     return (
         <div className="parent-div">

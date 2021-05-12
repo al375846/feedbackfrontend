@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Spinner } from 'react-bootstrap'
@@ -7,7 +7,11 @@ import './ProfileTotal.css'
 import { ProfileRepository } from './repository/ProfileRepository'
 import HistoryCard from '../../components/cards/HistoryCard'
 
-const HistoryInfo = () => {
+interface HistoryInfoProps {
+
+}
+
+const HistoryInfo: FunctionComponent<HistoryInfoProps> = () => {
 
     const credentials = useContext(CredentialsContext);
     const [ history, setHistory ] = useState<History[]>();

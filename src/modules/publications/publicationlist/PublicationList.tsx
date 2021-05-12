@@ -8,6 +8,7 @@ import PublicationCreate from './PublicationCreate'
 import CategoryMenu from './CategoryMenu'
 import PublicationListDetails from './PublicationListDetails'
 import SearchBar from '../../../components/search/SearchBar'
+import LoginForm from '../../auth/login/LoginForm'
 
 interface PublicationListProps {
 
@@ -32,7 +33,14 @@ const PublicationList: FunctionComponent<PublicationListProps> = () => {
     const handleSearchTerm = (term: string) => setFinalSearchTerm(term)
 
     if (!credentials.token)
-        return <div style={{textAlign: 'center'}}><h1>Please Login or Register</h1></div> 
+        return (
+            <div style={{textAlign: 'center'}}>
+                <h1>
+                    Please Login or Register
+                </h1>   
+                <LoginForm />
+            </div>
+        )
 
     return (
         <div className="parent-div">

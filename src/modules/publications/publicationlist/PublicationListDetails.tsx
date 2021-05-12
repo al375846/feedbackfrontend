@@ -82,6 +82,13 @@ const PublicationListDetails: FunctionComponent<PublicationListDetailsProps> = (
 
     if (loading)
         return <div className="loading"><Spinner animation="border"/></div>
+    
+    if (publications.length === 0)
+        return (
+            <div style={{textAlign: 'center', marginTop: '2em'}}>
+                No hay publicaciones que coincidan con los filtros aplicados
+            </div>
+        )
 
     return (
         <>

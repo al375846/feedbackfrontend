@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
@@ -20,7 +20,11 @@ type RegsiterInput = {
     type: string  
 };
 
-const Register = () => {
+interface RegisterProps {
+
+}
+
+const Register: FunctionComponent<RegisterProps> = () => {
 
     const { register, handleSubmit, watch } = useForm<RegsiterInput>();
     const [ alert, setAlert ] = useState<boolean>(false);
@@ -32,12 +36,12 @@ const Register = () => {
     const radioValues = [
         {
             id: "apprentice",
-            label: "Aprendiz",
+            label: "Apprentice",
             value: "apprentice"
         },
         {
             id: "expert",
-            label: "Experto",
+            label: "Expert",
             value: "expert"
         }
     ];
@@ -90,8 +94,7 @@ const Register = () => {
                             type={"text"}
                             required={true}
                             input={'name'}
-                            register={register}
-                        />
+                            register={register}/>
                     </Col>
                     <Col>
                         <InputForm 
@@ -101,8 +104,7 @@ const Register = () => {
                             type={"text"}
                             required={true}
                             input={'lastname'}
-                            register={register}
-                        />
+                            register={register}/>
                     </Col>
                 </Row>
                 <Row>
@@ -114,8 +116,7 @@ const Register = () => {
                             type={"text"}
                             required={true}
                             input={'username'}
-                            register={register}
-                        />
+                            register={register}/>
                     </Col>
                     <Col>
                         <InputForm 
@@ -125,8 +126,7 @@ const Register = () => {
                             type={"email"}
                             required={true}
                             input={'email'}
-                            register={register}
-                        />
+                            register={register}/>
                     </Col>
                 </Row>
                 <Row>
@@ -138,8 +138,7 @@ const Register = () => {
                             type={"text"}
                             required={true}
                             input={'address'}
-                            register={register}
-                        />
+                            register={register}/>
                     </Col>
                     <Col>
                         <InputForm 
@@ -149,8 +148,7 @@ const Register = () => {
                             type={"text"}
                             required={true}
                             input={'phone'}
-                            register={register}
-                        />
+                            register={register}/>
                     </Col>
                 </Row>
                 <Row>
@@ -162,8 +160,7 @@ const Register = () => {
                             type={"password"}
                             required={true}
                             input={'password'}
-                            register={register}
-                        />
+                            register={register}/>
                     </Col>
                     <Col>
                     <InputForm 
@@ -173,8 +170,7 @@ const Register = () => {
                         type={"password"}
                         required={true}
                         input={'confirmpassword'}
-                        register={register}
-                    />
+                        register={register}/>
                     </Col>
                 </Row>
                 <Row>
@@ -182,19 +178,21 @@ const Register = () => {
                         <InputRadio 
                             options={radioValues}
                             input={'type'}
-                            register={register}
-                        />
+                            register={register}/>
                     </Col>
                     <Col>
-                        <Alert variant="danger" show={password !== confirmpassword} dismissible={false}>
+                        <Alert variant="danger" show={password !== confirmpassword} 
+                            dismissible={false}>
                             Password mismatches
                         </Alert>
-                        <Alert variant="danger" show={alert} dismissible={true} onClose={() => setAlert(false)}>
+                        <Alert variant="danger" show={alert} dismissible={true} 
+                            onClose={() => setAlert(false)}>
                             Username already taken
                         </Alert>
                     </Col>
                 </Row>
-                <Button variant="primary" type="submit" className="profile-submit" disabled={password !== confirmpassword}>
+                <Button variant="primary" type="submit" 
+                    className="profile-submit" disabled={password !== confirmpassword}>
                 Submit
                 </Button>
             </Form>

@@ -57,7 +57,7 @@ const CategoriesInfo: FunctionComponent<CategoriesInfoProps> = () => {
         return <div className="loading"><Spinner animation="border" /></div> 
 
     const renderedSubcategories = categoryadmin.categories
-    .find(cat => cat.name === categoryparent)?.children
+    .find(cat => cat.name === categoryparent)?.subcategories
     ?.map((category) => {
         return <CategoryInfoCard
                 key={category.id} 

@@ -56,14 +56,14 @@ const CategoryCreate: FunctionComponent<CategoryCreateProps> = (
                     id: res.data.category.id,
                     name: res.data.category.name, 
                     description: res.data.category.description,
-                    children: []
+                    subcategories: []
                 }
                 const newCategories = [...categoryadmin.categories || [], category]
                 categoryadmin.onCategoriesChange(newCategories)
             }
             else
                 categoryadmin.categories
-                    ?.find(cat => cat.name === parent)?.children
+                    ?.find(cat => cat.name === parent)?.subcategories
                     ?.push(res.data.category)
         })
         .catch(err => window.alert(err))

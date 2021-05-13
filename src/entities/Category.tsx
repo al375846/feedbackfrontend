@@ -2,7 +2,7 @@ export interface Category {
     id: number,
     name: string,
     description: string,
-    children: SubCategory[]
+    subcategories: SubCategory[]
 }
 
 export interface SubCategory {

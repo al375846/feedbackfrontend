@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, FunctionComponent } from 'react'
-import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
+import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 import { useForm } from "react-hook-form";
 
 import CredentialsContext from '../../../contexts/CredentialsContext'
@@ -41,11 +41,12 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
     const category = watch('category');
     const subcategory = watch('subcategory');
     const repository = new PublicationRepository();
+    const [ loading, setLoading ] = useState<boolean>(false);
 
     const handlePost = (publication: Publication) => {
         handleShow(false);
-        console.log(publication)
         postPublication(publication);
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -80,14 +81,6 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
         return <option value={category.name} key={category.name+index}>{category.name}</option>
     })
 
-    const addFileToPublication = (publication: Publication, filename: string) => {
-        const extension = filename.split('.')
-        const type = extension[extension.length - 1]
-        if (type === 'pdf') publication.document.push(filename)
-        else if (type === 'mp4') publication.video.push(filename)
-        else publication.images.push(filename)
-    }
-
     const onSubmit = (data: PublicationCreateInput) => {
         const categorypost = subcategory === "-1" ? category : subcategory
 
@@ -99,6 +92,7 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
             date: new Date()
         };
         
+        setLoading(true)
         let publication: Publication
         repository.postPublication(publicationData, credentials.token)
         .then(res => {
@@ -108,14 +102,14 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
                 for (let i = 0; i < data.files.length; i++)
                     filesData.append(data.files[i].name, data.files[i], data.files[i].name)
                 repository.postPublicationFiles(publication.id, filesData, credentials.token)
-                .then(() => console.log(publication))
+                .then(() => handlePost(publication))
                 .catch(err => window.alert(err))
             }
-            for (let i = 0; i < data.files.length; i++)
-                addFileToPublication(publication, data.files[i].name)
+            else {
+                handlePost(publication)
+            }
         })
         .catch(err => window.alert(err))
-        .finally(() => handlePost(publication));
     }
 
     return (
@@ -173,10 +167,14 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
                         register={register}
                         input={'files'}/>
 
-                    <Button variant="primary" type="submit" style={{marginRight: '1em'}}>
+                    <Alert variant="info" show={loading}>
+                        Publicando...
+                    </Alert>
+
+                    <Button variant="primary" type="submit" className="submit-button">
                         Submit
                     </Button>
-                    <Button variant="primary" type="button" onClick={() => handleShow(false)}>
+                    <Button variant="secondary" type="button" onClick={() => handleShow(false)}>
                         Cancel
                     </Button>
                 </Form>

@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router';
 import CredentialsContext from '../../../contexts/CredentialsContext';
 import { Category } from '../../../entities/Category';
 import { Publication } from '../../../entities/Publication';
 import { PublicationPostParams, PublicationRepository } from '../repository/PublicationRepository';
+import PublicationCreateView from './PublicationCreateView';
 
-type PublicationCreateInput = {
+export type PublicationCreateInput = {
     title: string,
     tags: string,
     description: string,
@@ -16,19 +18,27 @@ type PublicationCreateInput = {
 
 const PublicationCreateDataContainer = () => {
 
-    const [ categories, setCategories ] = useState<Category[]>();
+    const [ categories, setCategories ] = useState<Category[]>([]);
     const [ loading, setLoading ] = useState<boolean>(false);
-    const [ isAdding, setIsAdding ] = useState<boolean>(false);
+    const [ isAddingPublication, setIsAddingPublication ] = useState<boolean>(false);
     const { register, handleSubmit, watch } = useForm<PublicationCreateInput>();
     const category = watch('category');
     const subcategory = watch('subcategory');
 
+    const history = useHistory();
     const repository = new PublicationRepository();
     const credentials = useContext(CredentialsContext);
 
+    const navigateToPublication = (id: number) => history.push(`/publication/${id}`)
+
+    const onLoadingChange = (loading: boolean) => setLoading(loading)
+
+    const onAddingChange = (adding: boolean) => setIsAddingPublication(adding)
+
     const handlePost = (publication: Publication) => {
-        
-        setLoading(false);
+        navigateToPublication(publication.id)
+        setLoading(false)
+        setIsAddingPublication(false)
     }
 
     const onSubmit = (data: PublicationCreateInput) => {
@@ -55,9 +65,7 @@ const PublicationCreateDataContainer = () => {
                 .then(() => handlePost(publication))
                 .catch(err => window.alert(err))
             }
-            else {
-                handlePost(publication)
-            }
+            else handlePost(publication)
         })
         .catch(err => window.alert(err))
     }
@@ -65,23 +73,27 @@ const PublicationCreateDataContainer = () => {
 
     useEffect(() => {
 
-        const searchCategories = () => {
+        if (!categories)
             repository.getCategories(credentials.token)
             .then(res => setCategories(res.data.categories))
             .catch(err => window.alert(err))
-            .finally(() => {})
-        }
-
-        if (credentials.token && !categories)
-            searchCategories()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categories, credentials.token])
     
     return (
-        <div>
-            
-        </div>
+        <PublicationCreateView 
+            isAddingPublication={isAddingPublication}
+            onAddingChange={onAddingChange}
+            handlePost={handlePost}
+            loading={loading}
+            onLoadingChange={onLoadingChange}
+            register={register}
+            handleSubmit={handleSubmit}
+            categories={categories}
+            onSubmit={onSubmit}
+            category={category}
+        />
     )
 }
 

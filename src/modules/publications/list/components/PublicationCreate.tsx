@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext, FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap'
-import { useForm } from "react-hook-form";
+import { UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
 
-import CredentialsContext from '../../../../contexts/CredentialsContext'
 import { Category } from '../../../../entities/Category'
 import './PublicationTotal.css'
 import { PublicationPostParams, PublicationRepository } from '../../repository/PublicationRepository'
@@ -11,60 +10,38 @@ import InputForm from '../../../../components/form/input/InputForm';
 import InputFile from '../../../../components/form/files/InputFile';
 import InputSelect from '../../../../components/form/select/InputSelect';
 import InputTextArea from '../../../../components/form/textarea/InputTextArea';
+import { PublicationCreateInput } from '../PublicationCreateDataContainer';
 
 export interface PublicationCreateProps {
-    visible: boolean,
-    handleShow: (show: boolean) => void,
-    postPublication: (publication: Publication) => void
-}
-
-type PublicationCreateInput = {
-    title: string,
-    tags: string,
-    description: string,
-    category: string,
-    subcategory: string,
-    files: FileList
+    isAddingPublication: boolean,
+    onAddingChange: (adding: boolean) => void,
+    handlePost: (publication: Publication) => void,
+    loading: boolean,
+    onLoadingChange: (loading: boolean) => void,
+    register: UseFormRegister<PublicationCreateInput>,
+    handleSubmit: UseFormHandleSubmit<PublicationCreateInput>,
+    categories: Category[],
+    onSubmit: (data: PublicationCreateInput) => void,
+    category: string
 }
 
 const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
     {
-        visible,
-        handleShow,
-        postPublication
+        isAddingPublication,
+        onAddingChange,
+        handlePost,
+        loading,
+        onLoadingChange,
+        register,
+        handleSubmit,
+        categories,
+        onSubmit,
+        category
     }
 ) => {
 
-    const [ categories, setCategories ] = useState<Category[]>();
-    const credentials = useContext(CredentialsContext);
-    const { register, handleSubmit, watch } = useForm<PublicationCreateInput>();
-    const category = watch('category');
-    const subcategory = watch('subcategory');
-    const repository = new PublicationRepository();
-    const [ loading, setLoading ] = useState<boolean>(false);
 
-    const handlePost = (publication: Publication) => {
-        handleShow(false);
-        postPublication(publication);
-        setLoading(false);
-    }
-
-    useEffect(() => {
-
-        const searchCategories = () => {
-            repository.getCategories(credentials.token)
-            .then(res => setCategories(res.data.categories))
-            .catch(err => window.alert(err))
-            .finally(() => {})
-        }
-
-        if (credentials.token && !categories)
-            searchCategories()
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [categories, credentials.token])
-
-    if (!visible) return null
+    if (!isAddingPublication) return null
 
     if (!categories)
         return <div className="loading"><Spinner animation="border"/></div>
@@ -80,37 +57,6 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
     const renderCategories = categories.map((category, index) => {
         return <option value={category.name} key={category.name+index}>{category.name}</option>
     })
-
-    const onSubmit = (data: PublicationCreateInput) => {
-        const categorypost = subcategory === "-1" ? category : subcategory
-
-        const publicationData: PublicationPostParams = {
-            title: data.title,
-            category: {name: categorypost},
-            tags: data.tags.split(' '),
-            description: data.description,
-            date: new Date()
-        };
-        
-        setLoading(true)
-        let publication: Publication
-        repository.postPublication(publicationData, credentials.token)
-        .then(res => {
-            publication = res.data.publication;
-            if (data.files) {
-                const filesData = new FormData();
-                for (let i = 0; i < data.files.length; i++)
-                    filesData.append(data.files[i].name, data.files[i], data.files[i].name)
-                repository.postPublicationFiles(publication.id, filesData, credentials.token)
-                .then(() => handlePost(publication))
-                .catch(err => window.alert(err))
-            }
-            else {
-                handlePost(publication)
-            }
-        })
-        .catch(err => window.alert(err))
-    }
 
     return (
         <div className="publication-form">
@@ -174,7 +120,7 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
                     <Button variant="primary" type="submit" className="submit-button">
                         Submit
                     </Button>
-                    <Button variant="secondary" type="button" onClick={() => handleShow(false)}>
+                    <Button variant="secondary" type="button" onClick={() => /*handleShow(false)*/{}}>
                         Cancel
                     </Button>
                 </Form>

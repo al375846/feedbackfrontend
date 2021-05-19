@@ -38,11 +38,6 @@ const PublicationListHeader: FunctionComponent<PublicationListHeaderProps> = (
                 onSelectedChange={onSelectedChange}
                 selected={selected}
                 categories={categories}/>
-           
-            <PublicationCreate 
-                visible={showCreate}
-                handleShow={handleShow}
-                postPublication={postPublication}/>
         </div>
     )
 }

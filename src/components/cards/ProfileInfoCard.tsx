@@ -28,11 +28,11 @@ const ProfileInfoCard: FunctionComponent<ProfileInfoCardProps> = (
                 </Button>
                 <Button variant="danger" onClick={() => handleDelete(true)}>
                     <i className="trash icon"></i>
-                    Eliminar
+                    Delete
                 </Button>
             </div>
             <div className="change-password">
-                <Button variant="secondary" onClick={() => handlePassword(true)}>
+                <Button onClick={() => handlePassword(true)}>
                     <i className="key icon"></i>
                     Change password
                 </Button>

@@ -4,7 +4,7 @@ import { Badge } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Publication } from '../../entities/Publication'
-import FilesInfo from '../../modules/publications/publicationinfo/FilesInfo'
+import FilesInfo from '../../modules/publications/detail/FilesInfo'
 
 interface PublicationDetailsProps {
     publication: Publication,

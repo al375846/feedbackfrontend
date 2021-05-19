@@ -2,15 +2,15 @@ import React, { useState, useEffect, useContext, FunctionComponent } from 'react
 import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 import { useForm } from "react-hook-form";
 
-import CredentialsContext from '../../../contexts/CredentialsContext'
-import { Category } from '../../../entities/Category'
+import CredentialsContext from '../../../../contexts/CredentialsContext'
+import { Category } from '../../../../entities/Category'
 import './PublicationTotal.css'
-import { PublicationPostParams, PublicationRepository } from '../repository/PublicationRepository'
-import { Publication } from '../../../entities/Publication'
-import InputForm from '../../../components/form/input/InputForm';
-import InputFile from '../../../components/form/files/InputFile';
-import InputSelect from '../../../components/form/select/InputSelect';
-import InputTextArea from '../../../components/form/textarea/InputTextArea';
+import { PublicationPostParams, PublicationRepository } from '../../repository/PublicationRepository'
+import { Publication } from '../../../../entities/Publication'
+import InputForm from '../../../../components/form/input/InputForm';
+import InputFile from '../../../../components/form/files/InputFile';
+import InputSelect from '../../../../components/form/select/InputSelect';
+import InputTextArea from '../../../../components/form/textarea/InputTextArea';
 
 export interface PublicationCreateProps {
     visible: boolean,

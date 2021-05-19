@@ -3,7 +3,7 @@ import { Pagination } from 'react-bootstrap'
 
 interface PaginationProps {
     totalPages: number
-    setPage: (value: React.SetStateAction<number>) => void,
+    setPage: (value: number) => void,
     page: number
 }
 

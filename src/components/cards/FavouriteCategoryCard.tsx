@@ -8,7 +8,7 @@ interface FavouriteCategoryCardProps {
     favcategories: SubCategory[]
     handleFav: (id: number) => void
 };
-
+//favourite categoty for expert profile
 const FavouriteCategoryCard: FunctionComponent<FavouriteCategoryCardProps> = (
     {
         category,
@@ -16,7 +16,7 @@ const FavouriteCategoryCard: FunctionComponent<FavouriteCategoryCardProps> = (
         handleFav
     }
 ) => {
-
+    //rendering favourite info icon
     const renderFavIcon = (id: number) => {
         const favIds = favcategories.map((fav) => {
             return fav.id

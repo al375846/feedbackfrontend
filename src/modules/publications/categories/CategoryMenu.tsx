@@ -1,41 +1,24 @@
-import React, { FunctionComponent, useContext, useEffect, useRef, useState } from 'react'
+import React, { FunctionComponent, useEffect, useRef } from 'react'
 import { Badge } from 'react-bootstrap'
 
 import { CategoryRaw } from '../../../entities/Category'
-import CredentialsContext from '../../../contexts/CredentialsContext'
-import './PublicationTotal.css'
-import { PublicationRepository } from '../repository/PublicationRepository'
+import '../list/components/PublicationTotal.css'
 
 export interface CategoryMenuProps {
     onSelectedChange: (selected: number) => void
-    selected: number
-}
-
-const badgeAll = {
-    id: -2,
-    name: 'Todas',
-    description:'',
-    parent: null
-}
-
-const expert = {
-    id: -1,
-    name: 'Favoritas',
-    description:'',
-    parent: null
+    selected: number,
+    categories: CategoryRaw[]
 }
 
 const CategoryMenu: FunctionComponent<CategoryMenuProps> = (
     {
         selected,
-        onSelectedChange
+        onSelectedChange,
+        categories
     }
 ) => {
 
-    const [ categories, setCategories ] = useState<CategoryRaw[]>([badgeAll])
-    const credentials = useContext(CredentialsContext)
     const divCategory = useRef<HTMLDivElement>(null)
-    const repository = new PublicationRepository();
 
     const wheelListener = (e: WheelEvent) => {
         e.preventDefault()
@@ -43,27 +26,6 @@ const CategoryMenu: FunctionComponent<CategoryMenuProps> = (
           left: divCategory.current!.scrollLeft + e.deltaY
         })
     }
-
-    useEffect(() => {
-        const searchCategories = () => {
-            repository.getCategoriesRaw(credentials.token)
-            .then(res => {
-                let newCategories
-                if (credentials.usertype === 'expert')
-                    newCategories = [badgeAll, expert, ...res.data.categories]
-                else
-                    newCategories = [badgeAll, ...res.data.categories]
-                setCategories(newCategories)
-            })
-            .catch(err => window.alert(err))
-            .finally(() => {})
-        }
-
-        if (credentials.token)
-            searchCategories()
-        
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [credentials.token, credentials.usertype])
 
     useEffect(() => {
         const refValue = divCategory.current

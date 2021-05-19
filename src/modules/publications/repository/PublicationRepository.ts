@@ -87,9 +87,6 @@ export class PublicationRepository {
                 cursor: getparams.cursor,
                 page: getparams.page,
                 filter: getparams.filter
-            },
-            headers: {
-                Authorization: `Bearer ${token}`
             }
         })
     }

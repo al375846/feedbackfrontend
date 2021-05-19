@@ -5,7 +5,7 @@ import CredentialsContext from '../../contexts/CredentialsContext';
 
 import { Feedback } from '../../entities/Feedback';
 import { Rate } from '../../entities/Rate';
-import FilesInfo from '../../modules/publications/publicationinfo/FilesInfo';
+import FilesInfo from '../../modules/publications/detail/FilesInfo';
 
 interface FeedbackCardProps {
     feedback: Feedback,

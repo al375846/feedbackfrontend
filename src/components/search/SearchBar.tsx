@@ -21,6 +21,7 @@ const SearchBar: FunctionComponent<SearchBarProps> = (
 
     useEffect(() => {
         const time = setTimeout( () => {
+            console.log('Estoy en el timeout')
             handleSearchTerm(searchTerm)
         }, 500)
 

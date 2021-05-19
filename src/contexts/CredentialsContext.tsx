@@ -9,6 +9,12 @@ export interface CredentialsData {
     onUsernameChange: (username: string) => void
 }
 
+export enum CredentialsUsertype {
+    ADMIN = 'admin',
+    APPRENTICE = 'apprentice',
+    EXPERT = 'expert'
+}
+
 const CredentialsContext = React.createContext<CredentialsData>({
     token: '', usertype: 'apprentice', username: '',
     onTokenChange: () => null, onUsertypeChange: () => null, onUsernameChange: () => null

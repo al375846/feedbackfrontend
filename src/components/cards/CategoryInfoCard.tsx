@@ -8,6 +8,7 @@ interface CategoryInfoCardProps {
     handleCategory: (cat: Category) => void
 }
 
+//category info card for admin profile
 const CategoryInfoCard: FunctionComponent<CategoryInfoCardProps> = (
     {
         category,
@@ -15,7 +16,7 @@ const CategoryInfoCard: FunctionComponent<CategoryInfoCardProps> = (
         handleCategory
     }
 ) => {
-
+    //check if the category is a parent category or not
     if (category)
         return (
             <div className="category-admin" onClick={() => handleCategory(category)}>

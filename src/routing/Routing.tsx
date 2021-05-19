@@ -6,16 +6,16 @@ import ApprenticeProfile from "../modules/profiles/apprentice/ApprenticeProfile"
 import ExpertProfile from "../modules/profiles/expert/ExpertProfile";
 import AdminProfile from "../modules/profiles/admin/AdminProfile";
 import Layout from "../components/layout/Layout";
-import PublicationList from "../modules/publications/publicationlist/PublicationList";
-import PublicationInfo from "../modules/publications/publicationinfo/PublicationInfo";
+import PublicationInfo from "../modules/publications/detail/PublicationInfo";
 import RankingInfo from "../modules/rankings/RankingInfo";
 import Register from "../modules/auth/register/Register";
+import PublicationListScreen from "../modules/publications/list/PublicationListScreen";
 
 const Routing: FunctionComponent = () => {
     return (
         <BrowserRouter>
             <Layout>
-                <Route path={ROUTE_BASE} exact component={PublicationList}/>
+                <Route path={ROUTE_BASE} exact component={PublicationListScreen}/>
                 <Route path={ROUTE_PUBLICATION_INFO} exact component={PublicationInfo}/>
                 <Route path={ROUTE_PROFILE_APPRENTICE} exact component={ApprenticeProfile}/>
                 <Route path={ROUTE_PROFILE_EXPERT} exact component={ExpertProfile}/>

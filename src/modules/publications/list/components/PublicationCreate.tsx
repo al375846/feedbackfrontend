@@ -4,47 +4,38 @@ import { UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
 
 import { Category } from '../../../../entities/Category'
 import './PublicationTotal.css'
-import { PublicationPostParams, PublicationRepository } from '../../repository/PublicationRepository'
-import { Publication } from '../../../../entities/Publication'
 import InputForm from '../../../../components/form/input/InputForm';
 import InputFile from '../../../../components/form/files/InputFile';
 import InputSelect from '../../../../components/form/select/InputSelect';
 import InputTextArea from '../../../../components/form/textarea/InputTextArea';
 import { PublicationCreateInput } from '../PublicationCreateDataContainer';
+import { isApprentice } from '../../../../contexts/CredentialsContext';
 
 export interface PublicationCreateProps {
     isAddingPublication: boolean,
     onAddingChange: (adding: boolean) => void,
-    handlePost: (publication: Publication) => void,
     loading: boolean,
-    onLoadingChange: (loading: boolean) => void,
     register: UseFormRegister<PublicationCreateInput>,
     handleSubmit: UseFormHandleSubmit<PublicationCreateInput>,
     categories: Category[],
     onSubmit: (data: PublicationCreateInput) => void,
-    category: string
+    category: string,
+    usertype: string
 }
 
 const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
     {
         isAddingPublication,
         onAddingChange,
-        handlePost,
         loading,
-        onLoadingChange,
         register,
         handleSubmit,
         categories,
         onSubmit,
-        category
+        category,
+        usertype
     }
 ) => {
-
-
-    if (!isAddingPublication) return null
-
-    if (!categories)
-        return <div className="loading"><Spinner animation="border"/></div>
 
     const getSubCategories = () => {
         const defaultOption = <option value={"-1"} key={"select -1"}>Seleccionar subcategoria</option>
@@ -58,6 +49,20 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
         return <option value={category.name} key={category.name+index}>{category.name}</option>
     })
 
+    if (!isApprentice(usertype)) return null
+
+    if (!isAddingPublication) 
+        return (
+            <div className="publication-add">
+                <Button className="add-button" onClick={() => onAddingChange(!isAddingPublication)}>
+                    <i className="plus icon"></i>
+                </Button> 
+            </div>
+        )
+
+    if (categories.length === 0)
+        return <div className="loading"><Spinner animation="border"/></div>
+    
     return (
         <div className="publication-form">
             <div className="create-form">
@@ -116,11 +121,10 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
                     <Alert variant="info" show={loading}>
                         Publicando...
                     </Alert>
-
                     <Button variant="primary" type="submit" className="submit-button">
                         Submit
                     </Button>
-                    <Button variant="secondary" type="button" onClick={() => /*handleShow(false)*/{}}>
+                    <Button variant="secondary" type="button" onClick={() => onAddingChange(!isAddingPublication)}>
                         Cancel
                     </Button>
                 </Form>

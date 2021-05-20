@@ -31,8 +31,6 @@ const PublicationCreateDataContainer = () => {
 
     const navigateToPublication = (id: number) => history.push(`/publication/${id}`)
 
-    const onLoadingChange = (loading: boolean) => setLoading(loading)
-
     const onAddingChange = (adding: boolean) => setIsAddingPublication(adding)
 
     const handlePost = (publication: Publication) => {
@@ -73,7 +71,7 @@ const PublicationCreateDataContainer = () => {
 
     useEffect(() => {
 
-        if (!categories)
+        if (categories.length === 0)
             repository.getCategories(credentials.token)
             .then(res => setCategories(res.data.categories))
             .catch(err => window.alert(err))
@@ -85,14 +83,13 @@ const PublicationCreateDataContainer = () => {
         <PublicationCreateView 
             isAddingPublication={isAddingPublication}
             onAddingChange={onAddingChange}
-            handlePost={handlePost}
             loading={loading}
-            onLoadingChange={onLoadingChange}
             register={register}
             handleSubmit={handleSubmit}
             categories={categories}
             onSubmit={onSubmit}
             category={category}
+            usertype={credentials.usertype}
         />
     )
 }

@@ -14,10 +14,8 @@ const PublicationListDataContainer = () => {
     const [ itemSize, setItemsize ] = useState<number>(0)
     const [ page, setPage ] = useState<number>(1)
     const [ left, setLeft ] = useState<number>(0)
-    const [ cursor, setCursor ] = useState<number>(-1)
     const [ loading, setLoading ] = useState<boolean>(false)
     const [ finalSearchTerm, setFinalSearchTerm ] = useState<string>('')
-    const [ showCreate, setShowCreate ] = useState<boolean>(false)
     const [ selectedCategory, setSelectedCategory ] = useState(PublicationCategories.ALL)
     
     const history = useHistory();
@@ -28,8 +26,6 @@ const PublicationListDataContainer = () => {
 
     const onSelectCategory = (selected: number) => setSelectedCategory(selected)
 
-    const handleShow = (show: boolean) => setShowCreate(show);
-
     const postPublication = (publication: Publication) => navigateToPublication(publication.id)
 
     const handleSearchTerm = (term: string) => setFinalSearchTerm(term)
@@ -39,18 +35,11 @@ const PublicationListDataContainer = () => {
     const handleSearch = (data: PublicationResponseData) => {
         setPublications(data.publications)
         setItemsize(data.itemSize)
-        if (cursor === -1) {
-            setLeft(data.leftSize)
-            setCursor(data.publications[0].id + 1) 
-        }
-        else {
-            setLeft((page - 1)*data.itemSize + data.leftSize) 
-        }
+        setLeft(data.leftSize) 
     }
 
     const getParams = () => {
         return {
-            cursor: cursor,
             page: page,
             filter: finalSearchTerm
         }
@@ -96,7 +85,7 @@ const PublicationListDataContainer = () => {
         else
             findAll()          
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [finalSearchTerm, credentials.token, selectedCategory, page, cursor])
+    }, [finalSearchTerm, credentials.token, selectedCategory, page])
 
     useEffect(() => {
         findCategories()
@@ -106,10 +95,8 @@ const PublicationListDataContainer = () => {
     return (
         <PublicationListView 
             handleSearchTerm={handleSearchTerm}
-            handleShow={handleShow}
             selected={selectedCategory}
             onSelectedChange={onSelectCategory}
-            showCreate={showCreate}
             postPublication={postPublication}
             publications={publications}
             itemSize={itemSize}

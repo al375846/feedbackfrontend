@@ -1,27 +1,19 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap'
-import CredentialsContext from '../../contexts/CredentialsContext'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 
 interface SearchBarProps {
-    handleSearchTerm: (term: string) => void,
-    handleShow: (show: boolean) => void,
-    show: boolean
+    handleSearchTerm: (term: string) => void
 }
 
 const SearchBar: FunctionComponent<SearchBarProps> = (
     {
-        handleSearchTerm,
-        handleShow,
-        show
+        handleSearchTerm
     }
 ) => {
 
     const [ searchTerm, setSearchTerm ] = useState<string>('')
-    const credentials = useContext(CredentialsContext)
 
     useEffect(() => {
         const time = setTimeout( () => {
-            console.log('Estoy en el timeout')
             handleSearchTerm(searchTerm)
         }, 500)
 
@@ -32,25 +24,13 @@ const SearchBar: FunctionComponent<SearchBarProps> = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchTerm])
 
-    const renderPost = () => {
-        if (credentials.usertype === 'apprentice')
-            return (
-                <div className="add-publication">
-                    <Button onClick={() => handleShow(!show)}>
-                        Post your publication
-                    </Button>  
-                </div>
-            )
-    }
-
     return (
         <div className="ui form">
-            <div className={`ui fluid icon input ${credentials.usertype === 'apprentice' ? 'posting' : ''}`}>
+            <div className="ui fluid icon input">
                 <input value={searchTerm} placeholder="Search publications" 
                 type="text" className="input" onChange={e => setSearchTerm(e.target.value)}/>  
                 <i className="search icon"></i>
             </div>
-            {renderPost()}
         </div>
     )
 }

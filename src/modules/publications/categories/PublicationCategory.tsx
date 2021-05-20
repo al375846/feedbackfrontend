@@ -1,4 +1,4 @@
-import { CredentialsUsertype } from "../../../contexts/CredentialsContext"
+import { isExpert } from "../../../contexts/CredentialsContext"
 import { CategoryRaw } from "../../../entities/Category"
 
 export enum PublicationCategories {
@@ -11,7 +11,7 @@ export const isCustomCategory = (id: number): boolean => {
 }
 
 export const isUserExpert = (type: string): Array<CategoryRaw> => {
-    return type === CredentialsUsertype.EXPERT ? [categoryFavourite] : []
+    return isExpert(type) ? [categoryFavourite] : []
 }
 
 export const categoryAll = {

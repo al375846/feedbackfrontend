@@ -6,9 +6,7 @@ import PublicationList from './components/PublicationList'
 import PublicationListHeader from './components/PublicationListHeader'
 
 interface PublicationListViewProps {
-    handleShow: (bool: boolean) => void,
     handleSearchTerm: (term: string) => void,
-    showCreate: boolean,
     onSelectedChange: (selected: number) => void,
     selected: number,
     postPublication: (publication: Publication) => void,
@@ -23,9 +21,7 @@ interface PublicationListViewProps {
 
 const PublicationListView: FunctionComponent<PublicationListViewProps> = (
     {
-        handleShow,
         handleSearchTerm,
-        showCreate,
         onSelectedChange,
         selected,
         postPublication,
@@ -42,10 +38,8 @@ const PublicationListView: FunctionComponent<PublicationListViewProps> = (
         <div className="parent-div">
             <PublicationListHeader 
                 handleSearchTerm={handleSearchTerm}
-                handleShow={handleShow}
                 selected={selected}
                 onSelectedChange={onSelectedChange}
-                showCreate={showCreate}
                 postPublication={postPublication}
                 categories={categories}
             />

@@ -9,7 +9,6 @@ import { Feedback } from "../../../entities/Feedback";
 
 
 export interface PublicationGetParams {
-    cursor: number,
     page: number,
     filter: string
 }
@@ -84,7 +83,6 @@ export class PublicationRepository {
     public async findAll(getparams: PublicationGetParams, token: string): Promise<AxiosResponse<PublicationResponseData>> {
         return await api.get<PublicationResponseData>(PUBLICATION, {
             params: {
-                cursor: getparams.cursor,
                 page: getparams.page,
                 filter: getparams.filter
             }
@@ -94,7 +92,6 @@ export class PublicationRepository {
     public async findAllByCategory(id: number, getparams: PublicationGetParams, token: string): Promise<AxiosResponse<PublicationResponseData>> {
         return await api.get<PublicationResponseData>(PUBLICATION_LIST_CATEGORY.replace(':id', id.toString()), {
             params: {
-                cursor: getparams.cursor,
                 page: getparams.page,
                 filter: getparams.filter
             },
@@ -107,7 +104,6 @@ export class PublicationRepository {
     public async findAllByExpert(getparams: PublicationGetParams, token: string): Promise<AxiosResponse<PublicationResponseData>> {
         return await api.get<PublicationResponseData>(PUBLICATION_LIST_EXPERT, {
             params: {
-                cursor: getparams.cursor,
                 page: getparams.page,
                 filter: getparams.filter
             },

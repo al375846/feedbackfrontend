@@ -20,6 +20,14 @@ const CredentialsContext = React.createContext<CredentialsData>({
     onTokenChange: () => null, onUsertypeChange: () => null, onUsernameChange: () => null
 })
 
+export const isExpert = (type: string): boolean => {
+    return type === CredentialsUsertype.EXPERT
+}
+
+export const isApprentice = (type: string): boolean => {
+    return type === CredentialsUsertype.APPRENTICE
+}
+
 export const CredentialsProvider = CredentialsContext.Provider
 
 export interface CredentialsStoreProps {

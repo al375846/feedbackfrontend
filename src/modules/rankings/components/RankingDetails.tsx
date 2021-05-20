@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { Spinner } from 'react-bootstrap';
-import RankingCard from '../../components/cards/RankingCard';
+import RankingCard from '../../../components/cards/RankingCard';
 
-import { Ranking } from '../../entities/Ranking';
+import { Ranking } from '../../../entities/Ranking';
 import './RankingDetails.css';
 
 export interface RankingDetailsProps {

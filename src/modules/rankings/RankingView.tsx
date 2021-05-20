@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { Ranking } from '../../entities/Ranking'
-import RankingInfo from './RankingInfo'
+import RankingInfo from './components/RankingInfo'
 
 interface RankingViewProps {
     ratedExperts: Ranking[] | undefined,

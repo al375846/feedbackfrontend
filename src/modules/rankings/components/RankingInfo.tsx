@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
-import { Ranking } from '../../entities/Ranking';
+import { Ranking } from '../../../entities/Ranking';
 
 import RankingDetails from './RankingDetails';
 

@@ -13,7 +13,7 @@ const CategoryAdminContext = React.createContext<CategoryAdminData>({
 export const CategoryAdminProvaider = CategoryAdminContext.Provider
 
 export interface CategoryAdminStoreProps {
-    children: JSX.Element
+    children: JSX.Element[]
 }
 
 export const CategoryAdminStore = (props: CategoryAdminStoreProps) => {

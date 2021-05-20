@@ -1,11 +1,13 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
-import FavouriteCategoryCard from '../../../components/cards/FavouriteCategoryCard'
+import FavouriteCategoryCard from '../../../../components/cards/FavouriteCategoryCard';
+import CredentialsContext from '../../../../contexts/CredentialsContext';
+import { CategoryRaw, SubCategory } from '../../../../entities/Category';
+import { ProfileRepository } from '../../repository/ProfileRepository';
 
-import CredentialsContext from '../../../contexts/CredentialsContext'
-import { SubCategory, CategoryRaw } from '../../../entities/Category'
+
 import '../ProfileTotal.css'
-import { ProfileRepository } from '../repository/ProfileRepository'
+
 
 interface FavCategoriesInfoProps {
 

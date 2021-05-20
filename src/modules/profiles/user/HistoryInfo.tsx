@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 
-import CredentialsContext from '../../contexts/CredentialsContext'
 import { Spinner } from 'react-bootstrap'
-import {History} from '../../entities/History'
+import HistoryCard from '../../../components/cards/HistoryCard';
+import CredentialsContext from '../../../contexts/CredentialsContext';
+import { History } from '../../../entities/History';
+import { ProfileRepository } from '../repository/ProfileRepository';
 import './ProfileTotal.css'
-import { ProfileRepository } from './repository/ProfileRepository'
-import HistoryCard from '../../components/cards/HistoryCard'
 
 interface HistoryInfoProps {
 

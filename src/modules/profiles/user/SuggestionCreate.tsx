@@ -1,14 +1,14 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 import { Alert, Button, Form, Spinner } from 'react-bootstrap'
 
-import CredentialsContext from '../../contexts/CredentialsContext'
-import { Category } from '../../entities/Category'
 import { useForm } from 'react-hook-form'
-import InputForm from '../../components/form/input/InputForm'
-import InputTextArea from '../../components/form/textarea/InputTextArea'
-import InputRadio from '../../components/form/radio/InputRadio'
-import InputSelect from '../../components/form/select/InputSelect'
-import { ProfileRepository } from './repository/ProfileRepository'
+import InputForm from '../../../components/form/input/InputForm'
+import InputRadio from '../../../components/form/radio/InputRadio'
+import InputSelect from '../../../components/form/select/InputSelect'
+import InputTextArea from '../../../components/form/textarea/InputTextArea'
+import CredentialsContext from '../../../contexts/CredentialsContext'
+import { Category } from '../../../entities/Category'
+import { ProfileRepository } from '../repository/ProfileRepository'
 
 type SuggestionCreateInput = {
     name: string,

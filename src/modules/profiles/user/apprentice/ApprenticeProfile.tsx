@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
-import CredentialsContext from '../../../contexts/CredentialsContext'
+import CredentialsContext from '../../../../contexts/CredentialsContext'
 
 import HistoryInfo from '../HistoryInfo'
 import ProfileInfo from '../ProfileInfo'

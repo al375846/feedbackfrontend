@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 
-import CredentialsContext from '../../contexts/CredentialsContext'
-import { User } from '../../entities/User'
 import './ProfileTotal.css'
 import SuggestionCreate from './SuggestionCreate'
 import DeleteUserModal from './DeleteUserModal'
 import ChangePasswordModal from './ChangePasswordModal'
-import { ProfileRepository } from './repository/ProfileRepository'
 import { useForm } from 'react-hook-form'
-import InputForm from '../../components/form/input/InputForm'
-import ProfileInfoCard from '../../components/cards/ProfileInfoCard'
+import CredentialsContext from '../../../contexts/CredentialsContext'
+import ProfileInfoCard from '../../../components/cards/ProfileInfoCard'
+import InputForm from '../../../components/form/input/InputForm'
+import { User } from '../../../entities/User'
+import { ProfileRepository } from '../repository/ProfileRepository'
 
 type UserParams = {
     email: string,

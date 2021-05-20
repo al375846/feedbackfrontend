@@ -111,19 +111,19 @@ const PublicationFeedbackDataContainer: FunctionComponent<PublicationFeedbackDat
 
     return (
         <PublicationFeedbackView 
-        publication={publicationContext.publication}
-        feedbacks={feedbacks}
-        loading={loading}
-        alert={alert}
-        showCreate={showCreate}
-        handleCreate={handleCreate}
-        register={register}
-        handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
-        handleRatingClick={handleRatingClick}
-        usertype={credentials.usertype}
-        username={credentials.username}
-        downloadFile={downloadFilesFeedback}/>
+            publication={publicationContext.publication}
+            feedbacks={feedbacks}
+            loading={loading}
+            alert={alert}
+            showCreate={showCreate}
+            handleCreate={handleCreate}
+            register={register}
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            handleRatingClick={handleRatingClick}
+            usertype={credentials.usertype}
+            username={credentials.username}
+            downloadFile={downloadFilesFeedback}/>
     )
 }
 

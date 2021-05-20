@@ -1,43 +1,40 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
-import { Spinner } from 'react-bootstrap'
+import React, { useContext, useEffect, useState } from 'react'
+import CategoryAdminContext from '../../../contexts/CategoryAdminContext';
+import CredentialsContext from '../../../contexts/CredentialsContext';
+import { Category } from '../../../entities/Category';
+import { Suggestion } from '../../../entities/Suggestion';
+import { ProfileRepository } from '../repository/ProfileRepository';
+import AdminProfileView from './AdminProfileView';
 
-import CredentialsContext from '../../../contexts/CredentialsContext'
-import { Suggestion } from '../../../entities/Suggestion'
-import CategoryAdminContext from '../../../contexts/CategoryAdminContext'
-import { Category } from '../../../entities/Category'
-import { ProfileRepository } from '../repository/ProfileRepository'
-import SuggestionCard from '../../../components/cards/SuggestionCard'
+const AdminProfileDataContainer = () => {
 
-interface SuggestionListProps {
+    const [ categoryparent, setCategoryParent ] = useState<string>('')
+    const [ suggestions, setSuggestions ] = useState<Suggestion[]>()
 
-}
-
-const SuggestionList: FunctionComponent<SuggestionListProps> = () => {
-
-    const credentials = useContext(CredentialsContext);
-    const categoryadmin = useContext(CategoryAdminContext);
-    const [ suggestions, setSuggestions ] = useState<Suggestion[]>();
-    const repository = new ProfileRepository();
-    const [ loading, setLoading ] = useState<boolean>(false);
+    const credentials = useContext(CredentialsContext)
+    const categoryadmin = useContext(CategoryAdminContext)
+    const repository = new ProfileRepository()
 
     useEffect(() => {
+        if (!categoryadmin.categories)
+            repository.getCategories(credentials.token)
+            .then(res => {
+                categoryadmin.onCategoriesChange(res.data.categories)
+                setCategoryParent(res.data.categories[0].name)
+            })
+            .catch(err => window.alert(err))
 
-        const searchSuggestions = async() => {
-            setLoading(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [credentials.token, categoryadmin.categories])
+
+    useEffect(() => {
+        if (!suggestions)
             repository.getSuggestions(credentials.token)
             .then(res => setSuggestions(res.data.suggestions))
             .catch(err => window.alert(err))
-            .finally(() => setLoading(false))
-        }
-
-        if (credentials.token && !suggestions)
-            searchSuggestions()
             
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [credentials.token, suggestions])
-
-    if ( loading || !suggestions )
-        return <div className="loading"><Spinner animation="border"/></div> 
 
     const handleAccept = (suggestion: Suggestion) => {
         const parent = suggestion.parent ? {name: suggestion.parent.name} : null
@@ -71,26 +68,24 @@ const SuggestionList: FunctionComponent<SuggestionListProps> = () => {
     const handleRemove = (suggestion: Suggestion) => {
         repository.deleteSuggestion(suggestion.id, credentials.token)
         .then(() => {
-            const newsuggestions = [...suggestions]
+            const newsuggestions = [...suggestions || []]
             const pos = newsuggestions.indexOf(suggestion)
             newsuggestions.splice(pos, 1)
             setSuggestions([...newsuggestions])
         })  
     }
 
-    const rendersuggestions = suggestions.map((suggestion) => {
-        return <SuggestionCard 
-                    key={suggestion.id}
-                    suggestion={suggestion}
-                    handleAccept={handleAccept} 
-                    handleRemove={handleRemove}/>
-    })
+    const handleCategory = (cat: Category) => setCategoryParent(cat.name)
 
     return (
-        <div className="suggestion-list">
-            {rendersuggestions}
-        </div>
+        <AdminProfileView 
+            categoryparent={categoryparent}
+            suggestions={suggestions}
+            categories={categoryadmin.categories}
+            handleCategory={handleCategory}
+            handleAccept={handleAccept}
+            handleRemove={handleRemove}/>
     )
 }
 
-export default SuggestionList
+export default AdminProfileDataContainer

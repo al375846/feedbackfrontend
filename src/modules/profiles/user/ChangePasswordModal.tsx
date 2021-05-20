@@ -2,10 +2,10 @@ import React, { FunctionComponent, useContext, useState } from 'react'
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
 import { createPortal } from 'react-dom'
 
-import CredentialsContext from '../../contexts/CredentialsContext'
 import { useForm } from 'react-hook-form'
-import InputForm from '../../components/form/input/InputForm'
-import { ProfileRepository } from './repository/ProfileRepository'
+import InputForm from '../../../components/form/input/InputForm'
+import CredentialsContext from '../../../contexts/CredentialsContext'
+import { ProfileRepository } from '../repository/ProfileRepository'
 
 export interface ChangePasswordModalProps {
     show: boolean,

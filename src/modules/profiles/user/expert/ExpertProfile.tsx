@@ -4,7 +4,7 @@ import { Tab, Tabs } from 'react-bootstrap'
 import FavCategoriesInfo from './FavCategoriesInfo'
 import HistoryInfo from '../HistoryInfo'
 import ProfileInfo from '../ProfileInfo'
-import CredentialsContext from '../../../contexts/CredentialsContext'
+import CredentialsContext from '../../../../contexts/CredentialsContext'
 
 interface ExpertProfileProps {
 

@@ -140,3 +140,19 @@
 .submit-category {
     margin-right: 1em;
 }
+
+.category-add {
+    position: fixed;
+    z-index: 100;
+    bottom: 1em;
+    right: 22%;
+}
+
+.add-button {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}

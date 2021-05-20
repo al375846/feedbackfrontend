@@ -1,44 +1,23 @@
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Spinner } from 'react-bootstrap';
 import RankingCard from '../../components/cards/RankingCard';
 
-import CredentialsContext from '../../contexts/CredentialsContext';
 import { Ranking } from '../../entities/Ranking';
 import './RankingDetails.css';
-import { RankingRepository } from './repository/RankingRepository';
 
 export interface RankingDetailsProps {
-    type: string
+    type: string,
+    ranking: Ranking[] | undefined
 };
 
 const RankingDetails: FunctionComponent<RankingDetailsProps> = (
     {
-        type
+        type,
+        ranking
     }
 ) => {
 
-    const [ ranking, setRanking ] = useState<Ranking[]>();
-    const credentials = useContext(CredentialsContext);
-    const repository = new RankingRepository();
-    const [ loading, setLoading ] = useState<boolean>(false);
-
-    useEffect(() => {
-
-        const searchRanking = () => {
-            setLoading(true)
-            repository.getRanking(type, credentials.token)
-            .then(res => setRanking(res.data.ranking))
-            .catch(err => window.alert(err))
-            .finally(() => setLoading(false))
-        };
-
-        if (credentials.token && !ranking)
-            searchRanking();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ranking, credentials.token, type]);
-
-    if ( loading || !ranking )
+    if ( !ranking )
         return <div><Spinner animation="border"/></div>;
 
     const orderfirst = [ranking[1], ranking[0], ranking[2]];

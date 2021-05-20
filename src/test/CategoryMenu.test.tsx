@@ -18,7 +18,7 @@ afterEach(() => {
 
 it("Categories div is loading", () => {
 
-    const menu = <CategoryMenu onSelectedChange={() => {}} selected={1}/>
+    const menu = <CategoryMenu categories={[]} onSelectedChange={() => {}} selected={1}/>
 
     act(() => {
       render(menu, container);
@@ -41,7 +41,7 @@ it("Change the category of category menu", () => {
 
     const onSelectedChange = jest.fn();
 
-    const menu = <CategoryMenu onSelectedChange={onSelectedChange} selected={1}/>
+    const menu = <CategoryMenu categories={[]} onSelectedChange={onSelectedChange} selected={1}/>
 
     act(() => {
       render(menu, container);

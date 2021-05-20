@@ -6,10 +6,10 @@ import ApprenticeProfile from "../modules/profiles/apprentice/ApprenticeProfile"
 import ExpertProfile from "../modules/profiles/expert/ExpertProfile";
 import AdminProfile from "../modules/profiles/admin/AdminProfile";
 import Layout from "../components/layout/Layout";
-import RankingInfo from "../modules/rankings/RankingInfo";
 import Register from "../modules/auth/register/Register";
 import PublicationListScreen from "../modules/publications/list/PublicationListScreen";
 import PublicationInfoScreen from "../modules/publications/detail/PublicationInfoScreen";
+import RankingScreen from "../modules/rankings/RankingScreen";
 
 const Routing: FunctionComponent = () => {
     return (
@@ -20,7 +20,7 @@ const Routing: FunctionComponent = () => {
                 <Route path={ROUTE_PROFILE_APPRENTICE} exact component={ApprenticeProfile}/>
                 <Route path={ROUTE_PROFILE_EXPERT} exact component={ExpertProfile}/>
                 <Route path={ROUTE_PROFILE_ADMIN} exact component={AdminProfile}/>
-                <Route path={ROUTE_RANKING} exact component={RankingInfo}/>
+                <Route path={ROUTE_RANKING} exact component={RankingScreen}/>
                 <Route path={ROUTE_REGISTER} exact component={Register}/>
             </Layout>
         </BrowserRouter>

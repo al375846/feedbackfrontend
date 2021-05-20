@@ -161,15 +161,15 @@ export class PublicationRepository {
         })
     }
 
-    public async getPublicationFeedbacks(publicationId: number, token: string): Promise<AxiosResponse<PublicationFeedbackResponseData>> {
-        return await api.get<PublicationFeedbackResponseData>(PUBLICATION_FEEDBACK.replace(':id', publicationId.toString()), {
+    public async getPublicationFeedbacks(publicationId: string, token: string): Promise<AxiosResponse<PublicationFeedbackResponseData>> {
+        return await api.get<PublicationFeedbackResponseData>(PUBLICATION_FEEDBACK.replace(':id', publicationId), {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
     }
 
-    public async postPublicationFeedback(publicationId: number, feedbacakData: PostFeedbackParams, token: string): Promise<AxiosResponse<PostFeedbackResponseData>> {
+    public async postPublicationFeedback(publicationId: string, feedbacakData: PostFeedbackParams, token: string): Promise<AxiosResponse<PostFeedbackResponseData>> {
         return await api.post<PostFeedbackResponseData>(FEEDBACK_POST.replace(':id', publicationId.toString()), feedbacakData, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -193,11 +193,8 @@ export class PublicationRepository {
         })
     }
 
-    public async getFile(filename: string, token: string): Promise<AxiosResponse> {
+    public async getFile(filename: string): Promise<AxiosResponse> {
         return await api.get(FILE.replace(':filename', filename), {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
             responseType: 'blob'
             })
     }

@@ -4,17 +4,19 @@ import { Badge } from 'react-bootstrap'
 
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Publication } from '../../entities/Publication'
-import FilesInfo from '../../modules/publications/detail/FilesInfo'
+import FilesInfo from '../../modules/publications/files/FilesInfo'
 
 interface PublicationDetailsProps {
     publication: Publication,
-    handleIncidence: (bool: boolean) => void
+    handleIncidence: (bool: boolean) => void,
+    downloadFile: (filename: string) => void
 }
 
 const PublicationDetails: FunctionComponent<PublicationDetailsProps> = (
     {
         publication,
-        handleIncidence
+        handleIncidence,
+        downloadFile
     }
 ) => {
 
@@ -61,7 +63,7 @@ const PublicationDetails: FunctionComponent<PublicationDetailsProps> = (
                 </div>
             </div>
             <br/>
-            <FilesInfo files={files}/>
+            <FilesInfo files={files} downloadFile={downloadFile}/>
             <br/>
             <div className="user-tag">
                 <h3>

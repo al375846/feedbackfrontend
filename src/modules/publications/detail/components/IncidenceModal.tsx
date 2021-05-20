@@ -1,56 +1,32 @@
-import React, { FunctionComponent, useContext } from 'react'
+import React, { FunctionComponent} from 'react'
 import { createPortal } from "react-dom"
 import { Button, Form, Modal } from 'react-bootstrap'
-import { useForm } from 'react-hook-form'
+import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
-import CredentialsContext from '../../../contexts/CredentialsContext'
-import InputTextArea from '../../../components/form/textarea/InputTextArea'
-import InputRadio from '../../../components/form/radio/InputRadio'
-import { PublicationRepository } from '../repository/PublicationRepository'
+import InputTextArea from '../../../../components/form/textarea/InputTextArea'
+import InputRadio from '../../../../components/form/radio/InputRadio'
+import { IncidenceInput } from '../PublicationInfoDataContainer'
 
 
 export interface IncidenceModalProps {
-    id: string,
     show: boolean,
-    handleIncidence: (bool: boolean) => void
-    showAlert: (message: string) => void
-}
-
-type IncidenceInput = {
-    description: string,
-    type: string
+    handleIncidence: (bool: boolean) => void,
+    showAlert: () => void,
+    register: UseFormRegister<IncidenceInput>,
+    handleSubmit: UseFormHandleSubmit<IncidenceInput>,
+    onSubmit: (data: IncidenceInput) => void
 }
 
 const IncidenceModal: FunctionComponent<IncidenceModalProps> = (
     {
-        id,
         show,
         handleIncidence,
-        showAlert
+        showAlert,
+        register,
+        handleSubmit,
+        onSubmit
     }
 ) => {
-
-    const { register, handleSubmit } = useForm<IncidenceInput>();
-    const credentials = useContext(CredentialsContext);
-    const repository = new PublicationRepository();
-
-    const handlePost = () => {
-        showAlert('Incidencia enviada')
-        handleIncidence(false)
-    }
-
-    const onSubmit = (data: IncidenceInput) => {
-
-        const incidenceData = {
-            type: data.type,
-            description: data.description
-        }
-        
-        repository.postIncidence(id, incidenceData, credentials.token)
-        .then(() => handlePost())
-        .catch(err => window.alert(err))
-        .finally(() => {})
-    }
 
     const radioValues = [
         {

@@ -1,40 +1,49 @@
-import moment from 'moment';
-import React, { FunctionComponent, useContext } from 'react';
-import { Card } from 'react-bootstrap';
-import CredentialsContext from '../../contexts/CredentialsContext';
+import React, { FunctionComponent } from 'react'
 
-import { Feedback } from '../../entities/Feedback';
-import { Rate } from '../../entities/Rate';
-import FilesInfo from '../../modules/publications/detail/FilesInfo';
+import { Feedback } from '../../../entities/Feedback'
+import '../detail/components/PublicationInfoTotal.css'
+import { Card } from 'react-bootstrap'
+import FilesInfo from '../files/FilesInfo'
+import moment from 'moment'
 
-interface FeedbackCardProps {
+export interface FeedbackCardProps {
     feedback: Feedback,
-    handleRatingClick: (rate: number) => void,
-    rating: Rate | null
-    username: string
-};
+    username: string | undefined,
+    handleRatingClick: (feedback: Feedback, rate: number) => void,
+    credentials: string,
+    downloadFile: (filename: string) => void
+}
 
-const FeedbackCard: FunctionComponent<FeedbackCardProps> = (
+const FeedbackDetails: FunctionComponent<FeedbackCardProps> = (
     {
         feedback,
+        username,
         handleRatingClick,
-        rating,
-        username
+        credentials,
+        downloadFile
     }
 ) => {
 
-    const credentials = useContext(CredentialsContext)
-
     const getoutline = (pos: number) => {
-        return (!rating || rating.grade < pos) ? 'outline' : ''
+        return (!feedback.valoration || feedback.valoration.grade < pos) ? 'outline' : ''
     }
 
     const renderstars = () => {
         let rendered = []
-        if (username === credentials.username)
+        if (username === credentials)
             for (let i = 0; i < 5; i++)
-                rendered.push(<i key={`star${i}`} className={`star ${getoutline(i + 1)} icon`} onClick={() => handleRatingClick(i + 1)}></i>)
+                rendered.push(<i key={`star${i}`} id={`star${i}`}
+                    className={`star ${getoutline(i + 1)} icon`} 
+                    onClick={() => {handleRatingClick(feedback, i + 1); updateStars(i + 1)}}></i>)
         return rendered
+    }
+
+    const updateStars = (rate: number) => {
+        for (let i = 0; i < 5; i++) {
+            const star = document.getElementById(`star${i}`) as HTMLElement
+            if (i < rate) star.className = 'star icon'
+            else star.className = 'star outline icon'
+        }
     }
 
     const files = [...feedback.images, ...feedback.video, ...feedback.document]
@@ -63,7 +72,7 @@ const FeedbackCard: FunctionComponent<FeedbackCardProps> = (
                     </div>
                 </div>
             </Card.Body>
-            <FilesInfo files={files}/>
+            <FilesInfo files={files} downloadFile={downloadFile}/>
             <small className="text-muted">
                 <div className="ui secondary menu">
                     <div className="metadata item">
@@ -77,4 +86,4 @@ const FeedbackCard: FunctionComponent<FeedbackCardProps> = (
     )
 }
 
-export default FeedbackCard
+export default FeedbackDetails

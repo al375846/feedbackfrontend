@@ -74,7 +74,7 @@
     cursor: pointer;
 }
 
-.feedback-created {
+.created {
     position: fixed;
     bottom: 1em;
     display: flex;

@@ -1,69 +1,24 @@
-import React, { FunctionComponent, useContext } from 'react'
+import React, { FunctionComponent } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import { Button } from 'react-bootstrap'
 
-import CredentialsContext from '../../../contexts/CredentialsContext'
-import './PublicationInfoTotal.css'
-import { PublicationRepository } from '../repository/PublicationRepository'
+import '../detail/components/PublicationInfoTotal.css'
+import { getFilename } from './FileDownload'
 
 export interface FilesInfoProps {
-    files: string[]
-}
-
-const mymes: { [extension: string]: string }  = {
-    jpg: 'image/jpg',
-    jpeg: 'image/jpeg',
-    png: 'image/png',
-    pdf: 'application/pdf',
-    mp4: 'video/mp4'
+    files: string[],
+    downloadFile: (filename: string) => void
 }
 
 const FilesInfo: FunctionComponent<FilesInfoProps> = (
     {
-        files
+        files,
+        downloadFile
     }
 ) => {
 
-    const credentials = useContext(CredentialsContext)
-    const repository = new PublicationRepository();
-
     pdfjs.GlobalWorkerOptions.workerSrc = 
     `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
-
-    const dowloandFile = (filename: string) => {
-
-        const extension = filename.split('.')
-        const type = extension[extension.length - 1]
-        const filetype = mymes[type]
-
-        repository.getFile(filename, credentials.token)
-        .then(res => {
-            let file = new File([res.data], filename, {type: filetype})
-            const link = document.createElement('a')
-            link.href = window.URL.createObjectURL(file)
-            link.setAttribute('download', filename)
-            document.body.appendChild(link)
-            link.click()
-        })
-        .catch(err => window.alert(err))
-        .finally(() => {})
-    }
-
-    const getFilename = (filename: string) => {
-        const fileparts = filename.split('-')
-        const extension = filename.split('.')
-        const type = extension[extension.length - 1]
-        let name = ''
-        for (let i = 0; i < fileparts.length - 1; i++) {
-            if (i !== 0)
-                name += '-'
-            name += fileparts[i]
-        }
-        name += '.' +type
-        if (name.length > 20)
-            name = name.substr(0,20) + '...'
-        return name
-    }
 
     const renderimage = (image: string) => {
         return (
@@ -104,7 +59,7 @@ const FilesInfo: FunctionComponent<FilesInfoProps> = (
         else
             renderdownload = renderimage(file)
         return (
-            <Button variant="light" onClick={() => dowloandFile(file)} key={file} className="file-preview">
+            <Button variant="light" onClick={() => downloadFile(file)} key={file} className="file-preview">
                 {renderdownload}
                 <div className="file-description">
                     {getFilename(file)}

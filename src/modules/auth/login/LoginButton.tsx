@@ -30,16 +30,11 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
 
         repository.logout(logData, credentials.token)
         .then(() => {
-            localStorage.removeItem('token')
-            localStorage.removeItem('username')
-            localStorage.removeItem('usertype')
             localStorage.removeItem('onesignal')
         })
         .catch(err => window.alert(err))
         .finally(() => {
-            credentials.onTokenChange('')
-            credentials.onUsertypeChange('')
-            credentials.onUsernameChange('')
+            credentials.removeAll()
             navigateToHome()
         })
     }

@@ -14,6 +14,9 @@ const Header = () => {
             <Link to="/ranking" className="item">
                 Rankings
             </Link>
+            <Link to="/suggestion" className="item">
+                Suggestions
+            </Link>
             </div>
             <div className="right menu">
                 <LoginButton />

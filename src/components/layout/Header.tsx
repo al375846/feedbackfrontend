@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-import LoginButton from '../../modules/auth/login/LoginButton'
+import LoggedScreen from '../../modules/auth/logged/LoggedScreen'
 
 const Header = () => {
 
@@ -19,7 +18,7 @@ const Header = () => {
             </Link>
             </div>
             <div className="right menu">
-                <LoginButton />
+                <LoggedScreen />
             </div>
         </div>
     )

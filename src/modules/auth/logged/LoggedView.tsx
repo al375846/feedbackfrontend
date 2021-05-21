@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
+import LoggedInfo from './components/LoggedInfo'
 
-const LoggedView = () => {
+interface LoggedViewProps {
+    onHandleLogout: () => void,
+    favs: () => boolean,
+    username: string
+}
+
+const LoggedView: FunctionComponent<LoggedViewProps> = (
+    {
+        onHandleLogout,
+        favs,
+        username
+    }
+) => {
     return (
-        <div>
-            
-        </div>
+        <LoggedInfo 
+            onHandleLogout={onHandleLogout}
+            favs={favs}
+            username={username}/>
     )
 }
 

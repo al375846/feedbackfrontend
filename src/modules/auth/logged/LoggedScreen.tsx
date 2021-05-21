@@ -1,10 +1,9 @@
 import React from 'react'
+import LoggedDataContainer from './LoggedDataContainer'
 
 const LoggedScreen = () => {
     return (
-        <div>
-            
-        </div>
+        <LoggedDataContainer />
     )
 }
 

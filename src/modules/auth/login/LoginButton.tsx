@@ -57,7 +57,7 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
     else 
         return (
             <div className="item">
-                <Link to={`/profile/${credentials.usertype}`} className="item">
+                <Link to="/profile" className="item">
                     <i className="user icon"></i>
                     {credentials.username}
                 </Link>

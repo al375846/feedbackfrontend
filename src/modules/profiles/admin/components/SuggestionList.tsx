@@ -19,15 +19,15 @@ const SuggestionList: FunctionComponent<SuggestionListProps> = (
     }
 ) => {
 
-    if ( !suggestions )
-        return <div className="loading"><Spinner animation="border"/></div> 
+    if (!suggestions)
+        return <div className="loading"><Spinner animation="border" /></div>
 
     const rendersuggestions = suggestions.map((suggestion) => {
-        return <SuggestionCard 
-                    key={suggestion.id}
-                    suggestion={suggestion}
-                    handleAccept={handleAccept} 
-                    handleRemove={handleRemove}/>
+        return <SuggestionCard
+            key={suggestion.id}
+            suggestion={suggestion}
+            handleAccept={handleAccept}
+            handleRemove={handleRemove} />
     })
 
     return (

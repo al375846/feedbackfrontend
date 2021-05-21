@@ -6,7 +6,8 @@ export interface CredentialsData {
     username: string,
     onTokenChange: (token: string) => void,
     onUsertypeChange: (usertype: string) => void,
-    onUsernameChange: (username: string) => void
+    onUsernameChange: (username: string) => void,
+    removeAll: () => void
 }
 
 export enum CredentialsUsertype {
@@ -17,7 +18,7 @@ export enum CredentialsUsertype {
 
 const CredentialsContext = React.createContext<CredentialsData>({
     token: '', usertype: 'apprentice', username: '',
-    onTokenChange: () => null, onUsertypeChange: () => null, onUsernameChange: () => null
+    onTokenChange: () => null, onUsertypeChange: () => null, onUsernameChange: () => null, removeAll: () => null
 })
 
 export const isExpert = (type: string): boolean => {
@@ -56,9 +57,20 @@ export const CredentialsStore = (props: CredentialsStoreProps) => {
         setUsername(username)
     }
 
+    const removeAll = () => {
+        setToken('')
+        setUsertype('')
+        setUsername('')
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        localStorage.removeItem('usertype')
+    }
+
     return (
-        <CredentialsContext.Provider value={{token: token, usertype: usertype, username: username,
-        onTokenChange:onTokenChange, onUsertypeChange:onUsertypeChange, onUsernameChange:onUsernameChange}}>
+        <CredentialsContext.Provider value={{
+            token: token, usertype: usertype, username: username,
+            onTokenChange: onTokenChange, onUsertypeChange: onUsertypeChange, onUsernameChange: onUsernameChange, removeAll: removeAll
+        }}>
             {props.children}
         </CredentialsContext.Provider>
     )

@@ -30,16 +30,16 @@ const AdminProfile: FunctionComponent<AdminProfileProps> = (
         <div>
             <Tabs fill defaultActiveKey="categories" id="admin-profile">
                 <Tab eventKey="categories" title="Categories">
-                    <CategoriesInfo 
+                    <CategoriesInfo
                         categoryparent={categoryparent}
                         categories={categories}
-                        handleCategory={handleCategory}/>
+                        handleCategory={handleCategory} />
                 </Tab>
                 <Tab eventKey="suggestions" title="Suggestions">
-                    <SuggestionList 
-                    suggestions={suggestions}
-                    handleAccept={handleAccept} 
-                    handleRemove={handleRemove}/>
+                    <SuggestionList
+                        suggestions={suggestions}
+                        handleAccept={handleAccept}
+                        handleRemove={handleRemove} />
                 </Tab>
             </Tabs>
         </div>

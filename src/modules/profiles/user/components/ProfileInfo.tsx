@@ -1,75 +1,38 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent} from 'react'
 import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 
 import './ProfileTotal.css'
-import SuggestionCreate from './SuggestionCreate'
-import DeleteUserModal from './DeleteUserModal'
-import ChangePasswordModal from './ChangePasswordModal'
-import { useForm } from 'react-hook-form'
-import CredentialsContext from '../../../contexts/CredentialsContext'
-import ProfileInfoCard from '../../../components/cards/ProfileInfoCard'
-import InputForm from '../../../components/form/input/InputForm'
-import { User } from '../../../entities/User'
-import { ProfileRepository } from '../repository/ProfileRepository'
+import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+import ProfileInfoCard from '../../../../components/cards/ProfileInfoCard'
+import InputForm from '../../../../components/form/input/InputForm'
+import { User } from '../../../../entities/User'
+import { UserParams } from '../UserDataContainer'
 
-type UserParams = {
-    email: string,
-    name: string,
-    lastname: string,
-    address: string,
-    phone: string
+export interface ProfileInfoProps {
+    user: User | undefined,
+    edit: boolean,
+    handleEdit: (edit: boolean) => void,
+    onSubmit: (data: UserParams) => void,
+    register: UseFormRegister<UserParams>,
+    handleSubmit: UseFormHandleSubmit<UserParams>,
+    handleChange: (change: boolean) => void,
+    handleDelete: (del: boolean) => void,
 }
 
-const ProfileInfo = () => {
-
-    const credentials = useContext(CredentialsContext);
-    const [ user, setUser ] = useState<User>();
-    const [ edit, setEdit ] = useState<boolean>(false);
-    const [ deletemodal, setDeletemodal ] = useState<boolean>(false);
-    const [ passwordmodal, setPasswordmodal ] = useState<boolean>(false);
-    const repository = new ProfileRepository();
-    const [ loading, setLoading ] = useState<boolean>(false);
-    const { register, handleSubmit } = useForm<UserParams>();
-
-    useEffect(() => {
-        const searchUser = () => {
-            setLoading(true)
-            repository.getUser(credentials.token)
-            .then(res => setUser(res.data.user))
-            .catch(err => window.alert(err))
-            .finally(() => setLoading(false))
-        }
-
-        if (credentials.token && !user)
-            searchUser()
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [credentials.token, user])
-
-    const onSubmit = (data: UserParams) => {
-       
-        const userData = {
-            username: credentials.username,
-            email: data.email,
-            name: data.name,
-            lastname: data.lastname,
-            address: data.address,
-            phone: data.phone
-        }
-
-        repository.putUser(userData, credentials.token)
-        .then(() => setEdit(false))
-        .catch(err => window.alert(err))
-            
+const ProfileInfo: FunctionComponent<ProfileInfoProps> = (
+    {
+        user,
+        edit,
+        handleEdit,
+        onSubmit,
+        register,
+        handleSubmit,
+        handleChange,
+        handleDelete
     }
+) => {
 
-    const handleEdit = (bool: boolean) => setEdit(bool);
-
-    const handleDelete = (bool: boolean) => setDeletemodal(bool);
-
-    const handlePassword = (bool: boolean) => setPasswordmodal(bool);
-
-    if ( loading || !user )
+    if ( !user )
         return <div><Spinner animation="border"/></div> 
 
     return (
@@ -77,8 +40,8 @@ const ProfileInfo = () => {
             <ProfileInfoCard 
                 edit={edit}
                 handleEdit={handleEdit}
-                handleDelete={handleDelete}
-                handlePassword={handlePassword}/>
+                handleChange={handleChange}
+                handleDelete={handleDelete}/>
             
             <div className="profile-info">
                 <Form onSubmit={handleSubmit(onSubmit)}>
@@ -147,13 +110,10 @@ const ProfileInfo = () => {
                     <Button variant="primary" type="submit" className="profile-submit" disabled={!edit}>
                         Submit
                     </Button>
-                    <Button variant="secondary" onClick={() => setEdit(!edit)} disabled={!edit}>
+                    <Button variant="secondary" onClick={() => handleEdit(!edit)} disabled={!edit}>
                         Cancel
                     </Button>
                 </Form>
-                <SuggestionCreate />
-                <DeleteUserModal show={deletemodal} handleDelete={handleDelete}/>
-                <ChangePasswordModal show={passwordmodal} handlePassword={handlePassword}/>
             </div>
         </div>
     )

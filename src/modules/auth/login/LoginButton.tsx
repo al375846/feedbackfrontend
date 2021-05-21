@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 import CredentialsContext, { isExpert } from '../../../contexts/CredentialsContext';
 import { AuthRepository } from '../repository/AuthRepository';
-import LoginModal from './LoginModal'
 
 interface LoginButtonProps {
     
@@ -48,16 +47,7 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
             )
     }
 
-    if (!credentials.token)
-        return (
-            <div className="item">
-                <Button variant="primary" onClick={() => setShow(true)}>
-                    Log in
-                </Button>
-
-                <LoginModal show={show} onShowChange={onShowChange}/>
-            </div>
-        )
+    if (!credentials.token) return null
     else 
         return (
             <div className="item">

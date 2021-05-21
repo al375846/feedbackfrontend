@@ -71,7 +71,7 @@ const PublicationCreateDataContainer = () => {
 
     useEffect(() => {
 
-        if (categories.length === 0)
+        if (categories.length === 0 && credentials.token)
             repository.getCategories(credentials.token)
             .then(res => setCategories(res.data.categories))
             .catch(err => window.alert(err))

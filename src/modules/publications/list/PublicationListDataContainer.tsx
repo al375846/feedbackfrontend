@@ -77,18 +77,21 @@ const PublicationListDataContainer = () => {
     }
 
     useEffect(() => {
-        setLoading(true);
-        if (selectedCategory === PublicationCategories.FAVOURITE)
-            findAllByExpert()
-        else if (isCustomCategory(selectedCategory))
-            findAllByCategory()
-        else
-            findAll()          
+        if (credentials.token) {
+            setLoading(true);
+            if (selectedCategory === PublicationCategories.FAVOURITE)
+                findAllByExpert()
+            else if (isCustomCategory(selectedCategory))
+                findAllByCategory()
+            else
+                findAll()
+        }       
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [finalSearchTerm, credentials.token, selectedCategory, page])
 
     useEffect(() => {
-        findCategories()
+        if (credentials.token)
+            findCategories()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [credentials.token, credentials.usertype])
 

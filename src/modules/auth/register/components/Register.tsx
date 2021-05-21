@@ -1,85 +1,45 @@
-import React, { FunctionComponent, useState } from 'react';
-import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router';
+import React, { FunctionComponent } from 'react'
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap'
+import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
-import InputForm from '../../../components/form/input/InputForm';
-import InputRadio from '../../../components/form/radio/InputRadio';
-import { AuthRepository } from '../repository/AuthRepository';
-import './Register.css';
-
-type RegsiterInput = {
-    username: string,
-    password: string,
-    confirmpassword: string,
-    email: string,
-    name: string,
-    lastname: string,
-    address: string,
-    phone: string,
-    type: string  
-};
+import InputForm from '../../../../components/form/input/InputForm'
+import InputRadio from '../../../../components/form/radio/InputRadio'
+import { CredentialsUsertype } from '../../../../contexts/CredentialsContext'
+import './Register.css'
+import { RegsiterInput } from '../RegisterDataContainer'
 
 interface RegisterProps {
-
+    alert: boolean,
+    handleAlert: (alert: boolean) => void,
+    passwordMismatches: () => boolean,
+    register: UseFormRegister<RegsiterInput>, 
+    handleSubmit: UseFormHandleSubmit<RegsiterInput>,
+    onSubmit: (data: RegsiterInput) => void
 }
 
-const Register: FunctionComponent<RegisterProps> = () => {
-
-    const { register, handleSubmit, watch } = useForm<RegsiterInput>();
-    const [ alert, setAlert ] = useState<boolean>(false);
-    const repository = new AuthRepository();
-    const history = useHistory();
-    const password = watch('password');
-    const confirmpassword = watch('confirmpassword');
+const Register: FunctionComponent<RegisterProps> = (
+    {
+        alert,
+        handleAlert,
+        passwordMismatches,
+        register, 
+        handleSubmit,
+        onSubmit
+    }
+) => {
 
     const radioValues = [
         {
             id: "apprentice",
             label: "Apprentice",
-            value: "apprentice"
+            value: CredentialsUsertype.APPRENTICE
         },
         {
             id: "expert",
             label: "Expert",
-            value: "expert"
+            value: CredentialsUsertype.EXPERT
         }
-    ];
-
-    const showAlert = () => {
-        setAlert(true)
-        setTimeout(() => {
-            setAlert(false)
-        }, 3000)
-    };
-
-    const navigateToHome = () => history.push('/');
-
-    const onSubmit = (data: RegsiterInput) => {
-
-        const registerData = {
-            username: data.username,
-            password: data.password,
-            email: data.email,
-            name: data.name,
-            lastname: data.lastname,
-            address: data.address,
-            phone: data.phone
-        };
-
-        repository.checkUsername(data.username)
-        .then(res => {
-            if (!res.data.exists)
-                repository.register(registerData, data.type)
-                .then()
-                .catch()
-                .finally(() => navigateToHome())
-            else
-                showAlert()
-        })
-        .catch(err => window.alert(err));
-        
-    };
+    ]
     
     return(
         <div>
@@ -181,24 +141,24 @@ const Register: FunctionComponent<RegisterProps> = () => {
                             register={register}/>
                     </Col>
                     <Col>
-                        <Alert variant="danger" show={password !== confirmpassword} 
+                        <Alert variant="danger" show={passwordMismatches()} 
                             dismissible={false}>
                             Password mismatches
                         </Alert>
                         <Alert variant="danger" show={alert} dismissible={true} 
-                            onClose={() => setAlert(false)}>
+                            onClose={() => handleAlert(false)}>
                             Username already taken
                         </Alert>
                     </Col>
                 </Row>
                 <Button variant="primary" type="submit" 
-                    className="profile-submit" disabled={password !== confirmpassword}>
+                    className="profile-submit" disabled={passwordMismatches()}>
                 Submit
                 </Button>
             </Form>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default Register

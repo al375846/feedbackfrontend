@@ -17,7 +17,7 @@ const Layout: FunctionComponent<LayoutProps> = (
     const location = useLocation()
     const credentials = useContext(CredentialsContext)
 
-    if (!credentials.token)
+    if (!credentials.token && location.pathname !== ROUTE_REGISTER)
         return (
             <Fragment>
                 <Header />

@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import { Category } from '../../entities/Category'
+import { SuggestionCreateInput } from '../../entities/Suggestion'
 import SuggestionCreate from './components/SuggestionCreate'
-import { SuggestionCreateInput } from './SuggestionDataContainer'
 
 interface SuggestionViewProps {
     categories: Category[] | undefined,

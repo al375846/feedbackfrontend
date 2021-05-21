@@ -2,21 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import CredentialsContext from '../../contexts/CredentialsContext'
 import { Category } from '../../entities/Category'
+import { SuggestionCreateInput, SuggestionTypes } from '../../entities/Suggestion'
 import { CategoryCreateOptions } from '../profiles/admin/CreateCategoryDataContainer'
-import { ProfileRepository } from '../profiles/repository/ProfileRepository'
+import { SuggestionRepository } from './repository/SuggestionRepository'
 import SuggestionView from './SuggestionView'
-
-export type SuggestionCreateInput = {
-    name: string,
-    description: string,
-    type: string,
-    category: string
-}
-
-export enum SuggestionTypes {
-    CATEGORY = 'category',
-    UPGRADE = 'upgrade'
-}
 
 const SuggestionDataContainer = () => {
 
@@ -29,13 +18,13 @@ const SuggestionDataContainer = () => {
     const [ message, setMessage ] = useState<string>('')
 
     const credentials = useContext(CredentialsContext)
-    const repository = new ProfileRepository()
+    const repository = new SuggestionRepository()
 
     const handleAlert = (alert: boolean) => setAlert(alert)
 
     useEffect(() => {
         if (!categories)
-            repository.getCategories(credentials.token)
+            repository.getCategories()
             .then(res => setCategories(res.data.categories))
             .catch(err => window.alert(err))
 
@@ -63,7 +52,7 @@ const SuggestionDataContainer = () => {
             date: new Date()
         }
 
-        repository.postSuggestion(suggestionData, credentials.token)
+        repository.postSuggestion(suggestionData)
         .then(() => {
             setVariant('success')
             setMessage('Sugerencia enviada')

@@ -8,3 +8,15 @@ export interface Suggestion {
     parent: SubCategory | null,
     date: Date
 }
+
+export type SuggestionCreateInput = {
+    name: string,
+    description: string,
+    type: string,
+    category: string
+}
+
+export enum SuggestionTypes {
+    CATEGORY = 'category',
+    UPGRADE = 'upgrade'
+}

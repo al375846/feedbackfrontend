@@ -9,7 +9,6 @@ interface PublicationListViewProps {
     handleSearchTerm: (term: string) => void,
     onSelectedChange: (selected: number) => void,
     selected: number,
-    postPublication: (publication: Publication) => void,
     loading: boolean,
     publications: Publication[],
     itemSize: number,
@@ -24,7 +23,6 @@ const PublicationListView: FunctionComponent<PublicationListViewProps> = (
         handleSearchTerm,
         onSelectedChange,
         selected,
-        postPublication,
         itemSize,
         left,
         page,
@@ -40,7 +38,6 @@ const PublicationListView: FunctionComponent<PublicationListViewProps> = (
                 handleSearchTerm={handleSearchTerm}
                 selected={selected}
                 onSelectedChange={onSelectedChange}
-                postPublication={postPublication}
                 categories={categories}
             />
 

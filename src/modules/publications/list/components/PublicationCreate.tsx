@@ -10,6 +10,7 @@ import InputSelect from '../../../../components/form/select/InputSelect';
 import InputTextArea from '../../../../components/form/textarea/InputTextArea';
 import { PublicationCreateInput } from '../PublicationCreateDataContainer';
 import { isApprentice } from '../../../../contexts/CredentialsContext';
+import { CategoryCreateOptions } from '../../../profiles/admin/CreateCategoryDataContainer';
 
 export interface PublicationCreateProps {
     isAddingPublication: boolean,
@@ -38,7 +39,7 @@ const PublicationCreate: FunctionComponent<PublicationCreateProps> = (
 ) => {
 
     const getSubCategories = () => {
-        const defaultOption = <option value={"-1"} key={"select -1"}>Seleccionar subcategoria</option>
+        const defaultOption = <option value={CategoryCreateOptions.DEFAULT} key={"select -1"}>Seleccionar subcategoria</option>
         const subCategories = categories.find(cat => cat.name === category)?.subcategories?.map((subcategory, index) => {
             return <option value={subcategory.name} key={subcategory.name+index}>{subcategory.name}</option>
         })

@@ -4,6 +4,8 @@ import { useHistory } from 'react-router';
 import CredentialsContext from '../../../contexts/CredentialsContext';
 import { Category } from '../../../entities/Category';
 import { Publication } from '../../../entities/Publication';
+import { ROUTE_PUBLICATION_INFO } from '../../../routing/Routes';
+import { CategoryCreateOptions } from '../../profiles/admin/CreateCategoryDataContainer';
 import { PublicationPostParams, PublicationRepository } from '../repository/PublicationRepository';
 import PublicationCreateView from './PublicationCreateView';
 
@@ -29,7 +31,7 @@ const PublicationCreateDataContainer = () => {
     const repository = new PublicationRepository();
     const credentials = useContext(CredentialsContext);
 
-    const navigateToPublication = (id: number) => history.push(`/publication/${id}`)
+    const navigateToPublication = (id: number) => history.push(ROUTE_PUBLICATION_INFO.replace(':id', id.toString()))
 
     const onAddingChange = (adding: boolean) => setIsAddingPublication(adding)
 
@@ -40,7 +42,9 @@ const PublicationCreateDataContainer = () => {
     }
 
     const onSubmit = (data: PublicationCreateInput) => {
-        const categorypost = subcategory === "-1" ? category : subcategory
+        const categorypost = subcategory === CategoryCreateOptions.DEFAULT 
+            ? category 
+            : subcategory
 
         const publicationData: PublicationPostParams = {
             title: data.title,
@@ -89,8 +93,7 @@ const PublicationCreateDataContainer = () => {
             categories={categories}
             onSubmit={onSubmit}
             category={category}
-            usertype={credentials.usertype}
-        />
+            usertype={credentials.usertype}/>
     )
 }
 

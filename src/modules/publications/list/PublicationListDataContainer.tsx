@@ -22,11 +22,7 @@ const PublicationListDataContainer = () => {
     const repository = new PublicationRepository();
     const credentials = useContext(CredentialsContext);
 
-    const navigateToPublication = (id: number) => history.push(`/publication/${id}`)
-
     const onSelectCategory = (selected: number) => setSelectedCategory(selected)
-
-    const postPublication = (publication: Publication) => navigateToPublication(publication.id)
 
     const handleSearchTerm = (term: string) => setFinalSearchTerm(term)
 
@@ -78,7 +74,7 @@ const PublicationListDataContainer = () => {
 
     useEffect(() => {
         if (credentials.token) {
-            setLoading(true);
+            setLoading(true)
             if (selectedCategory === PublicationCategories.FAVOURITE)
                 findAllByExpert()
             else if (isCustomCategory(selectedCategory))
@@ -100,7 +96,6 @@ const PublicationListDataContainer = () => {
             handleSearchTerm={handleSearchTerm}
             selected={selectedCategory}
             onSelectedChange={onSelectCategory}
-            postPublication={postPublication}
             publications={publications}
             itemSize={itemSize}
             left={left}

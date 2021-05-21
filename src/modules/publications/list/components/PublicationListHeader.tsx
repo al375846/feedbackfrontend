@@ -8,7 +8,6 @@ interface PublicationListHeaderProps {
     handleSearchTerm: (term: string) => void,
     onSelectedChange: (selected: number) => void,
     selected: number,
-    postPublication: (publication: Publication) => void,
     categories: CategoryRaw[]
 
 }
@@ -18,7 +17,6 @@ const PublicationListHeader: FunctionComponent<PublicationListHeaderProps> = (
         handleSearchTerm,
         onSelectedChange,
         selected,
-        postPublication,
         categories
     }
 ) => {

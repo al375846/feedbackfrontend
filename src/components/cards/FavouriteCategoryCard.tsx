@@ -1,26 +1,23 @@
 import React, { FunctionComponent } from 'react';
 import { Card } from 'react-bootstrap';
 
-import { CategoryRaw, SubCategory } from '../../entities/Category';
+import { CategoryRaw } from '../../entities/Category';
 
 interface FavouriteCategoryCardProps {
     category: CategoryRaw,
-    favcategories: SubCategory[]
+    favIds: number[]
     handleFav: (id: number) => void
 };
-//favourite categoty for expert profile
+
 const FavouriteCategoryCard: FunctionComponent<FavouriteCategoryCardProps> = (
     {
         category,
-        favcategories,
+        favIds,
         handleFav
     }
 ) => {
-    //rendering favourite info icon
+
     const renderFavIcon = (id: number) => {
-        const favIds = favcategories.map((fav) => {
-            return fav.id
-        })
         if (favIds.indexOf(id) === -1)
             return <i id={`star${id}`} 
                 onClick={() => handleFav(id)} className="star outline icon"></i>

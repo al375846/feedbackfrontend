@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import CredentialsContext from '../../../contexts/CredentialsContext';
+import CredentialsContext, { isExpert } from '../../../contexts/CredentialsContext';
 import { AuthRepository } from '../repository/AuthRepository';
 import LoginModal from './LoginModal'
 
@@ -39,6 +39,15 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
         })
     }
 
+    const renderFavs = () => {
+        if (isExpert(credentials.usertype))
+            return (
+                <Link to="/favs" className="item">
+                   Favourite Categories
+                </Link>
+            )
+    }
+
     if (!credentials.token)
         return (
             <div className="item">
@@ -52,6 +61,8 @@ const LoginButton: FunctionComponent<LoginButtonProps> = () => {
     else 
         return (
             <div className="item">
+                {renderFavs()}
+
                 <Link to="/profile" className="item">
                     <i className="user icon"></i>
                     {credentials.username}

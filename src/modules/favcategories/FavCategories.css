@@ -1,0 +1,9 @@
+.category-fav {
+    float: left;
+}
+
+.icon-fav {
+    float: right;
+    cursor: pointer;
+    color: yellow;
+}

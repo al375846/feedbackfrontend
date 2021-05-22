@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
-import { LoginInput } from './LoginDataContainer'
+import { LoginInput } from '../../../entities/User'
 import LoginForm from './components/LoginForm'
 
 interface LoginViewProps {

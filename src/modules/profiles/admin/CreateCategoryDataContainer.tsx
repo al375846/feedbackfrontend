@@ -2,19 +2,9 @@ import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import CategoryAdminContext from '../../../contexts/CategoryAdminContext'
 import CredentialsContext from '../../../contexts/CredentialsContext'
-import { Category } from '../../../entities/Category'
+import { Category, CategoryCreateInput, CategoryCreateOptions } from '../../../entities/Category'
 import { ProfileRepository } from '../repository/ProfileRepository'
 import CreateCategoryView from './CreateCategoryView'
-
-export type CategoryCreateInput = {
-    parent: string,
-    name: string,
-    description: string
-}
-
-export enum CategoryCreateOptions {
-    DEFAULT = "category"
-}
 
 const CreateCategoryDataContainer = () => {
 
@@ -42,7 +32,7 @@ const CreateCategoryDataContainer = () => {
                 : {name: parentCategory }
         }
 
-        repository.postCategory(categoryData, credentials.token)
+        repository.postCategory(categoryData)
         .then(res => {
             if (!parentCategory) {
                 const category: Category = {

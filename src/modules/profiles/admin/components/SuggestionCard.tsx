@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react"
 import { Button, Card } from "react-bootstrap"
 
-import { Suggestion } from "../../entities/Suggestion"
+import { Suggestion } from "../../../../entities/Suggestion"
 
 interface SuggestionCardProps {
     suggestion: Suggestion,

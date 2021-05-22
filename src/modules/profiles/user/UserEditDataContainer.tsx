@@ -3,18 +3,9 @@ import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import CredentialsContext from '../../../contexts/CredentialsContext';
 import UserContext from '../../../contexts/UserContext';
+import { PasswordInput, ChangePasswordInput } from '../../../entities/User';
 import { ProfileRepository } from '../repository/ProfileRepository';
 import UserEditView from './UserEditView';
-
-export type PasswordInput = {
-    password: string
-}
-
-export type ChangePasswordInput = {
-    oldPassword: string,
-    newPassword: string,
-    confirmPassword: string,
-}
 
 const UserEditDataContainer = () => {
 
@@ -44,7 +35,7 @@ const UserEditDataContainer = () => {
             newPassword: data.newPassword
         }
 
-        repository.changePassword(changeData, credentials.token)
+        repository.changePassword(changeData)
         .then(() => changeReset({oldPassword:'', newPassword:'', confirmPassword:''}))
         .catch(() => showAlert())
     }
@@ -64,10 +55,10 @@ const UserEditDataContainer = () => {
             password: data.password
         }
 
-        repository.checkPassword(passwordData, credentials.token)
+        repository.checkPassword(passwordData,)
         .then(res => {
             if (res.data.correct)
-                repository.deleteUser(credentials.token)
+                repository.deleteUser()
                 .then(() => handleRemove())
                 .catch(err => window.alert(err))
             else {

@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import InputForm from '../../../../components/form/input/InputForm'
-import { ChangePasswordInput } from '../UserEditDataContainer'
+import { ChangePasswordInput } from '../../../../entities/User'
 
 interface ChangePasswordModalProps {
     alert: boolean,

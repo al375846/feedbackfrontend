@@ -3,16 +3,9 @@ import { useForm } from 'react-hook-form';
 import CredentialsContext from '../../../contexts/CredentialsContext';
 import UserContext from '../../../contexts/UserContext';
 import { History } from '../../../entities/History';
+import { UserParams } from '../../../entities/User';
 import { ProfileRepository } from '../repository/ProfileRepository';
 import UserView from './UserView';
-
-export type UserParams = {
-    email: string,
-    name: string,
-    lastname: string,
-    address: string,
-    phone: string
-}
 
 const UserDataContainer = () => {
 
@@ -25,7 +18,7 @@ const UserDataContainer = () => {
 
     useEffect(() => {
         if (!history)
-            repository.getHistory(credentials.usertype, credentials.token)
+            repository.getHistory(credentials.usertype)
             .then(res => setHistory(res.data.history))
             .catch(err => window.alert(err))
 
@@ -34,7 +27,7 @@ const UserDataContainer = () => {
 
     useEffect(() => {
         if (!userContext.user)
-            repository.getUser(credentials.token)
+            repository.getUser()
             .then(res => userContext.onUserChange(res.data.user))
             .catch(err => window.alert(err))
 
@@ -51,7 +44,7 @@ const UserDataContainer = () => {
             phone: data.phone
         }
 
-        repository.putUser(userData, credentials.token)
+        repository.putUser(userData)
         .then(() => userContext.handleEdit(false))
         .catch(err => window.alert(err))
             

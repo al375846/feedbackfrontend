@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react'
 import { Form, Alert, Button, Row, Col } from 'react-bootstrap'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import InputForm from '../../../../components/form/input/InputForm'
-import { LoginInput } from '../LoginDataContainer'
+import { LoginInput } from '../../../../entities/User'
 
 interface LoginFormProps {
     alert: boolean,

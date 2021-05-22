@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react'
 import { Category } from '../../../../entities/Category'
 import { Spinner } from 'react-bootstrap'
 import '../../user/components/ProfileTotal.css'
-import CategoryInfoCard from '../../../../components/cards/CategoryInfoCard'
+import CategoryInfoCard from './CategoryInfoCard'
 
 interface CategoriesInfoProps {
     categoryparent: string,

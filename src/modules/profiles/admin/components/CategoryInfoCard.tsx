@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { Card } from 'react-bootstrap'
-import { Category, SubCategory } from '../../entities/Category'
+import { Category, SubCategory } from '../../../../entities/Category'
 
 interface CategoryInfoCardProps {
     category: Category | null,

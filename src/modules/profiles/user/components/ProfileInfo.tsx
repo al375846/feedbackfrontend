@@ -5,8 +5,7 @@ import './ProfileTotal.css'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import ProfileInfoCard from '../../../../components/cards/ProfileInfoCard'
 import InputForm from '../../../../components/form/input/InputForm'
-import { User } from '../../../../entities/User'
-import { UserParams } from '../UserDataContainer'
+import { User, UserParams } from '../../../../entities/User'
 
 export interface ProfileInfoProps {
     user: User | undefined,

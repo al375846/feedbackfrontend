@@ -17,7 +17,7 @@ const AdminProfileDataContainer = () => {
 
     useEffect(() => {
         if (!categoryadmin.categories)
-            repository.getCategories(credentials.token)
+            repository.getCategories()
             .then(res => {
                 categoryadmin.onCategoriesChange(res.data.categories)
                 setCategoryParent(res.data.categories[0].name)
@@ -29,7 +29,7 @@ const AdminProfileDataContainer = () => {
 
     useEffect(() => {
         if (!suggestions)
-            repository.getSuggestions(credentials.token)
+            repository.getSuggestions()
             .then(res => setSuggestions(res.data.suggestions))
             .catch(err => window.alert(err))
             
@@ -44,7 +44,7 @@ const AdminProfileDataContainer = () => {
             parent: parent
         }
 
-        repository.postCategory(categoryData, credentials.token)
+        repository.postCategory(categoryData)
         .then(res => {
             if (!parent) {
                 const category: Category = {
@@ -66,7 +66,7 @@ const AdminProfileDataContainer = () => {
     }
 
     const handleRemove = (suggestion: Suggestion) => {
-        repository.deleteSuggestion(suggestion.id, credentials.token)
+        repository.deleteSuggestion(suggestion.id.toString())
         .then(() => {
             const newsuggestions = [...suggestions || []]
             const pos = newsuggestions.indexOf(suggestion)

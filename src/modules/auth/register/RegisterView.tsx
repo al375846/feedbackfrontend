@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+import { RegsiterInput } from '../../../entities/User'
 import Register from './components/Register'
-import { RegsiterInput } from './RegisterDataContainer'
 
 interface RegisterViewProps {
     alert: boolean,

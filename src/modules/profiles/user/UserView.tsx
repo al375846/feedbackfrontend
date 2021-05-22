@@ -1,8 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import { History } from '../../../entities/History'
-import { User } from '../../../entities/User'
-import { UserParams } from './UserDataContainer'
+import { User, UserParams } from '../../../entities/User'
 import UserProfile from './components/UserProfile'
 
 interface UserViewProps {

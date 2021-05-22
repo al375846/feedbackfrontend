@@ -23,3 +23,21 @@ export type LoginInput = {
     username: string,
     password: string
 }
+
+export type PasswordInput = {
+    password: string
+}
+
+export type ChangePasswordInput = {
+    oldPassword: string,
+    newPassword: string,
+    confirmPassword: string,
+}
+
+export type UserParams = {
+    email: string,
+    name: string,
+    lastname: string,
+    address: string,
+    phone: string
+}

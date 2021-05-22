@@ -5,8 +5,7 @@ import '../../user/components/ProfileTotal.css'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import InputForm from '../../../../components/form/input/InputForm'
 import InputTextArea from '../../../../components/form/textarea/InputTextArea'
-import { Category } from '../../../../entities/Category'
-import { CategoryCreateInput, CategoryCreateOptions } from '../CreateCategoryDataContainer'
+import { Category, CategoryCreateInput, CategoryCreateOptions } from '../../../../entities/Category'
 import InputSelect from '../../../../components/form/select/InputSelect'
 
 interface CategoryCreateProps {

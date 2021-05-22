@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { Spinner } from 'react-bootstrap'
-import SuggestionCard from '../../../../components/cards/SuggestionCard'
+import SuggestionCard from './SuggestionCard'
 import { Suggestion } from '../../../../entities/Suggestion'
 
 

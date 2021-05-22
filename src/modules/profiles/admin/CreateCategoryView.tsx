@@ -1,8 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
-import { Category } from '../../../entities/Category'
+import { Category, CategoryCreateInput } from '../../../entities/Category'
 import CategoryCreate from './components/CategoryCreate'
-import { CategoryCreateInput } from './CreateCategoryDataContainer'
 
 interface CreateCategoryViewProps {
     isAddingCategory: boolean,

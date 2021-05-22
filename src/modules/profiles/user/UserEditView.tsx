@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+import { PasswordInput, ChangePasswordInput } from '../../../entities/User'
 import ChangePasswordModal from './components/ChangePasswordModal'
 import DeleteUserModal from './components/DeleteUserModal'
-import { ChangePasswordInput, PasswordInput } from './UserEditDataContainer'
 
 interface UserEditViewProps {
     alert: boolean,

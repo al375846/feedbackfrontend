@@ -5,8 +5,8 @@ import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import InputForm from '../../../../components/form/input/InputForm'
 import InputRadio from '../../../../components/form/radio/InputRadio'
 import { CredentialsUsertype } from '../../../../contexts/CredentialsContext'
+import { RegsiterInput } from '../../../../entities/User'
 import './Register.css'
-import { RegsiterInput } from '../RegisterDataContainer'
 
 interface RegisterProps {
     alert: boolean,

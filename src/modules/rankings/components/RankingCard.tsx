@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Card } from 'react-bootstrap';
 
-import { Ranking } from '../../entities/Ranking';
+import { Ranking } from '../../../entities/Ranking';
 
 interface RankingCardProps {
     top: boolean,

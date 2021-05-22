@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Spinner } from 'react-bootstrap';
-import RankingCard from '../../../components/cards/RankingCard';
+import RankingCard from './RankingCard';
 
 import { Ranking } from '../../../entities/Ranking';
 import './RankingDetails.css';

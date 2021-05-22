@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Category } from '../../entities/Category'
+import { Category, CategoryCreateOptions } from '../../entities/Category'
 import { SuggestionCreateInput, SuggestionTypes } from '../../entities/Suggestion'
-import { CategoryCreateOptions } from '../profiles/admin/CreateCategoryDataContainer'
 import { SuggestionRepository } from './repository/SuggestionRepository'
+import { SuggestionPostParams } from './repository/SuggestionRequestTypes'
 import SuggestionView from './SuggestionView'
 
 const SuggestionDataContainer = () => {
@@ -42,7 +42,7 @@ const SuggestionDataContainer = () => {
             ? null 
             : { name: category }
 
-        const suggestionData = {
+        const suggestionData: SuggestionPostParams = {
             name: data.name,
             type: data.type,
             description: data.description,

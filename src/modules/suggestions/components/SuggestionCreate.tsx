@@ -6,9 +6,8 @@ import InputForm from '../../../components/form/input/InputForm'
 import InputRadio from '../../../components/form/radio/InputRadio'
 import InputSelect from '../../../components/form/select/InputSelect'
 import InputTextArea from '../../../components/form/textarea/InputTextArea'
-import { Category } from '../../../entities/Category'
-import { CategoryCreateOptions } from '../../profiles/admin/CreateCategoryDataContainer'
-import { SuggestionCreateInput, SuggestionTypes } from '../SuggestionDataContainer'
+import { Category, CategoryCreateOptions } from '../../../entities/Category'
+import { SuggestionCreateInput, SuggestionTypes } from '../../../entities/Suggestion'
 
 interface SuggestionCreateProps {
     categories: Category[] | undefined,

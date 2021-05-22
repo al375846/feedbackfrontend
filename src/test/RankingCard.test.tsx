@@ -1,7 +1,7 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import RankingCard from "../components/cards/RankingCard";
+import RankingCard from "../modules/rankings/components/RankingCard";
 
 let container: Element | DocumentFragment | null = null;
 beforeEach(() => {

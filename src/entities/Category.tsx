@@ -17,3 +17,13 @@ export interface CategoryRaw {
     description: string,
     parent: CategoryRaw | null
 }
+
+export type CategoryCreateInput = {
+    parent: string,
+    name: string,
+    description: string
+}
+
+export enum CategoryCreateOptions {
+    DEFAULT = "category"
+}

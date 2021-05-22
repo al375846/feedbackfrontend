@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { Spinner } from 'react-bootstrap'
-import FavouriteCategoryCard from '../../components/cards/FavouriteCategoryCard'
-import { CategoryRaw } from '../../entities/Category'
+import FavouriteCategoryCard from './FavouriteCategoryCard'
+import { CategoryRaw } from '../../../entities/Category'
 import './FavCategories.css'
 
 interface FavCategoriesInfoProps {

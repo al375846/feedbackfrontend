@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from 'react';
-import { Card } from 'react-bootstrap';
+import React, { FunctionComponent } from 'react'
+import { Card } from 'react-bootstrap'
 
-import { CategoryRaw } from '../../entities/Category';
+import { CategoryRaw } from '../../../entities/Category'
 
 interface FavouriteCategoryCardProps {
     category: CategoryRaw,

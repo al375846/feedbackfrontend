@@ -1,31 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react'
-import CredentialsContext from '../../contexts/CredentialsContext'
+import React, { useEffect, useState } from 'react'
 import { CategoryRaw, SubCategory } from '../../entities/Category'
-import { ProfileRepository } from '../profiles/repository/ProfileRepository'
 import FavCategoriesView from './FavCategoriesView'
+import { FavCategoriesRepository } from './repository/FavcategoriesRepository'
 
 const FavCategoriesDataContainer = () => {
 
     const [categories, setCategories] = useState<CategoryRaw[]>()
     const [favcategories, setFavcategories] = useState<SubCategory[]>()
 
-    const credentials = useContext(CredentialsContext)
-    const repository = new ProfileRepository()
+    const repository = new FavCategoriesRepository()
 
     useEffect(() => {
         if (!categories)
-            repository.getCategoriesRaw(credentials.token)
+            repository.getCategoriesRaw()
                 .then(res => setCategories(res.data.categories))
 
         if (!favcategories)
-            repository.getCategoriesExpert(credentials.token)
+            repository.getCategoriesExpert()
                 .then(res => setFavcategories(res.data.favCategories))
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [credentials.token, categories, favcategories])
+    }, [categories, favcategories])
 
     const postFavCategory = (id: number) => {
-        repository.postCategoryFavourite(id, credentials.token)
+        repository.postCategoryFavourite(id.toString())
             .then(res => {
                 setFavcategories([...favcategories || [], res.data.favCategory])
                 const icon = document.getElementById(`star${id}`) as HTMLElement
@@ -35,7 +33,7 @@ const FavCategoriesDataContainer = () => {
     }
 
     const deleteFavCategory = (id: number, category: SubCategory) => {
-        repository.deleteCategoryFavourite(id, credentials.token)
+        repository.deleteCategoryFavourite(id.toString())
             .then(() => {
                 const i = favcategories?.indexOf(category)
                 const newfavs = [...favcategories || []]

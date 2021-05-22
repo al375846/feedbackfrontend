@@ -1,8 +1,8 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import FavouriteCategoryCard from "../components/cards/FavouriteCategoryCard";
-import { CategoryRaw, SubCategory } from "../entities/Category";
+import FavouriteCategoryCard from "../modules/favcategories/components/FavouriteCategoryCard";
+import { CategoryRaw } from "../entities/Category";
 
 let container: Element | DocumentFragment | null = null;
 beforeEach(() => {
@@ -25,9 +25,9 @@ it("Renders an outline star if category is not favourite", () => {
     parent: null
     }
 
-    const favcategories: SubCategory[] = []
+    const favcategories: number[] = []
     act(() => {
-      render(<FavouriteCategoryCard category={category} favcategories={favcategories} handleFav={() => {}}/>, container);
+      render(<FavouriteCategoryCard category={category} favIds={favcategories} handleFav={() => {}}/>, container);
     });
     expect(container!.textContent).toContain("TEST");
     expect(document.getElementById('star1')?.className).toBe('star outline icon')
@@ -43,9 +43,9 @@ it("Renders a star if category is favourite", () => {
     parent: null
     }
 
-    const favcategories: SubCategory[] = [{  id: 1,name: 'TEST',description: 'TEST'}]
+    const favcategories: number[] = [1]
     act(() => {
-      render(<FavouriteCategoryCard category={category} favcategories={favcategories} handleFav={() => {}}/>, container);
+      render(<FavouriteCategoryCard category={category} favIds={favcategories} handleFav={() => {}}/>, container);
     });
     expect(container!.textContent).toContain("TEST");
     expect(document.getElementById('star1')?.className).toBe('star icon')
@@ -61,11 +61,11 @@ it("HandleFav is called when icon click", () => {
     parent: null
     }
 
-    const favcategories: SubCategory[] = []
+    const favcategories: number[] = []
 
     const handleFav = jest.fn();
 
-    const card = <FavouriteCategoryCard category={category} favcategories={favcategories} handleFav={handleFav}/>
+    const card = <FavouriteCategoryCard category={category} favIds={favcategories} handleFav={handleFav}/>
 
     act(() => {
       render(card, container);
@@ -89,15 +89,13 @@ it("Fav category is added", () => {
     parent: null
     }
 
-    const favcategories: SubCategory[] = []
+    const favcategories: number[] = []
 
     const handleFav = (id: number) => {
-      favcategories.push({  id: id,
-        name: 'TEST',
-        description: 'TEST'})
+      favcategories.push(id)
     }
 
-    const card = <FavouriteCategoryCard category={category} favcategories={favcategories} handleFav={handleFav}/>
+    const card = <FavouriteCategoryCard category={category} favIds={favcategories} handleFav={handleFav}/>
 
     act(() => {
       render(card, container);

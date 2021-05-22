@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { CategoryRaw } from '../../entities/Category'
-import FavCategoriesInfo from './FavCategoriesInfo'
+import FavCategoriesInfo from './components/FavCategoriesInfo'
 
 interface FavCategoriesViewProps {
     handleFav: (id: number) => void,

@@ -3,6 +3,7 @@ import { Form, Alert, Button, Row, Col } from 'react-bootstrap'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import InputForm from '../../../../components/form/input/InputForm'
 import { LoginInput } from '../../../../entities/User'
+import './Login.css'
 
 interface LoginFormProps {
     alert: boolean,
@@ -23,7 +24,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = (
 ) => {
 
     return (
-        <div>
+        <div className="login-form">
             <h1>Please Log in or Register</h1>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row >

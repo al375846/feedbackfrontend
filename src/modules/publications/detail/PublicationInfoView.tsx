@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+import { IncidenceInput } from '../../../entities/Incidence'
 import { Publication } from '../../../entities/Publication'
 import PublicationInfo from './components/PublicationInfo'
-import { IncidenceInput } from './PublicationInfoDataContainer'
 
 interface PublicationInfoViewProps {
     publication: Publication | undefined,

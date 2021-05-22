@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useEffect, useRef } from 'react'
 import { Badge } from 'react-bootstrap'
 
-import { CategoryRaw } from '../../../entities/Category'
-import '../list/components/PublicationTotal.css'
+import { CategoryRaw } from '../../../../entities/Category'
+import './PublicationTotal.css'
 
 export interface CategoryMenuProps {
     onSelectedChange: (selected: number) => void

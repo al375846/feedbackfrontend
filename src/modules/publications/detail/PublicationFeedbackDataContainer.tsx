@@ -2,18 +2,14 @@ import React, { FunctionComponent, useContext, useEffect, useState } from 'react
 import { useForm } from 'react-hook-form'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import PublicationDetailsContext from '../../../contexts/PublicationDetailsContext'
-import { Feedback } from '../../../entities/Feedback'
+import { Feedback, FeedbackCreateInput } from '../../../entities/Feedback'
 import { dowloandFile } from '../files/FileDownload'
-import { PublicationRepository, RatePostParams, RatePutParams } from '../repository/PublicationRepository'
+import { PublicationRepository} from '../repository/PublicationRepository'
+import { RatePostParams, RatePutParams } from '../repository/PublicationRequestType'
 import PublicationFeedbackView from './PublicationFeedbackView'
 
 interface PublicationFeedbackDataContainerProps {
     id: string
-}
-
-export type FeedbackCreateInput = {
-    description: string,
-    files: FileList
 }
 
 const PublicationFeedbackDataContainer: FunctionComponent<PublicationFeedbackDataContainerProps> = (
@@ -51,7 +47,7 @@ const PublicationFeedbackDataContainer: FunctionComponent<PublicationFeedbackDat
     useEffect(() => {
         if (!feedbacks){
             setLoading(true)
-            repository.getPublicationFeedbacks(id, credentials.token)
+            repository.getPublicationFeedbacks(id)
             .then(res => setFeedbacks(res.data.feedbacks))
             .catch(err => window.alert(err))
             .finally(() => setLoading(false))
@@ -66,7 +62,7 @@ const PublicationFeedbackDataContainer: FunctionComponent<PublicationFeedbackDat
                 grade: rate,
                 date: new Date()
             }
-            repository.rateFeedback(feedback.id, rateData, credentials.token)
+            repository.rateFeedback(feedback.id.toString(), rateData)
             .then(res => feedback.valoration = res.data.rating)
             .catch(err => window.alert(err))
             .finally(() => {})
@@ -75,7 +71,7 @@ const PublicationFeedbackDataContainer: FunctionComponent<PublicationFeedbackDat
             const rateData: RatePutParams = {
                 grade: rate,
             }
-            repository.updateRateFeedback(feedback.valoration.id, rateData, credentials.token)
+            repository.updateRateFeedback(feedback.valoration.id.toString(), rateData)
             .then(res => feedback.valoration = res.data.rating)
             .catch(err => window.alert(err))
             .finally(() => {})
@@ -92,14 +88,14 @@ const PublicationFeedbackDataContainer: FunctionComponent<PublicationFeedbackDat
         }
 
         let feedback: Feedback
-        repository.postPublicationFeedback(id, feedbackData, credentials.token)
+        repository.postPublicationFeedback(id, feedbackData)
         .then(res => {
             feedback = res.data.feedback
             if (data.files) {
                 const filesData = new FormData()
                 for (let i = 0; i < data.files.length; i++)
                     filesData.append(data.files[i].name, data.files[i], data.files[i].name)
-                repository.postFeedbackFiles(feedback.id, filesData, credentials.token)
+                repository.postFeedbackFiles(feedback.id.toString(), filesData)
                 .then(() => {})
                 .catch(err => window.alert(err))
                 .finally(() => {})

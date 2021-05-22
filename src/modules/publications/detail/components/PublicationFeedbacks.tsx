@@ -1,15 +1,13 @@
 import React, { FunctionComponent} from 'react'
 import { Alert, Button, Spinner } from 'react-bootstrap'
 
-import { Feedback } from '../../../entities/Feedback'
-import '../detail/components/PublicationInfoTotal.css'
+import './PublicationInfoTotal.css'
 import FeedbackCreate from './FeedbackCreate'
 import FeedbackDetails from './FeedbackDetails'
-import { Publication } from '../../../entities/Publication'
 import { UseFormRegister, UseFormHandleSubmit } from 'react-hook-form'
-
-import { isExpert } from '../../../contexts/CredentialsContext'
-import { FeedbackCreateInput } from '../detail/PublicationFeedbackDataContainer'
+import { Feedback, FeedbackCreateInput } from '../../../../entities/Feedback'
+import { isExpert } from '../../../../contexts/CredentialsContext'
+import { Publication } from '../../../../entities/Publication'
 
 export interface PublicationFeedbacksProps {
     publication: Publication | undefined,

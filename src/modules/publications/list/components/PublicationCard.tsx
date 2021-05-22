@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import moment from 'moment';
-import { Publication } from '../../entities/Publication';
+import { Publication } from '../../../../entities/Publication';
 import { Link } from 'react-router-dom';
 import { Badge, Card } from 'react-bootstrap';
 

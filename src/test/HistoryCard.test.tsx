@@ -1,7 +1,7 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import HistoryCard from "../components/cards/HistoryCard";
+import HistoryCard from "../modules/profiles/user/components/HistoryCard";
 
 let container: Element | DocumentFragment | null = null;
 beforeEach(() => {

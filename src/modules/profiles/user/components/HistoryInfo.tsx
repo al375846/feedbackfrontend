@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 
 import { Spinner } from 'react-bootstrap'
-import HistoryCard from '../../../../components/cards/HistoryCard'
+import HistoryCard from './HistoryCard'
 import { History } from '../../../../entities/History'
 import './ProfileTotal.css'
 

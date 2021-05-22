@@ -1,7 +1,7 @@
 import React, { FunctionComponent} from 'react'
 import { Spinner } from 'react-bootstrap'
 
-import PublicationCard from '../../../../components/cards/PublicationCard'
+import PublicationCard from './PublicationCard'
 import PaginationContainer from '../../../../components/pagination/PaginationContainer'
 import { Publication } from '../../../../entities/Publication'
 

@@ -3,17 +3,13 @@ import { useForm } from 'react-hook-form';
 
 import CredentialsContext from '../../../contexts/CredentialsContext';
 import PublicationDetailsContext from '../../../contexts/PublicationDetailsContext';
+import { IncidenceInput } from '../../../entities/Incidence';
 import { dowloandFile } from '../files/FileDownload';
 import { PublicationRepository } from '../repository/PublicationRepository';
 import PublicationInfoView from './PublicationInfoView'
 
 interface PublicationInfoDataContainerProps {
     id: string
-}
-
-export type IncidenceInput = {
-    description: string,
-    type: string
 }
 
 const PublicationInfoDataContainer: FunctionComponent<PublicationInfoDataContainerProps> = (
@@ -54,7 +50,7 @@ const PublicationInfoDataContainer: FunctionComponent<PublicationInfoDataContain
             description: data.description
         }
         
-        repository.postIncidence(id, incidenceData, credentials.token)
+        repository.postIncidence(id.toString(), incidenceData)
         .then(() => handlePost())
         .catch(err => window.alert(err))
         .finally(() => {})
@@ -63,7 +59,7 @@ const PublicationInfoDataContainer: FunctionComponent<PublicationInfoDataContain
     useEffect(() => {
         if (!publicationContext.publication) {
             setLoading(true);
-            repository.findById(id, credentials.token)
+            repository.findById(id.toString())
                 .then((res) => publicationContext.onPublicationChange(res.data.publication))
                 .catch((err) => window.alert(err))
                 .finally(() => setLoading(false))

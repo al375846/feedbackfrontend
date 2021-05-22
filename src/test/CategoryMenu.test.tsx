@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
-import CategoryMenu from "../modules/publications/categories/CategoryMenu";
+import CategoryMenu from "../modules/publications/list/components/CategoryMenu";
 
 let container: Element | DocumentFragment | null = null;
 beforeEach(() => {

@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { useHistory } from 'react-router'
 import CredentialsContext from '../../../contexts/CredentialsContext'
-import { CategoryRaw } from '../../../entities/Category'
+import { categoryAll, CategoryRaw, isCustomCategory, isUserExpert, PublicationCategories } from '../../../entities/Category'
 import { Publication } from '../../../entities/Publication'
-import { categoryAll, isCustomCategory, isUserExpert, PublicationCategories } from '../categories/PublicationCategory'
-import { PublicationRepository, PublicationResponseData } from '../repository/PublicationRepository'
+import { PublicationRepository } from '../repository/PublicationRepository'
+import { PublicationResponseData } from '../repository/PublicationRequestType'
 import PublicationListView from './PublicationListView'
 
 const PublicationListDataContainer = () => {
@@ -16,9 +15,8 @@ const PublicationListDataContainer = () => {
     const [ left, setLeft ] = useState<number>(0)
     const [ loading, setLoading ] = useState<boolean>(false)
     const [ finalSearchTerm, setFinalSearchTerm ] = useState<string>('')
-    const [ selectedCategory, setSelectedCategory ] = useState(PublicationCategories.ALL)
+    const [ selectedCategory, setSelectedCategory ] = useState<number>(PublicationCategories.ALL)
     
-    const history = useHistory();
     const repository = new PublicationRepository();
     const credentials = useContext(CredentialsContext);
 
@@ -42,28 +40,28 @@ const PublicationListDataContainer = () => {
     }
 
     const findAllByExpert = () => {
-        repository.findAllByExpert(getParams(), credentials.token)
+        repository.findAllByExpert(getParams())
         .then((res) => handleSearch(res.data))
         .catch((err) => window.alert(err))
         .finally(() => setLoading(false));
     }
 
     const findAllByCategory = () => {
-        repository.findAllByCategory(selectedCategory, getParams(), credentials.token)
+        repository.findAllByCategory(selectedCategory.toString(), getParams())
         .then((res) => handleSearch(res.data))
         .catch((err) => window.alert(err))
         .finally(() => setLoading(false));
     }
 
     const findAll = () => {
-        repository.findAll(getParams(), credentials.token)
+        repository.findAll(getParams())
         .then((res) => handleSearch(res.data))
         .catch((err) => window.alert(err))
         .finally(() => setLoading(false));
     }
 
     const findCategories = () => {
-        repository.getCategoriesRaw(credentials.token)
+        repository.getCategoriesRaw()
         .then(res => {
             const newCategories = [categoryAll, ...isUserExpert(credentials.token), ...res.data.categories]
             setCategories(newCategories)

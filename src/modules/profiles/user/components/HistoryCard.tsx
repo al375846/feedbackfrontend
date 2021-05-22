@@ -2,7 +2,7 @@ import moment from 'moment';
 import React, { FunctionComponent } from 'react';
 import { Card } from 'react-bootstrap';
 
-import { History } from '../../entities/History';
+import { History } from '../../../../entities/History';
 
 interface HistoryCardProps {
     history: History

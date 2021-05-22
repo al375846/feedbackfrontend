@@ -1,8 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import SearchBar from '../../../../components/search/SearchBar'
 import { CategoryRaw } from '../../../../entities/Category'
-import { Publication } from '../../../../entities/Publication'
-import CategoryMenu from '../../categories/CategoryMenu'
+import CategoryMenu from './CategoryMenu'
 
 interface PublicationListHeaderProps {
     handleSearchTerm: (term: string) => void,

@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import { Category } from '../../../entities/Category'
+import { PublicationCreateInput } from '../../../entities/Publication'
 import PublicationCreate from './components/PublicationCreate'
-import { PublicationCreateInput } from './PublicationCreateDataContainer'
 
 interface PublicationCreateViewProps {
     isAddingPublication: boolean,

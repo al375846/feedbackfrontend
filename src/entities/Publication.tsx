@@ -10,3 +10,12 @@ export interface Publication {
     apprentice: {username: string},
     date: Date
 }
+
+export type PublicationCreateInput = {
+    title: string,
+    tags: string,
+    description: string,
+    category: string,
+    subcategory: string,
+    files: FileList
+}

@@ -2,11 +2,10 @@ import React, { FunctionComponent} from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
-import '../detail/components/PublicationInfoTotal.css'
-import InputTextArea from '../../../components/form/textarea/InputTextArea'
-import InputFile from '../../../components/form/files/InputFile'
-import { FeedbackCreateInput } from '../detail/PublicationFeedbackDataContainer'
-
+import './PublicationInfoTotal.css'
+import InputTextArea from '../../../../components/form/textarea/InputTextArea'
+import InputFile from '../../../../components/form/files/InputFile'
+import { FeedbackCreateInput } from '../../../../entities/Feedback'
 
 export interface FeedbackCreateProps {
     showCreate: boolean,

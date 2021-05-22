@@ -3,7 +3,7 @@ import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 
 import './ProfileTotal.css'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
-import ProfileInfoCard from '../../../../components/cards/ProfileInfoCard'
+import ProfileInfoCard from './ProfileInfoCard'
 import InputForm from '../../../../components/form/input/InputForm'
 import { User, UserParams } from '../../../../entities/User'
 

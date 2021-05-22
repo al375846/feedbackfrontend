@@ -2,9 +2,9 @@ import moment from 'moment'
 import React, { FunctionComponent, useContext } from 'react'
 import { Badge } from 'react-bootstrap'
 
-import CredentialsContext from '../../contexts/CredentialsContext'
-import { Publication } from '../../entities/Publication'
-import FilesInfo from '../../modules/publications/files/FilesInfo'
+import CredentialsContext from '../../../../contexts/CredentialsContext'
+import { Publication } from '../../../../entities/Publication'
+import FilesInfo from '../../files/FilesInfo'
 
 interface PublicationDetailsProps {
     publication: Publication,

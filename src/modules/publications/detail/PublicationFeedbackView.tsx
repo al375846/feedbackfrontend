@@ -1,10 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import { UseFormRegister, UseFormHandleSubmit } from 'react-hook-form'
-import { Feedback } from '../../../entities/Feedback'
+import { Feedback, FeedbackCreateInput } from '../../../entities/Feedback'
 import { Publication } from '../../../entities/Publication'
-import PublicationFeedbacks from '../feedbacks/PublicationFeedbacks'
-import { FeedbackCreateInput } from './PublicationFeedbackDataContainer'
-
+import PublicationFeedbacks from './components/PublicationFeedbacks'
 
 interface PublicationFeedbackViewProps {
     publication: Publication | undefined

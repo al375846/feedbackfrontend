@@ -2,21 +2,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import CredentialsContext from '../../../contexts/CredentialsContext';
-import { Category } from '../../../entities/Category';
-import { Publication } from '../../../entities/Publication';
+import { Category, CategoryCreateOptions } from '../../../entities/Category';
+import { Publication, PublicationCreateInput } from '../../../entities/Publication';
 import { ROUTE_PUBLICATION_INFO } from '../../../routing/Routes';
-import { CategoryCreateOptions } from '../../profiles/admin/CreateCategoryDataContainer';
-import { PublicationPostParams, PublicationRepository } from '../repository/PublicationRepository';
+import { PublicationRepository } from '../repository/PublicationRepository';
+import { PublicationPostParams } from '../repository/PublicationRequestType';
 import PublicationCreateView from './PublicationCreateView';
-
-export type PublicationCreateInput = {
-    title: string,
-    tags: string,
-    description: string,
-    category: string,
-    subcategory: string,
-    files: FileList
-}
 
 const PublicationCreateDataContainer = () => {
 
@@ -56,14 +47,14 @@ const PublicationCreateDataContainer = () => {
         
         setLoading(true)
         let publication: Publication
-        repository.postPublication(publicationData, credentials.token)
+        repository.postPublication(publicationData)
         .then(res => {
             publication = res.data.publication;
             if (data.files) {
                 const filesData = new FormData();
                 for (let i = 0; i < data.files.length; i++)
                     filesData.append(data.files[i].name, data.files[i], data.files[i].name)
-                repository.postPublicationFiles(publication.id, filesData, credentials.token)
+                repository.postPublicationFiles(publication.id.toString(), filesData)
                 .then(() => handlePost(publication))
                 .catch(err => window.alert(err))
             }
@@ -72,16 +63,15 @@ const PublicationCreateDataContainer = () => {
         .catch(err => window.alert(err))
     }
 
-
     useEffect(() => {
 
         if (categories.length === 0 && credentials.token)
-            repository.getCategories(credentials.token)
+            repository.getCategories()
             .then(res => setCategories(res.data.categories))
             .catch(err => window.alert(err))
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [categories, credentials.token])
+    }, [categories])
     
     return (
         <PublicationCreateView 

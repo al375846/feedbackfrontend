@@ -5,7 +5,7 @@ import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
 import InputTextArea from '../../../../components/form/textarea/InputTextArea'
 import InputRadio from '../../../../components/form/radio/InputRadio'
-import { IncidenceInput } from '../PublicationInfoDataContainer'
+import { IncidenceInput } from '../../../../entities/Incidence'
 
 
 export interface IncidenceModalProps {

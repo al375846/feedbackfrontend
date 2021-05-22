@@ -4,9 +4,9 @@ import {Alert, Spinner} from 'react-bootstrap'
 import {Publication} from '../../../../entities/Publication'
 import './PublicationInfoTotal.css'
 import IncidenceModal from './IncidenceModal'
-import PublicationDetails from '../../../../components/cards/PublicationDetails'
+import PublicationDetails from './PublicationDetails'
 import { UseFormRegister, UseFormHandleSubmit } from 'react-hook-form'
-import { IncidenceInput } from '../PublicationInfoDataContainer'
+import { IncidenceInput } from '../../../../entities/Incidence'
 
 interface PublicationInfoProps {
     publication: Publication | undefined,

@@ -1,14 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import CategoryAdminContext from '../../../contexts/CategoryAdminContext'
-import CredentialsContext from '../../../contexts/CredentialsContext'
 import { Category, CategoryCreateInput, CategoryCreateOptions } from '../../../entities/Category'
 import { ProfileRepository } from '../repository/ProfileRepository'
 import CreateCategoryView from './CreateCategoryView'
 
 const CreateCategoryDataContainer = () => {
 
-    const credentials = useContext(CredentialsContext)
     const [ isAddingCategory, setIsAddingCategory ] = useState<boolean>(false)
     const { register, handleSubmit, reset, watch } = useForm<CategoryCreateInput>()
     const parentCategory = watch('parent')

@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react'
 
-import { Feedback } from '../../../entities/Feedback'
-import '../detail/components/PublicationInfoTotal.css'
+import './PublicationInfoTotal.css'
 import { Card } from 'react-bootstrap'
-import FilesInfo from '../files/FilesInfo'
 import moment from 'moment'
+import { Feedback } from '../../../../entities/Feedback'
+import FilesInfo from '../../files/FilesInfo'
 
 export interface FeedbackCardProps {
     feedback: Feedback,

@@ -12,3 +12,8 @@ export interface Feedback {
     date: Date
     valoration: Rate | null
 }
+
+export type FeedbackCreateInput = {
+    description: string,
+    files: FileList
+}

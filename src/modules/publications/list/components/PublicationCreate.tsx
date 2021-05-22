@@ -2,15 +2,14 @@ import React, { FunctionComponent } from 'react'
 import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 import { UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
 
-import { Category } from '../../../../entities/Category'
+import { Category, CategoryCreateOptions } from '../../../../entities/Category'
 import './PublicationTotal.css'
 import InputForm from '../../../../components/form/input/InputForm';
 import InputFile from '../../../../components/form/files/InputFile';
 import InputSelect from '../../../../components/form/select/InputSelect';
 import InputTextArea from '../../../../components/form/textarea/InputTextArea';
-import { PublicationCreateInput } from '../PublicationCreateDataContainer';
 import { isApprentice } from '../../../../contexts/CredentialsContext';
-import { CategoryCreateOptions } from '../../../profiles/admin/CreateCategoryDataContainer';
+import { PublicationCreateInput } from '../../../../entities/Publication';
 
 export interface PublicationCreateProps {
     isAddingPublication: boolean,

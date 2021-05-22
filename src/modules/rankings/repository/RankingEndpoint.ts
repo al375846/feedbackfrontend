@@ -1,1 +1,1 @@
-export const RANKING: string = "/api/ranking/:type";
+export const RANKING: string = '/api/ranking/:type'

@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import CredentialsContext from '../../contexts/CredentialsContext'
 import { Category } from '../../entities/Category'
 import { SuggestionCreateInput, SuggestionTypes } from '../../entities/Suggestion'
 import { CategoryCreateOptions } from '../profiles/admin/CreateCategoryDataContainer'
@@ -17,7 +16,6 @@ const SuggestionDataContainer = () => {
     const [ variant, setVariant ] = useState<string>('')
     const [ message, setMessage ] = useState<string>('')
 
-    const credentials = useContext(CredentialsContext)
     const repository = new SuggestionRepository()
 
     const handleAlert = (alert: boolean) => setAlert(alert)
@@ -29,7 +27,7 @@ const SuggestionDataContainer = () => {
             .catch(err => window.alert(err))
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [categories, credentials.token])
+    }, [categories])
 
     const ShowAlert = () => {
         setAlert(true)
@@ -42,7 +40,7 @@ const SuggestionDataContainer = () => {
 
         const parent = category === CategoryCreateOptions.DEFAULT || type !== SuggestionTypes.CATEGORY
             ? null 
-            : {name: category}
+            : { name: category }
 
         const suggestionData = {
             name: data.name,

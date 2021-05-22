@@ -2,72 +2,35 @@ import { AxiosResponse } from "axios";
 
 import api from "../../../api/Api";
 import { CHECK_USERNAME, LOGIN, LOGOUT, ONESIGNAL, REGISTER, USERTYPE } from "./AuthEndpoints";
-
-export interface RegisterParams {
-    username: string,
-    password: string,
-    email: string,
-    name: string,
-    lastname: string,
-    address: string,
-    phone: string
-}
-
-export interface NotificationsParams {
-    onesignal: string
-}
-
-interface AuthLoginResponseData {
-    token: string
-}
-
-interface AuthUsertypeResponseData {
-    usertype: string
-}
-
-interface CheckUsernameResponseData {
-    exists: boolean
-}
+import { CheckUsernameResponse, LoginPostResponse, NotificationsParams, NotificationsResponse, RegisterParams, RegisterResponse, UsertypeResponse } from "./AuthRequestType";
 
 export class AuthRepository {
 
-    public async login(username: string, password: string): Promise<AxiosResponse<AuthLoginResponseData>> {
-        return await api.post<AuthLoginResponseData>(LOGIN, {
+    public async login(username: string, password: string): Promise<AxiosResponse<LoginPostResponse>> {
+        return await api.post<LoginPostResponse>(LOGIN, {
             username: username,
             password: password
         })
     }
 
-    public async usertype(token: string): Promise<AxiosResponse<AuthUsertypeResponseData>> {
-        return await api.get<AuthUsertypeResponseData>(USERTYPE, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+    public async usertype(): Promise<AxiosResponse<UsertypeResponse>> {
+        return await api.get<UsertypeResponse>(USERTYPE)
     }
 
-    public async logout(notificationData: NotificationsParams, token: string): Promise<void> {
-        await api.post<void>(LOGOUT, notificationData, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+    public async logout(notificationData: NotificationsParams): Promise<AxiosResponse<NotificationsResponse>> {
+        return await api.post<NotificationsResponse>(LOGOUT, notificationData)
     }
 
-    public async onesignal(notificationData: NotificationsParams, token: string): Promise<void> {
-        await api.post(ONESIGNAL, notificationData, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+    public async onesignal(notificationData: NotificationsParams): Promise<AxiosResponse<NotificationsResponse>> {
+        return await api.post<NotificationsResponse>(ONESIGNAL, notificationData)
     }
 
-    public async register(registerData: RegisterParams, type: string): Promise<void> {
-        await api.post<void>(REGISTER.replace(':type', type), registerData)
+    public async register(registerData: RegisterParams, type: string): Promise<AxiosResponse<RegisterResponse>> {
+        return await api.post<RegisterResponse>(REGISTER.replace(':type', type), registerData)
     }
 
-    public async checkUsername(username: string): Promise<AxiosResponse<CheckUsernameResponseData>> {
-        return await api.post<CheckUsernameResponseData>(CHECK_USERNAME, {
+    public async checkUsername(username: string): Promise<AxiosResponse<CheckUsernameResponse>> {
+        return await api.post<CheckUsernameResponse>(CHECK_USERNAME, {
             username: username
         })
     }

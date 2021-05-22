@@ -1,20 +1,9 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
+import { RegsiterInput } from '../../../entities/User';
 import { AuthRepository } from '../repository/AuthRepository';
 import RegisterView from './RegisterView';
-
-export type RegsiterInput = {
-    username: string,
-    password: string,
-    confirmpassword: string,
-    email: string,
-    name: string,
-    lastname: string,
-    address: string,
-    phone: string,
-    type: string  
-}
 
 const RegisterDataContainer = () => {
 

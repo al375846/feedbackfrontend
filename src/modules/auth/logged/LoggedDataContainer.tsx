@@ -18,7 +18,7 @@ const LoggedDataContainer = () => {
             onesignal: localStorage.getItem('onesignal')!
         }
 
-        repository.logout(logData, credentials.token)
+        repository.logout(logData)
         .then(() => {
             localStorage.removeItem('onesignal')
         })

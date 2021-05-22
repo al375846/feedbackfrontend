@@ -2,13 +2,9 @@ import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import CredentialsContext from '../../../contexts/CredentialsContext';
+import { LoginInput } from '../../../entities/User';
 import { AuthRepository } from '../repository/AuthRepository';
 import LoginView from './LoginView';
-
-export type LoginInput = {
-    username: string,
-    password: string
-}
 
 const LoginDataContainer = () => {
 
@@ -29,7 +25,7 @@ const LoginDataContainer = () => {
             localStorage.setItem('username', data.password)
             credentials.onTokenChange(res.data.token)
             credentials.onUsernameChange(data.password)
-            repository.usertype(res.data.token)
+            repository.usertype()
             .then(res => {
                 localStorage.setItem('usertype', res.data.usertype)
                 credentials.onUsertypeChange(res.data.usertype)
@@ -45,7 +41,7 @@ const LoginDataContainer = () => {
                 const logdata = {
                     onesignal: data
                 }
-                repository.onesignal(logdata, localStorage.getItem('token')!)
+                repository.onesignal(logdata)
             })
             reset({ username: '', password: ''})
             navigateToHome()

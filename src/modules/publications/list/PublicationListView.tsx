@@ -15,7 +15,8 @@ interface PublicationListViewProps {
     left: number,
     page: number,
     onPageChange: (page: number) => void,
-    categories: CategoryRaw[]
+    categories: CategoryRaw[],
+    divCategory: React.RefObject<HTMLDivElement>
 }
 
 const PublicationListView: FunctionComponent<PublicationListViewProps> = (
@@ -29,7 +30,8 @@ const PublicationListView: FunctionComponent<PublicationListViewProps> = (
         publications,
         loading,
         onPageChange,
-        categories
+        categories,
+        divCategory
     }
 ) => {
     return (
@@ -39,6 +41,7 @@ const PublicationListView: FunctionComponent<PublicationListViewProps> = (
                 selected={selected}
                 onSelectedChange={onSelectedChange}
                 categories={categories}
+                divCategory={divCategory}
             />
 
             <PublicationList 

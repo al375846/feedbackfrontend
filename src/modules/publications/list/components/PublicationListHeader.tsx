@@ -7,8 +7,8 @@ interface PublicationListHeaderProps {
     handleSearchTerm: (term: string) => void,
     onSelectedChange: (selected: number) => void,
     selected: number,
-    categories: CategoryRaw[]
-
+    categories: CategoryRaw[],
+    divCategory: React.RefObject<HTMLDivElement>
 }
 
 const PublicationListHeader: FunctionComponent<PublicationListHeaderProps> = (
@@ -16,7 +16,8 @@ const PublicationListHeader: FunctionComponent<PublicationListHeaderProps> = (
         handleSearchTerm,
         onSelectedChange,
         selected,
-        categories
+        categories,
+        divCategory
     }
 ) => {
     return (
@@ -27,7 +28,8 @@ const PublicationListHeader: FunctionComponent<PublicationListHeaderProps> = (
             <CategoryMenu 
                 onSelectedChange={onSelectedChange}
                 selected={selected}
-                categories={categories}/>
+                categories={categories}
+                divCategory={divCategory}/>
         </div>
     )
 }

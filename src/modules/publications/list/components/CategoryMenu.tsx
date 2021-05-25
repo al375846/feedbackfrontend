@@ -7,18 +7,18 @@ import './PublicationTotal.css'
 export interface CategoryMenuProps {
     onSelectedChange: (selected: number) => void
     selected: number,
-    categories: CategoryRaw[]
+    categories: CategoryRaw[],
+    divCategory: React.RefObject<HTMLDivElement>
 }
 
 const CategoryMenu: FunctionComponent<CategoryMenuProps> = (
     {
         selected,
         onSelectedChange,
-        categories
+        categories,
+        divCategory
     }
 ) => {
-
-    const divCategory = useRef<HTMLDivElement>(null)
 
     const wheelListener = (e: WheelEvent) => {
         e.preventDefault()

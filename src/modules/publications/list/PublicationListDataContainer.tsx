@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import CredentialsContext from '../../../contexts/CredentialsContext'
 import { categoryAll, CategoryRaw, isCustomCategory, isUserExpert, PublicationCategories } from '../../../entities/Category'
 import { Publication } from '../../../entities/Publication'
@@ -17,6 +17,7 @@ const PublicationListDataContainer = () => {
     const [ finalSearchTerm, setFinalSearchTerm ] = useState<string>('')
     const [ selectedCategory, setSelectedCategory ] = useState<number>(PublicationCategories.ALL)
     
+    const divCategory = useRef<HTMLDivElement>(null)
     const repository = new PublicationRepository();
     const credentials = useContext(CredentialsContext);
 
@@ -100,7 +101,8 @@ const PublicationListDataContainer = () => {
             page={page}
             loading={loading}
             onPageChange={onPageChange}
-            categories={categories}/>
+            categories={categories}
+            divCategory={divCategory}/>
     )
 }
 

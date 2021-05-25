@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
 import { Badge } from 'react-bootstrap'
 
 import { CategoryRaw } from '../../../../entities/Category'
@@ -33,6 +33,8 @@ const CategoryMenu: FunctionComponent<CategoryMenuProps> = (
         refValue!.addEventListener('wheel', wheelListener)
 
         return () => refValue?.removeEventListener('wheel', wheelListener)
+        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const setVariant = (id: number): string => {

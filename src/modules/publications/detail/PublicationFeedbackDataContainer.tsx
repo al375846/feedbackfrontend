@@ -22,7 +22,7 @@ const PublicationFeedbackDataContainer: FunctionComponent<PublicationFeedbackDat
     const [ loading, setLoading ] = useState<boolean>(false)
     const [ alert, setAlert ] = useState<boolean>(false)
     const [ showCreate, setShowCreate ] = useState<boolean>(false)
-    const { register, handleSubmit } = useForm<FeedbackCreateInput>()
+    const { register, handleSubmit, reset } = useForm<FeedbackCreateInput>()
 
     const credentials = useContext(CredentialsContext)
     const publicationContext = useContext(PublicationDetailsContext)
@@ -39,6 +39,7 @@ const PublicationFeedbackDataContainer: FunctionComponent<PublicationFeedbackDat
 
     const handlePost = (feedback: Feedback) => {
         const newFeedbacks = [feedback, ...feedbacks || []]
+        reset({description: '', files: undefined})
         setFeedbacks(newFeedbacks)
         showAlert()
         handleCreate(false);

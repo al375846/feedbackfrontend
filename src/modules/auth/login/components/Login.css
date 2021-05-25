@@ -8,9 +8,7 @@
 }
 
 .login-form {
-    position: fixed;
-    top: 2em;
-    left: 35%;
+    margin: 4em auto 0;
     width: 25em;
     text-align: center;
     align-content: center;

@@ -1,18 +1,21 @@
 import React, { FunctionComponent } from 'react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { isApprentice, isExpert } from '../../../../contexts/CredentialsContext'
 
 interface LoggedInfoProps {
     onHandleLogout: () => void,
     favs: () => boolean,
-    username: string
+    username: string,
+    usertype: string
 }
 
 const LoggedInfo: FunctionComponent<LoggedInfoProps> = (
     {
         onHandleLogout,
         favs,
-        username
+        username,
+        usertype
     }
 ) => {
 
@@ -25,11 +28,18 @@ const LoggedInfo: FunctionComponent<LoggedInfoProps> = (
             )
     }
 
+    const renderLink = () => {
+        if (isExpert(usertype) || isApprentice(usertype))
+            return '/profile'
+        else
+            return '/admin'
+    }
+
     return (
         <div className="item">
                 {renderFavs()}
 
-                <Link to="/profile" className="item">
+                <Link to={renderLink()} className="item">
                     <i className="user icon"></i>
                     {username}
                 </Link>

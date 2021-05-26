@@ -4,21 +4,24 @@ import LoggedInfo from './components/LoggedInfo'
 interface LoggedViewProps {
     onHandleLogout: () => void,
     favs: () => boolean,
-    username: string
+    username: string,
+    usertype: string
 }
 
 const LoggedView: FunctionComponent<LoggedViewProps> = (
     {
         onHandleLogout,
         favs,
-        username
+        username,
+        usertype
     }
 ) => {
     return (
         <LoggedInfo 
             onHandleLogout={onHandleLogout}
             favs={favs}
-            username={username}/>
+            username={username}
+            usertype={usertype}/>
     )
 }
 

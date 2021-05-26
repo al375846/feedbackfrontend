@@ -35,7 +35,8 @@ const LoggedDataContainer = () => {
         <LoggedView 
             onHandleLogout={onHandleLogout}
             favs={favs}
-            username={credentials.username}/>
+            username={credentials.username}
+            usertype={credentials.usertype}/>
     )
 }
 

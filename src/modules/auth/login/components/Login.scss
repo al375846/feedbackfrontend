@@ -1,0 +1,57 @@
+.close-button {
+    float: right;
+}
+
+.login-button {
+    float: right;
+    margin-right: 1em;
+}
+
+
+.login-container {
+    width: 100%;
+    height: 100%;
+    border: 3px solid purple;
+    background-color: lightblue;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+
+    .login-form {
+        background-color: white;
+        width: 28em;
+        height: 25em;
+
+        display: flex;
+        flex-flow: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        .login-form-header {
+            width: 100%;
+            padding-top: 8px;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .login-form-body {
+            width: 100%;
+            padding: 10px;
+
+            display: flex;
+            flex-flow: column;
+        }
+
+        .login-form-footer {
+            width: 100%;
+            padding: 10px;
+
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+        }
+    }
+}

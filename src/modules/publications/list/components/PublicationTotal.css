@@ -115,17 +115,21 @@
     margin-top: 0.4em;
     overflow-x: hidden;
     pointer-events:fill;
+    
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-content: space-between;
 }
 
 .arrow-prev {
     cursor: pointer;
-    float:left;
     margin-right: 1em;
 }
 
 .arrow-next {
     cursor: pointer;
-    float:right;
+    margin-left: 1em;
 }
 
 .category {
@@ -133,7 +137,6 @@
     cursor: pointer;
 }
 .categories {
-    float: left;
     display: flex;
     overflow-x: hidden;
     width: 91%;

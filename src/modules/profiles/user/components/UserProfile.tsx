@@ -5,7 +5,7 @@ import { History } from '../../../../entities/History'
 import { User, UserParams } from '../../../../entities/User'
 import HistoryInfo from './HistoryInfo'
 import ProfileInfo from './ProfileInfo'
-
+import './ProfileTotal.css'
 
 interface UserProfileProps {
     history: History[] | undefined,
@@ -34,8 +34,8 @@ const UserProfile: FunctionComponent<UserProfileProps> = (
 ) => {
 
     return (
-        <div>
-            <div>
+        <div className="profile-container">
+            <div className="profile">
                 <Tabs fill defaultActiveKey="profileap" 
                     id="apprentice-profile">
                     <Tab eventKey="profileap" title="Profile">

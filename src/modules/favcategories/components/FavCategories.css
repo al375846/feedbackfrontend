@@ -7,3 +7,21 @@
     cursor: pointer;
     color: yellow;
 }
+
+.favcategories-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.favourites-list {
+    width: 60%;
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18em, 1fr));
+    grid-gap: 1em;
+}

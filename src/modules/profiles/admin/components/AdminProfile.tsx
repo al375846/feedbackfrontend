@@ -5,6 +5,7 @@ import { Category } from '../../../../entities/Category'
 import { Suggestion } from '../../../../entities/Suggestion'
 import CategoriesInfo from './CategoriesInfo'
 import SuggestionList from './SuggestionList'
+import './AdminProfile.scss'
 
 interface AdminProfileProps {
     categoryparent: string,
@@ -27,21 +28,23 @@ const AdminProfile: FunctionComponent<AdminProfileProps> = (
 ) => {
 
     return (
-        <div>
-            <Tabs fill defaultActiveKey="categories" id="admin-profile">
-                <Tab eventKey="categories" title="Categories">
-                    <CategoriesInfo
-                        categoryparent={categoryparent}
-                        categories={categories}
-                        handleCategory={handleCategory} />
-                </Tab>
-                <Tab eventKey="suggestions" title="Suggestions">
-                    <SuggestionList
-                        suggestions={suggestions}
-                        handleAccept={handleAccept}
-                        handleRemove={handleRemove} />
-                </Tab>
-            </Tabs>
+        <div className="profile-container">
+            <div className="profile">
+                <Tabs fill defaultActiveKey="categories" id="admin-profile">
+                    <Tab eventKey="categories" title="Categories">
+                        <CategoriesInfo
+                            categoryparent={categoryparent}
+                            categories={categories}
+                            handleCategory={handleCategory} />
+                    </Tab>
+                    <Tab eventKey="suggestions" title="Suggestions">
+                        <SuggestionList
+                            suggestions={suggestions}
+                            handleAccept={handleAccept}
+                            handleRemove={handleRemove} />
+                    </Tab>
+                </Tabs>
+            </div>
         </div>
     )
 }

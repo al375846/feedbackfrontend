@@ -44,7 +44,7 @@ const PublicationFeedbacks: FunctionComponent<PublicationFeedbacksProps> = (
 ) => {
 
     if (loading || !feedbacks)
-        return <div><Spinner animation="border"/></div> 
+        return <div className="publication-feedbacks-container"><Spinner animation="border"/></div> 
 
     const renderfeedbacks = feedbacks.map((feedback) => {
         return <FeedbackDetails 
@@ -68,27 +68,29 @@ const PublicationFeedbacks: FunctionComponent<PublicationFeedbacksProps> = (
     }
 
     return (
-        <div>
-            <div className="ui secondary pointing menu">
-                <div className="item">
-                    <h1>Respuestas</h1>
+        <div className="publication-feedbacks-container">
+            <div className="publication-feedbacks">
+                <div className="ui secondary pointing menu">
+                    <div className="item">
+                        <h1>Respuestas</h1>
+                    </div>
+                    <div className="right menu">
+                        {renderPostFeedback()}
+                    </div>
                 </div>
-                <div className="right menu">
-                    {renderPostFeedback()}
-                </div>
-            </div>
-            {renderfeedbacks}
-            <FeedbackCreate 
-                showCreate={showCreate} 
-                handleCreate={handleCreate} 
-                register={register}
-                handleSubmit={handleSubmit}
-                onSubmit={onSubmit}/>
+                {renderfeedbacks}
+                <FeedbackCreate 
+                    showCreate={showCreate} 
+                    handleCreate={handleCreate} 
+                    register={register}
+                    handleSubmit={handleSubmit}
+                    onSubmit={onSubmit}/>
 
-            <div className="created">
-                <Alert variant="success" show={alert}>
-                    Feedback creado con éxito
-                </Alert>
+                <div className="created">
+                    <Alert variant="success" show={alert}>
+                        Feedback creado con éxito
+                    </Alert>
+                </div>
             </div>
         </div>
     )

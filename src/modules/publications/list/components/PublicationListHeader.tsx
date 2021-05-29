@@ -21,8 +21,9 @@ const PublicationListHeader: FunctionComponent<PublicationListHeaderProps> = (
     }
 ) => {
     return (
-        <div>
-           <SearchBar 
+        <div className="publications-header-container">
+            <div className="publication-header">
+            <SearchBar 
                 handleSearchTerm={handleSearchTerm}/>
 
             <CategoryMenu 
@@ -30,6 +31,7 @@ const PublicationListHeader: FunctionComponent<PublicationListHeaderProps> = (
                 selected={selected}
                 categories={categories}
                 divCategory={divCategory}/>
+            </div>
         </div>
     )
 }

@@ -32,7 +32,7 @@ const PublicationList: FunctionComponent<PublicationListProps> = (
     })
 
     if (loading)
-        return <div className="loading"><Spinner animation="border"/></div>
+        return <div className="publications-container"><Spinner animation="border"/></div>
     
     if (publications.length === 0)
         return (
@@ -42,7 +42,7 @@ const PublicationList: FunctionComponent<PublicationListProps> = (
         )
 
     return (
-        <>
+        <div className="publications-container">
             <div className="publication-list">
                 {pubs}
             </div>
@@ -53,7 +53,7 @@ const PublicationList: FunctionComponent<PublicationListProps> = (
                     totalPages={Math.ceil((left+itemSize) / itemSize)}
                 />
             </div>
-        </>
+        </div>
     )
 }
 

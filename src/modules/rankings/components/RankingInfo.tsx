@@ -19,8 +19,8 @@ const RankingInfo: FunctionComponent<RankingInfoProps> = (
 ) => {
 
     return (
-        <div>
-            <div>
+        <div className="ranking-container">
+            <div className="ranking-list">
                 <Tabs fill defaultActiveKey="ratedexperts" id="rankings">
                     <Tab eventKey="ratedexperts" title="Rated experts">
                         <RankingDetails type="rated/experts" ranking={ratedExperts}/>

@@ -37,27 +37,29 @@ const PublicationInfo: FunctionComponent<PublicationInfoProps> = (
 ) => {
 
     if (loading || !publication)
-        return <div className="loading"><Spinner animation="border"/></div>
+        return <div className="publication-details-container"><Spinner animation="border"/></div>
 
     return (
-        <div>
-            <PublicationDetails 
-                publication={publication}
-                handleIncidence={handleIncidence}
-                downloadFile={downloadFile}/>
+        <div className="publication-details-container">
+            <div className="publication-details">
+                <PublicationDetails 
+                    publication={publication}
+                    handleIncidence={handleIncidence}
+                    downloadFile={downloadFile}/>
 
-            <IncidenceModal 
-                show={showIncidence} 
-                handleIncidence={handleIncidence} 
-                showAlert={showAlert} 
-                register={register}
-                handleSubmit={handleSubmit}
-                onSubmit={onSubmit}/>
+                <IncidenceModal 
+                    show={showIncidence} 
+                    handleIncidence={handleIncidence} 
+                    showAlert={showAlert} 
+                    register={register}
+                    handleSubmit={handleSubmit}
+                    onSubmit={onSubmit}/>
 
-            <div className="created">
-                <Alert variant="success" show={alert}>
-                    Incidencia enviada
-                </Alert>
+                <div className="created">
+                    <Alert variant="success" show={alert}>
+                        Incidencia enviada
+                    </Alert>
+                </div>
             </div>
         </div>
     )

@@ -19,7 +19,7 @@ const FavCategoriesInfo: FunctionComponent<FavCategoriesInfoProps> = (
 ) => {
 
     if (!categories || !favIds)
-        return <div><Spinner animation="border" /></div>
+        return <div className="favcategories-container"><Spinner animation="border" /></div>
 
     const renderCategories = categories.map((category) => {
         return <FavouriteCategoryCard
@@ -30,8 +30,10 @@ const FavCategoriesInfo: FunctionComponent<FavCategoriesInfoProps> = (
     })
 
     return (
-        <div className="favourites-list">
-            {renderCategories}
+        <div className="favcategories-container">
+            <div className="favourites-list">
+                {renderCategories}
+            </div>
         </div>
     )
 }

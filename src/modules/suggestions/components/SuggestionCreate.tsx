@@ -8,6 +8,7 @@ import InputSelect from '../../../components/form/select/InputSelect'
 import InputTextArea from '../../../components/form/textarea/InputTextArea'
 import { Category, CategoryCreateOptions } from '../../../entities/Category'
 import { SuggestionCreateInput, SuggestionTypes } from '../../../entities/Suggestion'
+import './SuggestionCreate.scss'
 
 interface SuggestionCreateProps {
     categories: Category[] | undefined,
@@ -69,11 +70,11 @@ const SuggestionCreate: FunctionComponent<SuggestionCreateProps> = (
         : null
     }
 
-    if (!categories) return <div><Spinner animation="border" /></div>
+    if (!categories) return <div className="suggestion-create-continer"><Spinner animation="border" /></div>
 
     return(
-        <div className="suggestion-create">
-            <Form onSubmit={handleSubmit(onSubmit)}>
+        <div className="suggestion-create-continer">
+            <Form onSubmit={handleSubmit(onSubmit)} className="suggestion-create">
                 <InputForm 
                     name={"suggestion-name"}
                     label={"Name"}

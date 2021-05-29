@@ -6,7 +6,7 @@ import InputForm from '../../../../components/form/input/InputForm'
 import InputRadio from '../../../../components/form/radio/InputRadio'
 import { CredentialsUsertype } from '../../../../contexts/CredentialsContext'
 import { RegsiterInput } from '../../../../entities/User'
-import './Register.css'
+import './Register.scss'
 
 interface RegisterProps {
     alert: boolean,
@@ -42,9 +42,12 @@ const Register: FunctionComponent<RegisterProps> = (
     ]
     
     return(
-        <div>
-            <div className="register-form">
-            <Form onSubmit={handleSubmit(onSubmit)}>
+        <div className="register-container">
+            <Form onSubmit={handleSubmit(onSubmit)} className="register-form">
+                <div className="register-form-header">
+                    <h1>Register</h1>
+                </div>
+                <div className="register-form-body">
                 <Row>
                     <Col>
                         <InputForm 
@@ -151,12 +154,12 @@ const Register: FunctionComponent<RegisterProps> = (
                         </Alert>
                     </Col>
                 </Row>
+                </div>
                 <Button variant="primary" type="submit" 
                     className="profile-submit" disabled={passwordMismatches()}>
                 Submit
                 </Button>
             </Form>
-            </div>
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { Form, Alert, Button, Row, Col } from 'react-bootstrap'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import InputForm from '../../../../components/form/input/InputForm'
 import { LoginInput } from '../../../../entities/User'
 import './Login.scss'
@@ -62,8 +63,10 @@ const LoginForm: FunctionComponent<LoginFormProps> = (
             </div>
             <div className={"login-form-footer"}>
                 <div className="register">
-                    Not registered? Do it
-                    <a href="/register" className="item"> here</a>
+                    Not registered? Do it&nbsp;
+                    <Link to="/register" className="item">
+                        here
+                    </Link>
                 </div>
                 <Button variant="primary" type="submit" className="login-button">
                     Login

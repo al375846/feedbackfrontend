@@ -1,4 +1,30 @@
+.publications-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.publications-header-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.publication-header {
+    margin-top: 1em;
+    width: 60%;
+}
+
 .publication-list {
+    width: 60%;
     margin-top: 1em;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(30em, 1fr));

@@ -1,0 +1,50 @@
+.close-button {
+    float: right;
+}
+
+.login-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+
+    .login-form {
+        width: 25em;
+        height: 20em;
+
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+
+        .login-form-header {
+            width: 100%;
+            padding-top: 8px;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .login-form-body {
+            width: 100%;
+            padding: 10px;
+
+            display: flex;
+            flex-flow: column;
+        }
+
+        .login-form-footer {
+            width: 100%;
+
+            display: flex;
+            flex-flow: row nowrap;
+            align-content: space-around;
+            justify-content: space-around;
+
+            
+        }
+    }
+}

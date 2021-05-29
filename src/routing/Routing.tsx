@@ -12,18 +12,19 @@ import SuggestionScreen from "../modules/suggestions/SuggestionScreen";
 import FavCategoriesScreen from "../modules/favcategories/FavCategoriesScreen";
 import RegisterScreen from "../modules/auth/register/RegisterScreen";
 import LoginScreen from "../modules/auth/login/LoginScreen";
+import PrivateRoute from "./PrivateRoute";
 
 const Routing: FunctionComponent = () => {
     return (
         <BrowserRouter>
             <Layout>
-                <Route path={ROUTE_BASE} exact component={PublicationListScreen}/>
-                <Route path={ROUTE_PUBLICATION_INFO} exact component={PublicationInfoScreen}/>
-                <Route path={ROUTE_PROFILE} exact component={UserScreen}/>
-                <Route path={ROUTE_PROFILE_ADMIN} exact component={AdminScreen}/>
-                <Route path={ROUTE_RANKING} exact component={RankingScreen}/>
-                <Route path={ROUTE_SUGGESTION} exact component={SuggestionScreen}/>
-                <Route path={ROUTE_FAVOURITE} exact component={FavCategoriesScreen}/>
+                <PrivateRoute path={ROUTE_BASE} component={<PublicationListScreen />}/>
+                <PrivateRoute path={ROUTE_PUBLICATION_INFO} component={<PublicationInfoScreen />}/>
+                <PrivateRoute path={ROUTE_PROFILE} component={<UserScreen />}/>
+                <PrivateRoute path={ROUTE_PROFILE_ADMIN} component={<AdminScreen />}/>
+                <PrivateRoute path={ROUTE_RANKING} component={<RankingScreen />}/>
+                <PrivateRoute path={ROUTE_SUGGESTION} component={<SuggestionScreen />}/>
+                <PrivateRoute path={ROUTE_FAVOURITE} component={<FavCategoriesScreen />}/>
                 <Route path={ROUTE_REGISTER} exact component={RegisterScreen}/>
                 <Route path={ROUTE_LOGIN} exact component={LoginScreen}/>
             </Layout>

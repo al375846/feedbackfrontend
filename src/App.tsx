@@ -5,7 +5,7 @@ import Routing from "./routing/Routing";
 const App = () => {
 
     return (
-        <div className="ui container" style={{marginTop: '10px'}}>
+        <div className={"app-container"}>
             <CredentialsStore>
                 <Routing/>
             </CredentialsStore>

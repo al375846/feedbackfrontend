@@ -44,9 +44,12 @@ const RegisterDataContainer = () => {
         .then(res => {
             if (!res.data.exists)
                 repository.register(registerData, data.type)
-                .then()
+                .then(() => {
+                    repository.login(data.username, data.password)
+                    .then(() => navigateToHome())
+                    .catch(err => window.alert(err))
+                })
                 .catch()
-                .finally(() => navigateToHome())
             else
                 showAlert()
         })

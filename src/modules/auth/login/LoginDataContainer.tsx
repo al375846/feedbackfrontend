@@ -31,6 +31,7 @@ const LoginDataContainer = () => {
                 credentials.onUsertypeChange(res.data.usertype)
             })
             .catch(err => window.alert(err))
+            .finally(() => navigateToHome())
         })
         .catch(() => handleVisible())
         .finally(() => {
@@ -44,7 +45,6 @@ const LoginDataContainer = () => {
                 repository.onesignal(logdata)
             })
             reset({ username: '', password: ''})
-            navigateToHome()
         })
     }
 

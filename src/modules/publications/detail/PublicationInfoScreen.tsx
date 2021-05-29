@@ -1,23 +1,22 @@
 import React from 'react'
-import { RouteComponentProps } from 'react-router'
+import { useParams } from 'react-router'
 import { PublicationDetailsStore } from '../../../contexts/PublicationDetailsContext'
 import PublicationFeedbackDataContainer from './PublicationFeedbackDataContainer'
 import PublicationInfoDataContainer from './PublicationInfoDataContainer'
 
-type PublicationInfoParams = {
+interface PublicationSreenParams {
     id: string
 }
 
-const PublicationInfoScreen = (
-    {
-        match
-    }: RouteComponentProps<PublicationInfoParams>
-) => {
+const PublicationInfoScreen = () => {
+
+    const id = useParams<PublicationSreenParams>().id
+
     return (
         <div>
             <PublicationDetailsStore>
-                <PublicationInfoDataContainer id={match.params.id}/>
-                <PublicationFeedbackDataContainer id={match.params.id}/>
+                <PublicationInfoDataContainer id={id}/>
+                <PublicationFeedbackDataContainer id={id}/>
             </PublicationDetailsStore>
         </div>
     )

@@ -3,7 +3,7 @@ import { Form, Alert, Button, Row, Col } from 'react-bootstrap'
 import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import InputForm from '../../../../components/form/input/InputForm'
 import { LoginInput } from '../../../../entities/User'
-import './Login.css'
+import './Login.scss'
 
 interface LoginFormProps {
     alert: boolean,
@@ -24,47 +24,53 @@ const LoginForm: FunctionComponent<LoginFormProps> = (
 ) => {
 
     return (
-        <div className="login-form">
-            <h1>Please Log in or Register</h1>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-                <Row >
+        <div className={"login-container"}>
+        <Form onSubmit={handleSubmit(onSubmit)} className="login-form">
+            <div className={"login-form-header"}>
+                <h2>Please Log in or Register</h2>
+            </div>
+            <div className={"login-form-body"}>
+                <Row>
                     <Col sm={12} md={12} lg={12}>
-                    <InputForm 
-                        name={"login-username"}
-                        label={"Username"}
-                        value={""}
-                        type={"text"}
-                        required={true}
-                        input={'username'}
-                        register={register}/>
+                        <InputForm
+                            name={"login-username"}
+                            label={"Username"}
+                            value={""}
+                            type={"text"}
+                            required={true}
+                            input={'username'}
+                            register={register}/>
                     </Col>
                 </Row>
-                <Row >
+                <Row>
                     <Col sm={12} md={12} lg={12}>
-                    <InputForm 
-                        name={"login-password"}
-                        label={"Password"}
-                        value={""}
-                        type={"password"}
-                        required={true}
-                        input={'password'}
-                        register={register}/>
+                        <InputForm
+                            name={"login-password"}
+                            label={"Password"}
+                            value={""}
+                            type={"password"}
+                            required={true}
+                            input={'password'}
+                            register={register}/>
                     </Col>
                 </Row>
-                <Alert variant="danger" show={alert} 
-                    onClose={() => handleAlert(false)} 
-                    dismissible={true}>
+                <Alert variant="danger" show={alert}
+                       onClose={() => handleAlert(false)}
+                       dismissible={true}>
                     Usuario o contraseña incorrectos
                 </Alert>
-
-                Not registered? Do it 
-                <a href="/register" className="item"> here</a>
-                
+            </div>
+            <div className={"login-form-footer"}>
+                <div className="register">
+                    Not registered? Do it
+                    <a href="/register" className="item"> here</a>
+                </div>
                 <Button variant="primary" type="submit" className="login-button">
                     Login
                 </Button>
-            </Form>
-        </div>
+            </div>
+        </Form>
+    </div>
     )
 }
 

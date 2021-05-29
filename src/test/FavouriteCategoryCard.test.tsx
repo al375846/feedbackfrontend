@@ -71,13 +71,18 @@ it("HandleFav is called when icon click", () => {
       render(card, container);
     });
 
-    const icon = document.getElementById('star1') as HTMLElement
+    const icon = document.getElementById('star1')
+
+    expect(container!.textContent).toContain("TEST");
+    expect(icon).toBeDefined()
+    expect(icon?.className).toBe('star outline icon');
 
     act(() => {
-      icon.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      icon?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      icon?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    expect(handleFav).toHaveBeenCalledTimes(1);
+    expect(handleFav).toHaveBeenCalledTimes(2);
 });
 
 it("Fav category is added", () => {
@@ -92,7 +97,13 @@ it("Fav category is added", () => {
     const favcategories: number[] = []
 
     const handleFav = (id: number) => {
-      favcategories.push(id)
+      if (!favcategories.includes(id))
+        favcategories.push(id)
+      else {
+        const i = favcategories?.indexOf(id)
+        if (i)
+          favcategories.splice(i, 1)
+      }
     }
 
     const card = <FavouriteCategoryCard category={category} favIds={favcategories} handleFav={handleFav}/>
@@ -108,6 +119,5 @@ it("Fav category is added", () => {
     act(() => {
       icon.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-
     expect(favcategories.length).toBe(1)
 });
